@@ -1,0 +1,40 @@
+INSTALACIÓN DE PHPREPORT
+========================
+
+Modificar los ficheros include/config_db.php y sql/install.sh, poniendo 
+en ambos la base de datos, usuario y clave elegidos para ejecutar la 
+aplicación. En include/config.php se especificará también el método de 
+autenticación (contra tabla de usuarios o contra LDAP) y otras 
+configuraciones.
+
+Entrar en el directorio sql y ejecutar (como root) install.sh, que 
+creará la base de datos, el usuario, las tablas, los datos básicos de 
+ejemplo y el virtual host.
+
+Mover phpreport a la ubicación definitiva, típicamente 
+/var/www/phpreport. Asignarle permisos y propietario adecuados:
+
+ chown -R www-data:www-data /var/www/phpreport
+ chmod go-rw
+
+Recargar la configuración del apache:
+
+ /etc/init.d/apache reload
+
+Para probar la aplicación con la configuración por defecto, es necesario 
+que la máquina donde se instale responda al nombre de phpreport, por lo 
+que añadiremos ese alias a /etc/hosts (acordarse de quitarlo una vez se 
+haya configurado correctamente el virtual host).
+
+127.0.0.1       localhost.localdomain localhost phpreport
+
+Configurar a medida el virtual host en /etc/apache/vhosts.d/20-phpreport
+
+Existen dos usuarios por defecto en la aplicación cuando se trabaja en 
+modo de autenticación contra tablas:
+
+ admin/admin
+ usuario/usuario
+
+--
+Enrique Ocanha Gonzalez <eocanha@igalia.com>

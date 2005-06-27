@@ -1,0 +1,18 @@
+
+Alias /phpreport /usr/share/phpreport
+
+<DirectoryMatch /usr/share/phpreport/>
+
+Options +FollowSymLinks
+AllowOverride None
+
+order deny,allow
+deny from all
+allow from all
+
+<IfModule mod_php4.c>
+  php_flag magic_quotes_gpc On
+  php_flag register_globals On
+</IfModule>
+
+</DirectoryMatch>

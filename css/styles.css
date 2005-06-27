@@ -1,0 +1,107 @@
+body {
+  font: normal 9pt tahoma, lucida, helvetica, sans­serif;
+}
+
+A {
+  text-decoration: none
+}
+
+input, select, textarea, .boton {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #878eaf
+}
+
+.titulo {
+  font: bold 12pt tahoma, lucida, helvetica, sans­serif;
+  text-transform: uppercase;
+  text-align: right;
+  color: #61667c
+}
+
+.msg_fallo {
+  font: bold 9pt tahoma, lucida, helvetica, sans­serif;
+  border-width: 1px;
+  color: #505050;
+  background: #e2ac7c;
+  border-style: dotted;
+  border-color: #a57d5b
+}
+
+.msg_ok {
+  font: bold 9pt tahoma, lucida, helvetica, sans­serif;
+  border-width: 1px;
+  color: #666666;
+  background: #d4e0a6;
+  border-style: dotted;
+  border-color: #808764
+}
+
+.titulo_caja {
+  font: bold 10pt tahoma, lucida, helvetica, sans­serif;
+  text-align: center;
+  background: #878eaf;
+  color: #ffffff
+}
+
+.texto_caja {
+  font: normal 9pt tahoma, lucida, helvetica, sans­serif;
+  background: #f0f0f9;
+  color: #000000
+}
+
+.texto_caja A {
+  text-decoration: none
+}
+
+.titulo_minicaja {
+  font: bold 9pt tahoma, lucida, helvetica, sans­serif;
+  text-align: center;
+  background: #878eaf;
+  color: #ffffff
+}
+
+.texto_minicaja {
+  font: normal 8pt tahoma, lucida, helvetica, sans­serif;
+  background: #f0f0f9;
+  color: #000000
+}
+
+.texto_minicaja A {
+  text-decoration: none
+}
+
+
+.dir_par { background-color: #fff; }
+.dir_impar { background-color: #ceb; }
+
+.dir_tabla { border: 1px solid; width: 100%; text-align: center; background-color: #FFFFFF; }
+.info { background-color: #f0f0f9; text-align: left; padding: 2%; padding-left: 5%; }
+.dir_titulo { text-align: left; color: #FFFFFF; background-color: #4682B4; }
+.error { 
+  border-width: 1px;
+  color: #505050;
+  background: #e2ac7c;
+  border-style: dotted;
+  border-color: #a57d5b;
+}
+
+.pie { color: #FFFFFF; background-color: #878eaf; padding: 10px; padding-left: 20px; }
+
+.texto_caja_xml {
+  font: normal 9pt tahoma, lucida, helvetica, sans­serif;
+  background: #f0f0f9;
+  color: #000000;
+  padding: 2%;
+  padding-left: 5%;  
+  padding-right: 5%;  
+}
+
+.contenido_error { background-color: #F0F0F9; 
+  padding: 2%;
+  padding-left: 5%;  
+}
+
+.f_correcto { color: #0000FF; font-family: sans-serif, courier; font-weight: bold;}
+.f_incorrecto { color: #FF0000; font-family: courier, sans-serif; font-weight: bold; }
+
