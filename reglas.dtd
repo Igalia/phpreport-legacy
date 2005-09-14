@@ -11,7 +11,7 @@
   tipo (SIS|AP|BAJ|BUR|COM|COR|FOR|PEX|PIN|TAP|VAC|sis|ap|baj|bur|com|cor|for|pex|pin|tap|vac) #REQUIRED
   inicio CDATA #REQUIRED
   fin CDATA #REQUIRED
-  nombre (proyecto1|proyecto2|proyecto3)
+  nombre (proyecto1|proyecto2|proyecto3|proyecto4)
   fase (construccion|elaboracion|explotacion|inicio|transicion) #IMPLIED
   ttipo (analisis|comunidad|coordinacion|demo|despliegue|diseno|documentacion|entorno|formacion|implementacion|mantenimiento|mto_sistemas|prueba|publicacion|requisitos|tecnologia) #IMPLIED
   story CDATA #IMPLIED>
