@@ -31,19 +31,19 @@
 
 // Crea una tabla de error con el mensaje que recibe
 
-function TablaError ($error)
+function ErrorTable ($error)
 {
     ?>
     <br>
     <table border="0" width="85%" cellpadding="4" cellspacing="1" bgcolor="#000000">
     <tr>
-        <th class="error">Error</th>
+        <th class="error"><?=_("Error")?></th>
     </tr>
     <tr>
-        <td align="left" class="contenido_error">
+        <td align="left" class="content_error">
             <?
             if (!empty($error)) echo "$error";
-            else echo "Error no definido, contacte con el administrador, ;-).";
+            else echo _("Error undefined, contact with the administrator, ;-).");
             ?>
         </td>
     </tr>
@@ -55,17 +55,17 @@ function TablaError ($error)
 
 
 // Crea una tabla con tres filas (junto con la funcion que la cierra) para
-// presentar la informacion de forma general. Recibe el titulo que va a tener
+// presentar la informacion de forma general. Recibe el title que va a tener
 // la tabla y la documentacion de lo que hace.
 
-function IniTablaGeneral ($titulo)
+function IniGeneralTable ($title)
 {
     ?>
     <table border="0" width="85%" cellspacing="1" bgcolor="#000000">
     <tr>
-	<!-- <th class="titulo"> -->
-        <td class="titulo_caja">
-        <? echo $titulo; ?>
+	<!-- <th class="title"> -->
+        <td class="title_box">
+        <? echo $title; ?>
 	   </th>
     </tr>
 
@@ -80,8 +80,8 @@ function IniTablaGeneral ($titulo)
     <? } ?>
 
     <tr>
-       	   <!-- <td align="center" class="contenido"> -->
-           <td align="center" class="texto_caja_xml">
+       	   <!-- <td align="center" class="content"> -->
+           <td align="center" class="text_box_xml">
     <?
 }
 
@@ -90,7 +90,7 @@ function IniTablaGeneral ($titulo)
 // Cierra la tabla que la funcion anterior creo, recibe opcionalmente el
 // pie (parecido al pie de pagina, se corresponde con la tercera fila)
 
-function FinTablaGeneral ()
+function EndGeneralTable ()
 {
     if (func_num_args() == 1)
     {
@@ -98,7 +98,7 @@ function FinTablaGeneral ()
            </td>
         </tr>
         <tr>
-	       <td class="pie"><?
+	       <td class="foot"><?
         echo func_get_arg(0);
     }
     ?>
@@ -113,12 +113,13 @@ function FinTablaGeneral ()
 
 // crea un enlace que se abrira en una nueva ventana para editar el fichero
 
-function LinkEditorXML ($xmldir, $entrada)
+function LinkEditorXML ($xmldir, $entry)
 {
-    echo "\t<td align=\"left\"><a href=\"editorxml.php?fichero=".urlencode($entrada)."&ruta=".
+ //*************************************REVISAR EDITOR DE INFORMES
+    echo "\t<td align=\"left\"><a href=\"editorxml.php?fichero=".urlencode($entry)."&ruta=".
     urlencode($xmldir)."\" onclick=\"javascript:window.open(this.href,'Editor de informes XML',".
     "'width=800,height=600,location=no, menubar=no,status=no,toolbar=no,scrollbars=yes,".
-    "resizable=yes'); return false;\">".$entrada."</a></td>";
+    "resizable=yes'); return false;\">".$entry."</a></td>";
 }
 
 

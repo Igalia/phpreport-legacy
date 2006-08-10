@@ -3,9 +3,9 @@
 //
 // Copyright (C) 2003-2005
 //  Igalia, S.L. <info@igalia.com>
-//  Andrés Gómez García <agomez@igalia.com>
-//  Enrique Ocaña González <eocanha@igalia.com>
-//  José Riguera López <jriguera@igalia.com>
+//  AndrÃ©s GÃ³mez GarcÃ­a <agomez@igalia.com>
+//  Enrique OcaÃ±a GonzÃ¡lez <eocanha@igalia.com>
+//  JosÃ© Riguera LÃ³pez <jriguera@igalia.com>
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,41 +22,41 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 /**
- * PARÁMETROS HTTP QUE RECIBE ESTA PÁGINA:
+ * PARÃMETROS HTTP QUE RECIBE ESTA PÃGINA:
  *
- * dia = Día del que mostrar el calendario. Formato DD/MM/AAAA
+ * dia = DÃ­a del que mostrar el calendar. Formato DD/MM/AAAA
  */
 
-require_once("include/autentificado.php");
+require_once("include/autenticate.php");
 require_once("include/util.php");
 
-$meses=array(
- "Enero","Febrero","Marzo","Abril","Mayo","Junio",
- "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
-$dias=array(
- "L","M","M","J","V","S","D");
+$months=array(
+ _("January"),_("February"),_("March"),_("April"),_("May"),_("June"),
+ _("July"),_("August"),_("September"),_("October"),_("November"),_("December"));
+$days=array(
+ _("M"),_("T"),_("W"),_("Th"),_("F"),_("St"),_("S"));
 
-if (!empty($dia)) {
- $arrayDMA=fecha_web_to_arrayDMA($dia);
- $hoy=getdate(mktime(0,0,0,$arrayDMA[1],$arrayDMA[0],$arrayDMA[2]));
+if (!empty($day)) {
+ $arrayDMA=date_web_to_arrayDMA($day);
+ $today=getdate(mktime(0,0,0,$arrayDMA[1],$arrayDMA[0],$arrayDMA[2]));
 } else {
- $hoy=getdate(time());
- $hoy=getdate(mktime(0,0,0,$hoy["mon"],$hoy["mday"],$hoy["year"]));
+ $today=getdate(time());
+ $today=getdate(mktime(0,0,0,$today["mon"],$today["mday"],$today["year"]));
 }
-$dia=fecha_arrayDMA_to_web(array($hoy["mday"],$hoy["mon"],$hoy["year"]));
+$day=date_arrayDMA_to_web(array($today["mday"],$today["mon"],$today["year"]));
 
-$calendario=crea_calendario($dia);
+$calendar=make_calendar($day);
 
-$dia_mes_anterior=dia_mes_movido($dia, -1);
-$dia_mes_siguiente=dia_mes_movido($dia, 1);
-$dia_anho_anterior=dia_anho_movido($dia, -1);
-$dia_anho_siguiente=dia_anho_movido($dia, 1);
+$day_month_previous=day_month_moved($day, -1);
+$day_month_next=day_month_moved($day, 1);
+$day_year_previous=day_year_moved($day, -1);
+$day_year_next=day_year_moved($day, 1);
 
-$title="Calendario de ".$meses[$hoy["mon"]-1]
- ." de ".$hoy["year"];
-require("include/plantilla-pre.php");
+$title=_("calendar of ").$months[$today["mon"]-1]
+ ._(" of ").$today["year"];
+require("include/template-pre.php");
 
-if (!empty($error)) msg_fallo($error);
+if (!empty($error)) msg_fail($error);
 ?>
 <center>
 <table border="0" cellpadding="0" cellspacing="0" width="100%"
@@ -66,23 +66,23 @@ if (!empty($error)) msg_fallo($error);
    <table border="0" cellpadding="20" cellspacing="0" style="text-align: center; margin-left: auto; margin-right: auto;">
     <tr>
      <td align="center" style="font-weight: bold">
-      <a href="?dia=<?=$dia_anho_anterior?>"
-       >&lt;&lt; Año anterior</a>
+      <a href="?day=<?=$day_year_previous?>"
+       >&lt;&lt; <?=_("Previous year")?></a>
      </td>
      <td align="center" style="font-weight: bold">
-      <a href="?dia=<?=$dia_mes_anterior?>"
-      >&lt; Mes anterior</a>
+      <a href="?day=<?=$day_month_previous?>"
+      >&lt; <?=_("Previous month")?></a>
      </td>
      <td align="center" style="font-weight: bold">
-      <a href="?">Hoy</a>
+      <a href="?"><?=_("Today")?></a>
      </td>
      <td align="center" style="font-weight: bold">
-      <a href="?dia=<?=$dia_mes_siguiente?>"
-       >Mes siguiente &gt;</a>
+      <a href="?day=<?=$day_month_next?>"
+       ><?=_("Next month")?> &gt;</a>
      </td>
      <td align="center" style="font-weight: bold">
-      <a href="?dia=<?=$dia_anho_siguiente?>"
-       >Año siguiente &gt;&gt;</a>
+      <a href="?day=<?=$day_year_next?>"
+       ><?=_("Next year")?> &gt;&gt;</a>
      </td>
     </tr>
    </table>
@@ -92,17 +92,17 @@ if (!empty($error)) msg_fallo($error);
       <table cellpadding="3" cellspacing="1" style="text-align: center;">
        <tr>
         <?
-         $estilo=array(
+         $style=array(
           "T"=>"background: #C0C0D0; color: #000000; font-weight: bold; text-align: center",
           "G"=>"background: #E0E0F0; color: #808080; font-weight: regular; text-align: center",
           "N"=>"background: #E0E0F0; color: #000000; font-weight: regular; text-align: center",
           "H"=>"background: #C0C0D0; color: #000000; font-weight: regular; text-align: center"
          );
 
-         // Cálculo de los títulos de los días
-         foreach ($dias as $d) {
+         // CÃ¡lculo de los titles de los dÃ­as
+         foreach ($days as $d) {
         ?>
-        <td style="<?=$estilo["T"]?>">
+        <td style="<?=$style["T"]?>">
         <?=$d?>
         </td>
         <?
@@ -110,14 +110,14 @@ if (!empty($error)) msg_fallo($error);
         ?>
        </tr>
        <?
-        foreach ($calendario as $s) {
+        foreach ($calendar as $s) {
        ?>
       <tr>
         <?
          foreach ($s as $d) {
         ?>
-        <td style="<?=$estilo[$d[1]]?>">
-         <a href="informe.php?dia=<?=$d[2]?>" style="<?=$estilo[$d[1]]?>"
+        <td style="<?=$style[$d[1]]?>">
+         <a href="report.php?day=<?=$d[2]?>" style="<?=$style[$d[1]]?>"
          ><?=$d[0]?></a>
         </td>
         <?
@@ -135,70 +135,70 @@ if (!empty($error)) msg_fallo($error);
  <?
   // El usuario actual es del grupo de administradores
 
-  // if (in_array("informesadm", $grupos)) {
+  // if (in_array("informesadm", $groups)) {
   if (true) {
  ?>
   <td style="width: 25ex" valign="top">
 
-   <!-- caja -->
+   <!-- box -->
    <table border="0" cellspacing="0" cellpadding="0" width="100%">
    <tr><td bgcolor="#000000">
    <table border="0" cellspacing="1" cellpadding="0" width="100%"><tr>
-   <td bgcolor="#000000" class="titulo_minicaja"><font
-    color="#FFFFFF" class="titulo_minicaja">
-   <!-- título caja -->
-   Administración
-   <!-- fin título caja -->
-   </font></td></tr><tr><td bgcolor="#FFFFFF" class="texto_minicaja">
+   <td bgcolor="#000000" class="title_minibox"><font
+    color="#FFFFFF" class="title_minibox">
+   <!-- title box -->
+   <?=_("Administration")?>
+   <!-- end title box -->
+   </font></td></tr><tr><td bgcolor="#FFFFFF" class="text_minibox">
    <table border="0" cellspacing="0" cellpadding="10"><tr><td
     align="left">
    <font
-    color="#000000" class="texto_minicaja">
-   <!-- texto caja -->
-   <a href="bloqueo.php"
-    style="font-weight: bold;">- Bloqueo de Informes</a>
+    color="#000000" class="text_minibox">
+   <!-- text box -->
+   <a href="block.php"
+    style="font-weight: bold;">- <?=_("Block reports")?></a>
    <br>
-   <a href="consulta.php"
-    style="font-weight: bold;">- Consultas</a>
+   <a href="consult.php"
+    style="font-weight: bold;">- <?=_("Querys")?></a>
 
-   <!-- fin texto caja -->
+   <!-- end text box -->
    </font></td></tr></table></td></tr></table></td></tr></table>
-   <!-- fin caja -->
+   <!-- end box -->
 
    <br>
 
-   <!-- caja -->
+   <!-- box -->
    <table border="0" cellspacing="0" cellpadding="0" width="100%">
    <tr><td bgcolor="#000000">
    <table border="0" cellspacing="1" cellpadding="0" width="100%"><tr>
-   <!-- título caja -->
-   <td bgcolor="#000000" class="titulo_minicaja"
-    ><a href="?dia=<?=$dia_mes_anterior?>"
-    ><font color="#FFFFFF" class="titulo_minicaja">
+   <!-- title box -->
+   <td bgcolor="#000000" class="title_minibox"
+    ><a href="?day=<?=$day_month_previous?>"
+    ><font color="#FFFFFF" class="title_minibox">
    &nbsp;&lt;&nbsp;
    </font></a></td>
-   <td bgcolor="#000000" class="titulo_minicaja" width="100%"
-    ><font color="#FFFFFF" class="titulo_minicaja">
-   Calendario
+   <td bgcolor="#000000" class="title_minibox" width="100%"
+    ><font color="#FFFFFF" class="title_minibox">
+   <?=_("Calendar")?>
    </font></td>
-   <td bgcolor="#000000" class="titulo_minicaja"
-    ><a href="?dia=<?=$dia_mes_siguiente?>"
-    ><font color="#FFFFFF" class="titulo_minicaja">
+   <td bgcolor="#000000" class="title_minibox"
+    ><a href="?day=<?=$day_month_next?>"
+    ><font color="#FFFFFF" class="title_minibox">
    &nbsp;&gt;&nbsp;
    </font></a></td>
-   </tr><tr><td bgcolor="#FFFFFF" class="texto_minicaja" colspan="3">
-   <!-- fin título caja -->
+   </tr><tr><td bgcolor="#FFFFFF" class="text_minibox" colspan="3">
+   <!-- end title box -->
    <table border="0" cellspacing="0" cellpadding="0" width="100%"><tr><td
     align="center">
-   <!-- texto caja -->
+   <!-- text box -->
    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-   <form name="mini_calendario" method="get">
+   <form name="mini_calendar" method="get">
    <tr><td style="background: #C0C0D0; color: #000000; text-align: center">
-   <input type="text" name="dia" value="<?=$dia?>" size="10"
+   <input type="text" name="day" value="<?=$day?>" size="10"
     style="border: none; background: #C0C0D0; color: #000000"
-    onchange="javascript: document.mini_calendario.submit();">
+    onchange="javascript: document.mini_calendar.submit();">
    </td><td style="background: #C0C0D0; color: #000000; text-align: right">
-   <input type="submit" name="cambiar" value="Cambiar">
+   <input type="submit" name="change" value="<?=_("Change")?>">
    </td></tr>
    </form>
    </table>
@@ -206,17 +206,17 @@ if (!empty($error)) msg_fallo($error);
     width="100%">
     <tr>
      <?
-      $estilo=array(
+      $style=array(
        "T"=>"background: #C0C0D0; color: #000000; font-weight: bold; text-align: center",
        "G"=>"background: #E0E0F0; color: #808080; font-weight: regular; text-align: center",
        "N"=>"background: #E0E0F0; color: #000000; font-weight: regular; text-align: center",
        "H"=>"background: #C0C0D0; color: #000000; font-weight: regular; text-align: center"
       );
 
-      // Cálculo de los títulos de los días
-      foreach ($dias as $d) {
+      // CÃ¡lculo de los titles de los dÃ­as
+      foreach ($days as $d) {
      ?>
-     <td style="<?=$estilo["T"]?>">
+     <td style="<?=$style["T"]?>">
      <?=$d?>
      </td>
      <?
@@ -224,14 +224,14 @@ if (!empty($error)) msg_fallo($error);
      ?>
     </tr>
     <?
-     foreach ($calendario as $s) {
+     foreach ($calendar as $s) {
     ?>
    <tr>
      <?
       foreach ($s as $d) {
      ?>
-     <td style="<?=$estilo[$d[1]]?>">
-      <a href="?dia=<?=$d[2]?>" style="<?=$estilo[$d[1]]?>"
+     <td style="<?=$style[$d[1]]?>">
+      <a href="?day=<?=$d[2]?>" style="<?=$style[$d[1]]?>"
       ><?=$d[0]?></a>
      </td>
      <?
@@ -242,15 +242,15 @@ if (!empty($error)) msg_fallo($error);
      }
     ?>
    </table>
-   <!-- fin texto caja -->
+   <!-- end text box -->
    </td></tr></table></td></tr></table></td></tr></table>
-   <!-- fin caja -->
+   <!-- end box -->
 
   </td>
  <? } ?>
  </tr>
 </table>
-</center>
+</center>   <form name="mini_calendar" method="get">
 <?
-require("include/plantilla-post.php");
+require("include/template-post.php");
 ?>

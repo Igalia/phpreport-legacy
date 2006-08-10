@@ -28,13 +28,13 @@
  *
  */
 
-require_once("include/autentificado.php");
+require_once("include/autenticate.php");
 
-$title="Equivalencia de códigos";
-require("include/plantilla-pre.php");
+$title=_("Equivalence of codes");
+require("include/template-pre.php");
 
-if (!empty($error)) msg_fallo($error);
-if (!empty($confirmacion)) msg_ok($confirmacion);
+if (!empty($error)) msg_fail($error);
+if (!empty($confirmation)) msg_ok($confirmation);
 ?>
 
 <table border="0" cellpadding="0" cellspacing="0" width="100%"
@@ -45,40 +45,40 @@ if (!empty($confirmacion)) msg_ok($confirmacion);
 <center>
 <?
 foreach (array(
- "tabla_tipo"=>"Tipo de tarea",
- "tabla_nombre"=>"Proyecto",
- "tabla_fase"=>"Fase del proyecto",
- "tabla_ttipo"=>"Tipo de tarea dentro de la fase"
- ) as $nombre_tabla=>$explicacion_tabla) {
- $tabla=&$$nombre_tabla;
+ "table_type"=>_("Task type"),
+ "table_name"=>_("Project"),
+ "table_phase"=>_("Project phase"),
+ "table_ttype"=>_("Task type into the phase")
+ ) as $confirmation_name=>$confirmation_explain) {
+ $table=&$$confirmation_name;
 
 ?>
-<!-- caja -->
+<!-- box -->
 <table border="0" cellspacing="0" cellpadding="0">
 <tr><td bgcolor="#000000">
 <table border="0" cellspacing="1" cellpadding="5" width="100%">
  <tr>
-  <td bgcolor="#000000" class="titulo_caja">
-   <font color="#FFFFFF" class="titulo_caja">
-   Código
+  <td bgcolor="#000000" class="title_box">
+   <font color="#FFFFFF" class="title_box">
+   <?=_("Code")?>
    </font>
   </td>
-  <td bgcolor="#000000" class="titulo_caja">
-   <font color="#FFFFFF" class="titulo_caja">
-   <?=$explicacion_tabla?>
+  <td bgcolor="#000000" class="title_box">
+   <font color="#FFFFFF" class="title_box">
+   <?=$confirmation_explain?>
    </font>
   </td>
  </tr>
 <?
- foreach ((array)$tabla as $id=>$valor) {
+ foreach ((array)$table as $id=>$value) {
   if (empty($id)) continue;
 ?>
  <tr>
-  <td bgcolor="#FFFFFF" class="texto_caja">
+  <td bgcolor="#FFFFFF" class="text_box">
    <?=$id?>
   </td>
-  <td bgcolor="#FFFFFF" class="texto_caja">
-   <?=$valor?>
+  <td bgcolor="#FFFFFF" class="text_box">
+   <?=$value?>
   </td>
  </tr>
 <?
@@ -86,7 +86,7 @@ foreach (array(
 ?>
 </table>
 </td></tr></table>
-<!-- fin caja -->
+<!-- end box -->
 
 <br>
 <br>
@@ -97,7 +97,7 @@ foreach (array(
 </table>
 
 <?
-require("include/plantilla-post.php");
+require("include/template-post.php");
 ?>
 
 

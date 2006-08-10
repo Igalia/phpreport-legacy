@@ -20,16 +20,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
-require_once("include/util.php");
-require_once("include/config.php");
-
-unset($session_uid);
-unset($session_grupos);
-session_register("session_uid");
-session_register("session_grupos");
-session_register("session_usuarios");
-if (empty($session_uid)) {
- header ("Location: login.php?procedencia=".urlencode(stripslashes($_SERVER["REQUEST_URI"])));
-}
+$die=_("The database is not operative at this moment. Please, try the operation later.");
+$cnx = pg_connect("host=$hostname_db 
+port=$port_db user=$login_db dbname=$dbname_db password=$password_db")
+ or die($die);
 ?>

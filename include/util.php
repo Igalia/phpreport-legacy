@@ -3,9 +3,9 @@
 //
 // Copyright (C) 2003-2005
 //  Igalia, S.L. <info@igalia.com>
-//  AndrÈs GÛmez GarcÌa <agomez@igalia.com>
-//  Enrique OcaÒa Gonz·lez <eocanha@igalia.com>
-//  JosÈ Riguera LÛpez <jriguera@igalia.com>
+//  Andr√©s G√≥mez Garc√≠a <agomez@igalia.com>
+//  Enrique Oca√±a Gonz√°lez <eocanha@igalia.com>
+//  Jos√© Riguera L√≥pez <jriguera@igalia.com>
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,18 +22,18 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-// LIBRERÕA DE FUNCIONES ⁄TILES
+// LIBRER√çA DE FUNCIONES √öTILES
 
 // NOTA: Descomenta las que necesites. Al final del proyecto se
-// borrar·n las sobrantes.
+// borrar√°n las sobrantes.
 require_once("include/config.php");
 
 function msg_ok($msg) {
  echo("<p class=\"msg_ok\"><b>$msg</b></p>");
 }
 
-function msg_fallo($msg) {
- echo("<p class=\"msg_fallo\"><b>$msg</b></p>");
+function msg_fail($msg) {
+ echo("<p class=\"msg_fail\"><b>$msg</b></p>");
 }
 
 // Obtiene la mayor de las claves de un array monodimensional
@@ -62,72 +62,72 @@ function chequeado($checkbox) {
 */
 
 // Borra el elemento i de un array unidimensional.
-// i es numÈrico. Todos los elementos k, siendo
-// k>i ser·n desplazados a la posiciÛn k-1 con el fin de no dejar "huecos"
-// en la numeraciÛn i del array.
-// Ej: A[1] A[2] A[3] A[4] --> A[1] A[3] A[4] °°No debe quedar el hueco A[2]!!
+// i es num√©rico. Todos los elementos k, siendo
+// k>i ser√°n desplazados a la posici√≥n k-1 con el fin de no dejar "huecos"
+// en la numeraci√≥n i del array.
+// Ej: A[1] A[2] A[3] A[4] --> A[1] A[3] A[4] ¬°¬°No debe quedar el hueco A[2]!!
 // Correcto: A[1] A[2] A[3] A[4] --> A[1] A[2] A[3] (A[2] y A[3] son los antiguos
 //           A[3] y A[4].
-function borra_elementos_desplazando($array, $i) {
+function del_elements_shifting($array, $i) {
  array_splice($array,$i,1);
  return(array_values($array));
 }
 
-// Convierte una fecha de formato "espaÒol" (DD/MM/AAAA) a un
+// Convierte una fecha de formato "espa√±ol" (DD/MM/AAAA) a un
 // array(DD,MM,AAAA)
-function fecha_web_to_arrayDMA($fecha_web) {
- return explode("/",$fecha_web);
+function date_web_to_arrayDMA($web_date) {
+ return explode("/",$web_date);
 }
 
 // Convierte un array(DD,MM,AAAA) en una fecha de
-// formato "espaÒol" (DD/MM/AAAA)
-function fecha_arrayDMA_to_web($fecha_arrayDMA) {
- return implode("/",$fecha_arrayDMA);
+// formato "espa√±ol" (DD/MM/AAAA)
+function date_arrayDMA_to_web($date_arrayDMA) {
+ return implode("/",$date_arrayDMA);
 }
 
-// Convierte una fecha de formato "espaÒol" (DD/MM/AAAA) a formato "PostgreSQL" (AAAA-MM-DD)
-function fecha_web_to_sql($fecha_web) {
- $fechaDMA=explode("/",$fecha_web);
- if (strlen($fechaDMA[0])==1) $fechaDMA[0]="0".$fechaDMA[0];
- if (strlen($fechaDMA[1])==1) $fechaDMA[1]="0".$fechaDMA[1];
- return($fechaDMA[2]."-".$fechaDMA[1]."-".$fechaDMA[0]);
+// Convierte una fecha de formato "espa√±ol" (DD/MM/AAAA) a formato "PostgreSQL" (AAAA-MM-DD)
+function date_web_to_sql($web_date) {
+ $dateDMA=explode("/",$web_date);
+ if (strlen($dateDMA[0])==1) $dateDMA[0]="0".$dateDMA[0];
+ if (strlen($dateDMA[1])==1) $dateDMA[1]="0".$dateDMA[1];
+ return($dateDMA[2]."-".$dateDMA[1]."-".$dateDMA[0]);
 }
 
-// Convierte una fecha de formato "PostreSQL" (AAAA-MM-DD) a formato "espaÒol" (DD/MM/AAAA)
-function fecha_sql_to_web($fecha_sql) {
- $fechaAMD=explode("-",$fecha_sql);
- return($fechaAMD[2]."/".$fechaAMD[1]."/".$fechaAMD[0]);
+// Convierte una fecha de formato "PostreSQL" (AAAA-MM-DD) a formato "espa√±ol" (DD/MM/AAAA)
+function date_sql_to_web($date_sql) {
+ $dateAMD=explode("-",$date_sql);
+ return($dateAMD[2]."/".$dateAMD[1]."/".$dateAMD[0]);
 }
 
 // Compara las dos fechas de inicio de dos arrays
-function cmp_fechas_inicio ($a, $b) {
-    if ($a["inicio"] == $b["inicio"]) return 0;
-    return ($a["inicio"] < $b["inicio"]) ? -1 : 1;
+function cmp_init_dates ($a, $b) {
+    if ($a["init"] == $b["init"]) return 0;
+    return ($a["init"] < $b["init"]) ? -1 : 1;
 }
 
-// Convierte una hora de formato "espaÒol" (HH:MM) a formato "PostgreSQL" (minutos totales)
-function hora_web_to_sql($hora_web) {
- $horaHM=explode(":",$hora_web);
- return($horaHM[0]*60+$horaHM[1]);
+// Convierte una hora de formato "espa√±ol" (HH:MM) a formato "PostgreSQL" (minutos totales)
+function hour_web_to_sql($web_hour) {
+ $hourHM=explode(":",$web_hour);
+ return($hourHM[0]*60+$hourHM[1]);
 }
 
-// Convierte una fecha de formato "PostgreSQL" (minutos totales) a formato "espaÒol" (HH:MM)
-function hora_sql_to_web($hora_sql) {
- $horaHM=array(floor($hora_sql/60),$hora_sql%60);
- return(sprintf("%02d:%02d",$horaHM[0],$horaHM[1]));
+// Convierte una fecha de formato "PostgreSQL" (minutos totales) a formato "espa√±ol" (HH:MM)
+function hour_sql_to_web($hour_sql) {
+ $hourHM=array(floor($hour_sql/60),$hour_sql%60);
+ return(sprintf("%02d:%02d",$hourHM[0],$hourHM[1]));
 }
 
 // Convierte una fechahora de formato "MySQL" (AAAA-MM-DD HH:MM:SS) a
-// formato "espaÒol" (DD/MM/AAAA HH:MM)
+// formato "espa√±ol" (DD/MM/AAAA HH:MM)
 /*
-function fechahora_sql_to_web($fecha_sql) {
- $fechaFH=explode(" ",$fecha_sql);
+function fechahora_sql_to_web($date_sql) {
+ $fechaFH=explode(" ",$date_sql);
  return(fecha_sql_to_web($fechaFH[0])." "
   .hora_sql_to_web($fechaFH[1]));
 }
 */
 
-// Convierte un n˙mero a formato monetario. Ej: 123456.45
+// Convierte un n√∫mero a formato monetario. Ej: 123456.45
 /*
 function money_to_web($currency) {
  return(sprintf("%01.2f",$currency));
@@ -135,20 +135,20 @@ function money_to_web($currency) {
 */
 
 // Genera los campos OPTION para formularios, marcando SELECTED el campo especificado
-function array_to_option($opciones, $selected, $valores="") {
+function array_to_option($options, $selected, $values="") {
  $result="";
  $i=0;
- foreach((array)$opciones as $opcion) {
-  if (!empty($valores)) {
-   $valor="VALUE=\"$valores[$i]\"";
-   if ($valores[$i]==$selected) $txt_selected="SELECTED";
+ foreach((array)$options as $option) {
+  if (!empty($values)) {
+   $value="VALUE=\"$values[$i]\"";
+   if ($values[$i]==$selected) $txt_selected="SELECTED";
    else $txt_selected="";
   } else {
-   $valor="";
-   if ($opcion==$selected) $txt_selected="SELECTED";
+   $value="";
+   if ($option==$selected) $txt_selected="SELECTED";
    else $txt_selected="";
   }
-  $result=$result."<OPTION $txt_selected $valor>".$opcion."</OPTION>";
+  $result=$result."<OPTION $txt_selected $value>".$option."</OPTION>";
   $i++;
  }
  return $result;
@@ -169,7 +169,7 @@ function array_join($a1, $a2) {
 // por esos values.
 // Ej: [a b c] = [0->a, 1->b, 2->c] --> [a->TRUE, b->TRUE, c->TRUE]
 // De este modo ya no es necesario hacer array_search($elemento,$array),
-// ya que podemos usar esta comparaciÛn m·s cÛmoda: ø($array[$elemento]==true)?
+// ya que podemos usar esta comparaci√≥n m√°s c√≥moda: ¬ø($array[$elemento]==true)?
 /*
 function array_to_boolean_array($array) {
  $result=array();
@@ -179,7 +179,7 @@ function array_to_boolean_array($array) {
 }
 */
 
-// Extrae una porciÛn de un array
+// Extrae una porci√≥n de un array
 // Ej: sub_array([a->w, b->x, c->y, d->z], [a, c]) = [a->w, c->y]
 /*
 function sub_array($array, $claves) {
@@ -192,75 +192,93 @@ function sub_array($array, $claves) {
 
 // Devuelve la fecha que se le pasa con tantos meses hacia adelante o atras como se le indique
 // en los parametros. La fecha debe estar en formato DD/MM/AAAA
-function dia_mes_movido($dia, $movimiento) {
- $arrayDMA=fecha_web_to_arrayDMA($dia);
- $tmp=getdate(mktime(0,0,0,$arrayDMA[1]+$movimiento,$arrayDMA[0],$arrayDMA[2]));
- return(fecha_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"])));
+function day_month_moved($day, $shift) {
+ $arrayDMA=date_web_to_arrayDMA($day);
+ $tmp=getdate(mktime(0,0,0,$arrayDMA[1]+$shift,$arrayDMA[0],$arrayDMA[2]));
+ return(date_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"])));
 }
 
-// Devuelve la fecha que se le pasa con tantos aÒos hacia adelante o atras como se le indique
+// Devuelve la fecha que se le pasa con tantos a√±os hacia adelante o atras como se le indique
 // en los parametros. La fecha debe estar en formato DD/MM/AAAA
-function dia_anho_movido($dia, $movimiento) {
- $arrayDMA=fecha_web_to_arrayDMA($dia);
- $tmp=getdate(mktime(0,0,0,$arrayDMA[1],$arrayDMA[0],$arrayDMA[2]+$movimiento));
- return(fecha_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"])));
+function day_year_moved($day, $shift) {
+ $arrayDMA=date_web_to_arrayDMA($day);
+ $tmp=getdate(mktime(0,0,0,$arrayDMA[1],$arrayDMA[0],$arrayDMA[2]+$shift));
+ return(date_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"])));
+}
+
+//Dada una fecha, devuelve la fecha correspondiente al d√≠a anterior
+//(√∫til para la acci√≥n copiar informe del d√≠a anterior)
+function day_yesterday($day){
+  $arrayDMA=date_web_to_arrayDMA($day);
+  $tmp=getdate(mktime(0,0,0,$arrayDMA[1],$arrayDMA[0]-1,$arrayDMA[2]));
+  return(date_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"])));
 }
 
 // Crea un array con el calendario del mes de una fecha dada.
 // Si la fecha esta vacia se coge el dia actual.
-function crea_calendario($dia) {
- if (!empty($dia)) {
-  $arrayDMA=fecha_web_to_arrayDMA($dia);
-  $hoy=getdate(mktime(0,0,0,$arrayDMA[1],$arrayDMA[0],$arrayDMA[2]));
+function make_calendar($day) {
+ if (!empty($day)) {
+  $arrayDMA=date_web_to_arrayDMA($day);
+  $today=getdate(mktime(0,0,0,$arrayDMA[1],$arrayDMA[0],$arrayDMA[2]));
  } else {
-  $hoy=getdate(time());
-  $hoy=getdate(mktime(0,0,0,$hoy["mon"],$hoy["mday"],$hoy["year"]));
+  $today=getdate(time());
+  $today=getdate(mktime(0,0,0,$today["mon"],$today["mday"],$today["year"]));
  }
 
- $dia=fecha_arrayDMA_to_web(array($hoy["mday"],$hoy["mon"],$hoy["year"]));
- $arrayDMA=fecha_web_to_arrayDMA($dia);
+ $day=date_arrayDMA_to_web(array($today["mday"],$today["mon"],$today["year"]));
+ $arrayDMA=date_web_to_arrayDMA($day);
 
- $calendario=array();
+ $calendar=array();
 
- // C·lculo de los dÌas en gris del mes anterior
+ // C√°lculo de los d√≠as en gris del mes anterior
 
- $dt=getdate(mktime(0,0,0,$hoy["mon"],1,$hoy["year"]));
- $d=getdate(mktime(0,0,0,$hoy["mon"],
-  1-((($dt["wday"]+6)%7)+1),$hoy["year"]));
+ $dt=getdate(mktime(0,0,0,$today["mon"],1,$today["year"]));
+ $d=getdate(mktime(0,0,0,$today["mon"],
+  1-((($dt["wday"]+6)%7)+1),$today["year"]));
  $s=1; // Semana
  for ($i=1;$i<((($dt["wday"]+6)%7)+1);$i++) {
   $tmp=getdate(mktime(0,0,0,$arrayDMA[1]-1,$d["mday"]+$i,$arrayDMA[2]));
-  $calendario[$s][$i]=array($d["mday"]+$i,"G",
-   fecha_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"]))
+  $calendar[$s][$i]=array($d["mday"]+$i,"G",
+   date_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"]))
   );
  }
 
- // C·lculo de los dÌas en negro (de este mes)
+// $calendar2=$calendar2;
+ // C√°lculo de los d√≠as en negro (de este mes)
  for ($k=0;;$k++,$i++) {
-  $t=mktime(0,0,0,$hoy["mon"],$k+1,$hoy["year"]);
+  $t=mktime(0,0,0,$today["mon"],$k+1,$today["year"]);
   $dt=getdate($t);
-  if (($dt["mon"])==($hoy["mon"])) {
-   if ($dt==$hoy) $letra_color="H";
-   else $letra_color="N";
+  if (($dt["mon"])==($today["mon"])) {
+   if ($dt==$today) $letter_colour="H";
+   else $letter_colour="N";
    $tmp=getdate(mktime(0,0,0,$arrayDMA[1],$dt["mday"],$arrayDMA[2]));
-   $calendario[$s][$i]=array($dt["mday"],$letra_color,
-    fecha_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"])));
+   $calendar[$s][$i]=array($dt["mday"],$letter_colour,
+    date_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"])));
+//   $calendar2[$s][$i]=$calendar[$s][$i];
+//echo($i);
+//$proba[]=date_web_to_SQL($calendar2[$s][$i][2]);
+//echo("\n");
    if ($i==7) {
     $i=0;
+//    $proba[]="|";
     $s++;
+//echo("<".$s.">");
    }
   } else break;
  }
-
- // C·lculo de los dÌas en gris del mes siguiente
+//echo("<pre>");
+//print_r($proba);
+//echo("</pre>");
+ // C√°lculo de los d√≠as en gris del mes siguiente
  for ($j=1;($i>1)&&($i<=7);$i++) {
   $tmp=getdate(mktime(0,0,0,$arrayDMA[1]+1,$j,$arrayDMA[2]));
-  $calendario[$s][$i]=array($j,"G",
-    fecha_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"])));
+  $calendar[$s][$i]=array($j,"G",
+    date_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"])));
   $j++;
  }
- return($calendario);
+ return($calendar);
 }
+
 
 // Necesario para eval_html
 function eval_buffer($string) {
@@ -280,7 +298,7 @@ function eval_print_buffer($string) {
     return $return;
 }
  
-// Eval˙a un PHP y devuelve el resultado como un string
+// Eval√∫a un PHP y devuelve el resultado como un string
 function eval_html($string) {
     $string = preg_replace_callback("/(<\?=)(.*?)\?>/si",
                                     "eval_print_buffer",$string);
@@ -288,16 +306,16 @@ function eval_html($string) {
                                   "eval_buffer",$string);
 }
 
-// Actualiza el fichero reglas.dtd con la configuraciÛn de config.php
+// Actualiza el fichero reglas.dtd con la configuraci√≥n de config.php
 function update_dtd() {
 
    global $tabla_tipo, $tabla_nombre, $tabla_fase, $tabla_ttipo;
 
    ob_start();
-   require("reglas.dtd.php");
+   require("rules.dtd.php");
    $dtd=ob_get_contents();
    ob_end_clean();
-   $f=fopen("reglas.dtd","w");
+   $f=fopen("rules.dtd","w");
    fwrite($f,$dtd);
    fclose($f);
 }
@@ -315,28 +333,27 @@ function sql_to_checkbox($i) {
 }
 
 // Calcula los minutos que un trabajador lleva trabajados la semana actual
-function minutos_trabajados_esta_semana($cnx,$uid,$dia) {
- $horas="---";
- $result=@pg_exec($cnx,$query="
-SELECT uid, SUM(fin-inicio) - 60*COALESCE((
-  SELECT SUM(horas)
-  FROM compensacion
-  WHERE uid=tarea.uid AND uid='$uid'
-   AND inicio>=(timestamp '$dia' -
-    ((int2(date_part('dow',timestamp '$dia')+7-1) % 7)||' days')::interval)::date
-   AND fin<=(timestamp '$dia'-
-    ((int2(date_part('dow',timestamp '$dia')+7-1) % 7)-6||' days')::interval)::date
- ),0) AS suma_horas
-FROM tarea
-WHERE fecha>=(timestamp '$dia' -
- ((int2(date_part('dow',timestamp '$dia')+7-1) % 7)||' days')::interval)::date
- AND fecha<= (timestamp '$dia' -
- ((int2(date_part('dow',timestamp '$dia')+7-1) % 7)-6||' days')::interval)::date
+function worked_minutes_this_week($cnx,$uid,$day) {
+ $hours="---";
+ $result=pg_exec($cnx,$query="
+SELECT uid, SUM(_end-init) - 60*COALESCE((
+  SELECT SUM(hours)
+  FROM compensation
+  WHERE uid=task.uid AND uid='$uid'
+   AND init>=(timestamp '$day' -
+    ((int2(date_part('dow',timestamp '$day')+7-1) % 7)||' days')::interval)::date
+   AND _end<=(timestamp '$day'-
+    ((int2(date_part('dow',timestamp '$day')+7-1) % 7)-6||' days')::interval)::date
+ ),0) AS add_hours
+FROM task
+WHERE _date>=(timestamp '$day' -
+ ((int2(date_part('dow',timestamp '$day')+7-1) % 7)||' days')::interval)::date
+ AND _date<= (timestamp '$day' -
+ ((int2(date_part('dow',timestamp '$day')+7-1) % 7)-6||' days')::interval)::date
  AND uid='$uid'
 GROUP BY uid");
- if ($row=@pg_fetch_row($result)) $minutos=$row[1];
- @pg_freeresult($result);
- return $minutos;
+ if ($row=pg_fetch_row($result)) $minutes=$row[1];
+ pg_freeresult($result);
+ return $minutes;
 }
-
 ?>

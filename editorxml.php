@@ -23,32 +23,32 @@
 
 /** editorxml.php
  *
- * Esta pag. permite editar un fichero XML en un "textarea". Permite guardar y
+ * Esta pag. permite editar un file XML en un "textarea". Permite guardar y
  * validar los cambios realizados. Es conveniente abrirlo en una ventana diferente
  * para no entorpecer ...
  *
  * Parámetros recibidos:
  *
- * fichero: fichero en XML que va a ser abierto y editado.
- * ruta: directorio temporal en donde esta el fichero
+ * file: file en XML que va a ser abierto y editado.
+ * ruta: directorio temporal en donde esta el file
  *
  * botonvalidar: Se ha pulsado el boton validar informes.
- * botonguardar: Se ha pulsado el boton guardar el fichero XML.
+ * botonguardar: Se ha pulsado el boton guardar el file XML.
  *
  *
  * José Riguera, <jriguera@igalia.com>
  *
  */
 
-require_once("include/autentificado.php");
+require_once("include/autenticate.php");
 
-if (empty($fichero) || empty($ruta)) header("Location: subirxml.php");
+if (empty($file) || empty($path)) header("Location: uploadxml.php");
 
 require("include/infxml.php");
 require("include/html.php");
 
 $title = "Editor de informes XML";
-require("include/plantilla-pre.php");
+require("include/template-pre.php");
 
 ?>
 
@@ -56,68 +56,69 @@ require("include/plantilla-pre.php");
 
 <?
 
-$ruta_fichero = $ruta_absoluta.$ruta;
-$fichero_valido = false;
+$path_file = $absolute_path.$path;
+$file_valido = false;
 
 unset($session_logins);
-foreach ($session_usuarios as $u=>$v) $session_logins[] = $u;
+foreach ($session_users as $u=>$v) $session_logins[] = $u;
 
-if (strstr($ruta, "/") || strstr($fichero, "/"))
+if (strstr($path, "/") || strstr($file, "/"))
 {
-    $ruta_valida = false;
+    $valid_path = false;
     $error = "Ruta no valida ... XP";
 }
-else $ruta_valida = true;
+else $valid_path = true;
 
-if ((!empty($ruta_fichero)) && (!empty($fichero)) && $ruta_valida)
+if ((!empty($path_file)) && (!empty($file)) && $valid_path)
 {
-    $mostrar = false;
+    $show = false;
     $info = array();
-    $dirfichero = $ruta_fichero."/".$fichero;
-    $escribir = true;
+    $dirfile = $path_file."/".$file;
+    $write = true;
     $mesg = "OK";
 
-    if (!is_dir($ruta_fichero)) $error = "No se encuentra ruta al fichero";
-    elseif (!NombreValido($session_logins, $fichero, $info))
+    if (!is_dir($path_file)) $error = _("No se encuentra ruta al file");
+    elseif (!ValidName($session_logins, $file, $info))
     {
      	if (!empty($info["error"])) $error = $info["error"];
-      	else $error = "Fichero con nombre no valido";
+      	else $error = _("file con nombre no valido");
     }
-    elseif (!is_file($dirfichero)) $error = "Fichero no reconocido";
-    elseif (!is_readable($dirfichero)) $error = "No se puede abrir el fichero";
+    elseif (!is_file($dirfile)) $error = _("file no reconocido");
+    elseif (!is_readable($dirfile)) $error = _("No se puede abrir el file");
     else
     {
-     	$escribir = is_writeable($dirfichero);
-      	$mostrar = true;
+     	$write = is_writeable($dirfile);
+      	$show = true;
 
-       	if ((!empty($botoncerrar)) && ($botoncerrar == "Cerrar"))
+       	if ((!empty($close_button)) && ($close_button == _("Cerrar")))
        	{
     		// Cerrar
       	}
-     	elseif ((!empty($botonguardar)) && ($botonguardar == "Guardar"))
+     	elseif ((!empty($save_button)) && ($save_button == _("Guardar")))
       	{
-     	    if (($fp = @fopen($dirfichero, "w")) && $escribir)
+     	    if (($fp = @fopen($dirfile, "w")) && $write)
             {
-	     	$bytes = @fwrite($fp, stripslashes($informe));
+	     	$bytes = @fwrite($fp, stripslashes($report));
 	      	@fclose($fp);
-	      	$mesg = $mesg.", ".$bytes." bytes escritos correctamente.";
+	      	$mesg = $mesg.", ".$bytes._(" bytes escritos correctamente.");
 	    }
-	    else $mesg = "Imposible guardar los cambios realizados";
+	    else $mesg = _("Imposible guardar los cambios realizados");
    	}
-   	elseif ((!empty ($botonvalidar)) && ($botonvalidar == "Validar"))
+   	elseif ((!empty ($valid_button)) && ($valid_button == _("Validar")))
    	{
-            $mesg = "Validando informe ".$fichero." ... ";
-            $tmpfname = FicheroTemp($ruta_absoluta, "tmp_", "_".$fichero);
-            //$tmpfname = tempnam($ruta_absoluta, $fichero."_");
+            $mesg = _("Validando informe ").$file." ... ";
+            $tmpfname = fileTemp($absolute_path, "tmp_", "_".$file);
+            //$tmpfname = tempnam($absolute_path, $file."_");
             $fp = @fopen($tmpfname, "w");
-            @fwrite($fp, stripslashes($informe));
+            @fwrite($fp, stripslashes($report));
    	    @fclose($fp);
             //chmod($tmpfname, 0755);
-            $rt = ValidarDTD($tmpfname, $mesg);
+            $rt = ValidateDTD($tmpfname, $mesg);
 	    if ($rt == 1)
-	    {
-            	$ret = ValidarInformeXML($tmpfname, $info, $msg);
-                if ($ret == 1) $mesg = "<font color=\"#00FF00\"><b>Informe válido y coherente, listo para ser guardado</b></font>";
+	    {  
+  		$temp=_("Informe válido y coherente, listo para ser guardado");
+            	$ret = ValidateXMLReport($tmpfname, $info, $msg);
+                if ($ret == 1) $mesg = "<font color=\"#00FF00\"><b>$temp</b></font>";
         	elseif ($ret == -1)
                 {
                 	$error = $msg;
@@ -133,25 +134,25 @@ if ((!empty($ruta_fichero)) && (!empty($fichero)) && $ruta_valida)
             @unlink($tmpfname);
 	}
     }
-    unset ($botonguardar);
-    unset ($botonvalidar);
+    unset ($save_button);
+    unset ($valid_button);
 }
 
 
-if (mostrar)
+if ($show)
 {
 
-    IniTablaGeneral("Editor de informes en formato XML");
+    IniGeneralTable(_("Editor de informes en formato XML"));
 
 ?>
 	<form name="editor" action="<? echo "$PHP_SELF"; ?>" enctype="multipart/form-data" method="post">
    	<table border="0" width="80%" cellpadding="2">
       	<tr>
 		<td align="left" colspan="2">
-			<font face="Verdana" color="#000000"><? echo "$fichero"; ?>
+			<font face="Verdana" color="#000000"><? echo "$file"; ?>
 			</font>
 		</td>
-		<? if (!$escribir) { ?>
+		<? if (!$write) { ?>
 		<td align="right" colspan="1">
 			<font color="#990000">ReadOnly</font>
 		</td>
@@ -163,35 +164,35 @@ if (mostrar)
       	</tr>
       	<tr>
       		<td align="center" colspan="4">
-         		<textarea <? if (!$escribir) echo "readonly"; ?> name="informe" cols="70" rows="18"><?
-			if (empty ($informe)) @readfile($dirfichero); else echo stripslashes($informe); ?>
+         		<textarea <? if (!$write) echo "readonly"; ?> name="report" cols="70" rows="18"><?
+			if (empty ($report)) @readfile($dirfile); else echo stripslashes($report); ?>
 			</textarea>
          	</td>
       	</tr>
       	<tr>
         	<td align="left" colspan="1">
-          		<input type="submit" name="botonvalidar" value="Validar" />
-			<? if ($escribir) { ?>
-          		<input type="submit" name="botonguardar" value="Guardar" />
+          		<input type="submit" name="valid_button" value=<?=_("Validar")?> />
+			<? if ($write) { ?>
+          		<input type="submit" name="save_button" value=<?=_("Guardar")?> />
 			<? } ?>
          	</td>
          	<td align="right" colspan="2">
-                	<input type="button" name="botoncerrar" value="Cerrar" onclick="window.close()"/>
+                	<input type="button" name="close_button" value=<?=_("Cerrar")?> onclick="window.close()"/>
          	</td>
       	</tr>
 	</table>
 
-    	<input type="hidden" name="fichero" value="<? echo $fichero; ?>"/>
-    	<input type="hidden" name="ruta" value="<? echo $ruta; ?>"/>
+    	<input type="hidden" name="file" value="<? echo $file; ?>"/>
+    	<input type="hidden" name="path" value="<? echo $path; ?>"/>
 
 	</form>
  
 <?php
 
-    FinTablaGeneral($mesg);
+    EndGeneralTable($mesg);
 }
 
-if (!empty($error)) TablaError($error);
+if (!empty($error)) ErrorTable($error);
 
 ?>
 
@@ -199,7 +200,7 @@ if (!empty($error)) TablaError($error);
 
 <?
 
-require("include/plantilla-post.php");
+require("include/template-post.php");
 
 ?>
 

@@ -32,56 +32,57 @@
 	* nueva_password2 = Confirmación de password
  */
 
-require_once("include/autentificado.php");
-require_once("include/conecta_db.php");
-require_once("include/prepara_calendario.php");
+require_once("include/autenticate.php");
+require_once("include/connect_db.php");
+require_once("include/prepare_calendar.php");
 
-if (!($modo_autenticacion=="sql")) {
+if (!($authentication_mode=="sql")) {
  header("Location: login.php");
 }
 
-if (!empty($nueva_password) || !empty($cambiar)) {
+if (!empty($new_password) || !empty($change)) {
 	do {
 		if (empty($actual_password)) {
-		 $error="Debe especificar la password actual";
+		 $error=_("You must specify the actual password");
 			break;
 		}
-		if (empty($nueva_password)) {
-		 $error="Debe especificar la nueva password";
+		if (empty($new_password)) {
+		 $error=_("You must specify the new password");
 			break;
 		}
-		if ($nueva_password!=$nueva_password2) {
-		 $error="La nueva password y la password de confirmación no coinciden";
+		if ($new_password!=$new_password2) {
+		 $error=_("The new password and the confirmation password does not agree");
 			break;
 		}
 		
-		$result=@pg_exec($cnx,$query="SELECT uid FROM usuario"
+		$die=_("Can't finalize the operation: ");
+		$result=@pg_exec($cnx,$query="SELECT uid FROM users"
 		." WHERE uid='$session_uid' AND password=md5('$actual_password')")
-		or die("No se ha podido completar la operación: $query");
+		or die("$die $query");
 		
 		if (!($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC))) {
-		 $error="La password actual es incorrecta";
+		 $error=_("The actual password is incorrect");
 			break;
 		}
 	 @pg_freeresult($result);
 		
-		$result=@pg_exec($cnx,$query="UPDATE usuario SET password=md5('$nueva_password')"
+		$result=@pg_exec($cnx,$query="UPDATE users SET password=md5('$new_password')"
 		 ." WHERE uid='$session_uid'")
-			or die("No se ha podido completar la operación: $query");
-		$confirmacion="La contraseña se ha cambiado correctamente";
+			or die("$die $query");
+		$confirmation=_("The password has changed correctly");
 		@pg_freeresult($result);
 		
 	} while (false);
 
 }
 
-require_once("include/cerrar_db.php");
+require_once("include/close_db.php");
 
-$title="Cambio de contraseña";
-require("include/plantilla-pre.php");
+$title=_("Password change");
+require("include/template-pre.php");
 
-if (!empty($error)) msg_fallo($error);
-if (!empty($confirmacion)) msg_ok($confirmacion);
+if (!empty($error)) msg_fail($error);
+if (!empty($confirmation)) msg_ok($confirmation);
 ?>
 
 <table border="0" cellpadding="0" cellspacing="0" width="100%"
@@ -90,54 +91,52 @@ if (!empty($confirmacion)) msg_ok($confirmacion);
 <td style="text-align: center; vertical-align: top;">
 
 <center>
-<!-- caja -->
+<!-- box -->
 <table border="0" cellspacing="0" cellpadding="0">
 <tr><td bgcolor="#000000">
 <table border="0" cellspacing="1" cellpadding="0" width="100%"><tr>
-<td bgcolor="#000000" class="titulo_caja"><font
- color="#FFFFFF" class="titulo_caja">
-<!-- título caja -->
-Introduzca su nueva contraseña
-<!-- fin título caja -->
-</font></td></tr><tr><td bgcolor="#FFFFFF" class="texto_caja">
+<td bgcolor="#000000" class="title_box"><font
+ color="#FFFFFF" class="title_box">
+<!-- title box -->
+<?=_("Introduce the new password")?>
+<!-- end title box -->
+</font></td></tr><tr><td bgcolor="#FFFFFF" class="text_box">
 <table border="0" cellspacing="0" cellpadding="10"><tr><td>
 <font
- color="#000000" class="texto_caja">
-<!-- texto caja -->
+ color="#000000" class="text_box">
+<!-- text box -->
 <center>
 <form method="post">
 <table border="0" cellspacing="0" cellpadding="10">
 <tr>
- <td>Password actual</td>
+ <td><?=_("Actual password")?></td>
  <td><input type="password" name="actual_password"></td>
 </tr>
 <tr>
- <td>Nueva password</td>
- <td><input type="password" name="nueva_password"></td>
+ <td><?=_("New password")?></td>
+ <td><input type="password" name="new_password"></td>
 </tr>
 <tr>
- <td>Confirmar password</td>
- <td><input type="password" name="nueva_password2"></td>
+ <td><?=_("Confirm password")?></td>
+ <td><input type="password" name="new_password2"></td>
 </tr>
 </table>
-<input type="submit" name="cambiar" value="Cambiar">
+<input type="submit" name="change" value="<?=_("Change")?>">
 </form>
 </center>
-<!-- fin texto caja -->
+<!-- end text box -->
 </font></td></tr></table></td></tr></table></td></tr></table>
-<!-- fin caja -->
+<!-- end box -->
 </center>
 
 </td>
 <td style="width: 25ex" valign="top">
-<? require("include/muestra_recuento.php") ?>
+<? require("include/show_sections.php") ?>
 <br>
-<? require("include/muestra_secciones.php") ?>
-<br>
-<? require("include/muestra_calendario.php") ?>
+<? require("include/show_calendar.php") ?>
 </td>
 </tr>
 </table>
 <?
-require("include/plantilla-post.php");
+require("include/template-post.php");
 ?>

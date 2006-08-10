@@ -21,43 +21,15 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+require_once("include/util.php");
+require_once("include/config.php");
 
-require_once("include/autentificado.php");
-
-require_once("include/conecta_db.php");
-
-$result=pg_exec($cnx,"SELECT * FROM informe");
-$tabla=array();
-for ($i=0;$row=@pg_fetch_array($result,$i,PGSQL_ASSOC);$i++)
- $tabla[]=$row;
-
-require_once("include/cerrar_db.php");
-
-$title="Página de prueba";
-require("include/plantilla-pre.php");
-
-if (!empty($error)) msg_fallo($error);
-?>
-<table border="1">
-<?
-foreach ($tabla as $fila) {
-?>
- <tr>
-<?
- foreach ((array)$fila as $campo) {
-?>
-  <td>
-   <?=$campo?>
-  </td>
-<?
- }
-?>
- </tr>
-<?
+unset($session_uid);
+unset($session_groups);
+session_register("session_uid");
+session_register("session_groups");
+session_register("session_users");
+if (empty($session_uid)) {
+ header ("Location: login.php?origin=".urlencode(stripslashes($_SERVER["REQUEST_URI"])));
 }
-?>
-</table>
-
-<?
-require("include/plantilla-post.php");
 ?>

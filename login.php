@@ -3,9 +3,9 @@
 //
 // Copyright (C) 2003-2005
 //  Igalia, S.L. <info@igalia.com>
-//  AndrÈs GÛmez GarcÌa <agomez@igalia.com>
-//  Enrique OcaÒa Gonz·lez <eocanha@igalia.com>
-//  JosÈ Riguera LÛpez <jriguera@igalia.com>
+//  Andr√©s G√≥mez Garc√≠a <agomez@igalia.com>
+//  Enrique Oca√±a Gonz√°lez <eocanha@igalia.com>
+//  Jos√© Riguera L√≥pez <jriguera@igalia.com>
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,20 +23,21 @@
 
 
 /**
- * PAR¡METROS HTTP QUE RECIBE ESTA P¡GINA:
+ * PAR√ÅMETROS HTTP QUE RECIBE ESTA P√ÅGINA:
  *
  * login = Login del usuario (coincide con uid en LDAP)
  * password = Password del usuario
  */
+
 require_once("include/config.php");
 require_once("include/util.php");
 
-// Si el usuario no venÌa previamente de ninguna p·gina,
+// Si el usuario no ven√≠a previamente de ninguna p√°gina,
 // se indica a cual debe ir en caso
 // de autentificarse correctamente
 
-if (empty($procedencia)) {
- $procedencia="informe.php";
+if (empty($origin)) {
+ $origin="report.php";
 }
 
 if (!empty($logout)) {
@@ -53,18 +54,18 @@ if (empty($login) && empty($password)) {
 if (!empty($login)) {
 	do {	 
   if (empty($password)) {
-   $error="Password vacÌo";
+   $error=_("Empty password");
    break;
   }
 
-  if ($modo_autenticacion=="ldap") {
+  if ($authentication_mode=="ldap") {
 								
 			if (!$ds=@ldap_connect($LDAP_SERVER)) {
-				$error="No se puede conectar con el servidor LDAP";
+				$error=_("Can't connect to server LDAP");
 				break;
 			}
 			if (!$bn=@ldap_bind($ds,"uid=$login,ou=People,$LDAP_BASE",$password)) {
-				$error="Login/password incorrectos";
+				$error=_("Incorrect Login/password");
 				break;
 			}
 	
@@ -72,18 +73,18 @@ if (!empty($login)) {
 					"(&(objectClass=posixGroup)(uniqueMember=uid=$login,ou=People,$LDAP_BASE))",
 					array("cn")
 				)) {
-				$error="No se pueden recuperar los grupos LDAP a los que pertenece el usuario";
+				$error=_("Can't retrieve the LDAP's groups of this user");
 				break;
 			}
 	
 			$info = @ldap_get_entries($ds, $sr);
-			$grupos=array();
+			$groups=array();
 			for ($i=0;$i<$info["count"];$i++) {
-				$grupos[]=$info[$i]["cn"][0];
+				$groups[]=$info[$i]["cn"][0];
 			}
 	
-			if (!in_array("informesdedic",$grupos)) {
-				$error="El usuario no est· autorizado a utilizar la aplicaciÛn";
+			if (!in_array("informesdedic",$groups)) {
+				$error=_("This user is not authorized to use this application");
 				break;
 			}
 	
@@ -91,108 +92,112 @@ if (!empty($login)) {
 					"(&(objectClass=posixGroup)(cn=informesdedic))",
 					array("uniqueMember")
 				)) {
-				$error="No se puede recuperar la lista de usuarios de PhpReport";
+				$error=_("Can't retrieve the user's PhpReport list");
 				break;
 			}
 	
 			$info = @ldap_get_entries($ds, $sr);
 	
-			$usuarios=array();
+			$users=array();
 			for ($i=0;$i<$info[0]["uniquemember"]["count"];$i++) {
 				strtok($info[0]["uniquemember"][$i],"=,");
 				$u=strtok("=,");
-				$usuarios[$u]=$u;
+				$users[$u]=$u;
 			}
 	
 			if (!$sr=@ldap_list($ds,"ou=People,$LDAP_BASE",
 					"(objectClass=posixAccount)",
 					array("uid","cn")
 				)) {
-				$error="No se puede recuperar la lista de usuarios de PhpReport";
+				$error=_("Can't retrieve the user's PhpReport list");
 				break;
 			}
 	
 			$info = @ldap_get_entries($ds, $sr);
 			for ($i=0;$i<$info["count"];$i++)
-				if (!empty($usuarios[$info[$i]["uid"][0]]))
-					$usuarios[$info[$i]["uid"][0]]=$info[$i]["cn"][0];
+				if (!empty($users[$info[$i]["uid"][0]]))
+					$users[$info[$i]["uid"][0]]=$info[$i]["cn"][0];
 			$tmp=array();
-			foreach($usuarios as $k=>$v) $tmp[$v]=$k;
+			foreach($users as $k=>$v) $tmp[$v]=$k;
 			ksort($tmp);
-			$usuarios=array();
-			foreach($tmp as $k=>$v) $usuarios[$v]=$k;
+			$users=array();
+			foreach($tmp as $k=>$v) $users[$v]=$k;
    @ldap_close($ds);
 		
-		} else	if ($modo_autenticacion=="sql") {		
-			
+		} else	if ($authentication_mode=="sql") {		
+			$die=_("Can't finalize the operation: ");
 			$result=pg_exec($cnx,$query=
-			 "SELECT uid,admin FROM usuario"
+			 "SELECT uid,admin FROM users"
    ." WHERE uid='$login' AND password=md5('$password')")
-   or die("No se ha podido completar la operaciÛn: $query");
+   or die($die."$query");
 
 			if ($row=pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
-				if ($row['admin']=='t') $grupos=array("informesdedic","informesadm");
-				else $grupos=array("informesdedic");
+				if ($row['admin']=='t') $groups=array("informesdedic","informesadm");
+				else $groups=array("informesdedic");
 			} else {			
-				$error="Login/password incorrectos";
+				$error=_("Incorrect Login/password");
 				break;
 			}
 			@pg_freeresult($result);
-			
+			$die=_("Can't finalize the operation: ");
 			$result=@pg_exec($cnx,$query=
-			 "SELECT uid FROM usuario")
-   or die("No se ha podido completar la operaciÛn: $query");
+			 "SELECT uid FROM users")
+   or die($die."$query");
 
-			$usuarios=array();
+			$users=array();
 			while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
-				$usuarios=$row['uid'];
+				// #################### ERROR: $users=$row['uid'];
+				$users[]=$row['uid'];
 			}
-			if (empty($usuarios)) {
-				$error="No se puede recuperar la lista de usuarios de PhpReport";
+			if (empty($users)) {
+				$error=_("Can't retrieve the user's PhpReport list");
 				break;
 			}
 			@pg_freeresult($result);		
 		} else {
-		  $error="No se ha configurado un mecanismo de autenticaciÛn";
+		 		$error=_("Not configured a authentication mecanism");
 				break;
 		}
 				
-  // ### ATENCI”N!!! ###
+  // ### ATENCI√ìN!!! ###
   // ### MODO CHEAT (PUERTA TRASERA PARA MANTENIMIENTO) ###
-  if (!empty($mantenimiento)) {
+  if (!empty($maintenance)) {
    // ESTO CONVIERTE A CUALQUIERA EN ADMINISTRADOR
-   $grupos=array("informesdedic","informesadm");
+   $groups=array("informesdedic","informesadm");
    // SUPLANTAR A OTRO USUARIO
    if (!empty($fake_login)) $login=$fake_login;
   }
 
-  // Cargamos la informaciÛn previa de la sesiÛn
+  // Cargamos la informaci√≥n previa de la sesi√≥n
   session_register("session_uid");
-  session_register("session_grupos");
-  session_register("session_usuarios");
+  session_register("session_groups");
+  session_register("session_users");
 
   // La cambiamos
   $session_uid=$login;
-  $session_grupos=$grupos;
-  $session_usuarios=$usuarios;
+  $session_groups=$groups;
+  $session_users=$users;
 
   // Y la guardamos
   session_register("session_uid");
-  session_register("session_grupos");
-  session_register("session_usuarios");
+  session_register("session_groups");
+  session_register("session_users");
 
-  // Entramos a la p·gina de la cual venÌa anteriormente
-  // el usario sin sesiÛn
-  header("Location: $procedencia");
+  // Entramos a la p√°gina de la cual ven√≠a anteriormente
+  // el usario sin sesi√≥n
+  header("Location: $origin");
 
  } while(false);
 	
 }
 
-$title="IdentificaciÛn";
-require("include/plantilla-pre.php");
+$title=_("Identification");
 
-if (!empty($error)) msg_fallo($error);
+
+require("include/template-pre.php");
+
+
+if (!empty($error)) msg_fail($error);
 
 if (empty($login) || !empty($error)) {
 ?>
@@ -200,26 +205,26 @@ if (empty($login) || !empty($error)) {
 <form method="post">
 <table border="0" cellspacing="0" cellpadding="10">
 <tr>
- <td>Login</td>
+ <td><?=_("Login")?></td>
  <td><input type="text" name="login" value="<?=$login?>"></td>
 </tr>
 <tr>
- <td>Password</td>
+ <td><?=_("Password")?></td>
  <td><input type="password" name="password"></td>
 </tr>
 </table>
-<input type="hidden" name="procedencia" value="<?=$procedencia?>">
-<input type="submit" name="entrar" value="Entrar">
+<input type="hidden" name="origin" value="<?=$origin?>">
+<input type="submit" name="enter" value="<?=_("Enter")?>">
 </form>
 </center>
 <?
 } else {
 ?>
-IdentificaciÛn correcta.<br>
-<form action="<?$procedencia?>">
-<input type="submit" name="entrar" value="Entrar">
+<?=_("Identification successfull.")?><br>
+<form action="<?$origin?>">
+<input type="submit" name="enter" value="<?=_("Enter")?>">
 </form>
 <?
 }
-require("include/plantilla-post.php");
+require("include/template-post.php");
 ?>

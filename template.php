@@ -34,32 +34,32 @@ PhpReport
 <body bgcolor="#FFFFFF">
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
  <tr>
-  <td align="left"><img src="images/titulo.gif"></td>
-  <td align="right" class="titulo">Introducción de informes</td>
+  <td align="left"><img src="images/title.gif"></td>
+  <td align="right" class="title"><?=_("Introducción de informes")?></td>
  </tr>
 </table>
-<? msg_fallo("No se pudo completar la operación"); ?>
-<? msg_ok("Los cambios fueron realizados correctamente"); ?>
+<? msg_fail_("No se pudo completar la operación"); ?>
+<? msg_ok_("Los cambios fueron realizados correctamente"); ?>
 
-<!-- caja -->
+<!-- box -->
 <table border="0" cellspacing="0" cellpadding="0">
 <tr><td bgcolor="#000000">
 <table border="0" cellspacing="1" cellpadding="0" width="100%"><tr>
-<td bgcolor="#000000" class="titulo_caja"><font
- color="#FFFFFF" class="titulo_caja">
-<!-- título caja -->
-Título de la caja
-<!-- fin título caja -->
-</font></td></tr><tr><td bgcolor="#FFFFFF" class="texto_caja">
+<td bgcolor="#000000" class="title_box"><font
+ color="#FFFFFF" class="title_box">
+<!-- title box -->
+<?=_("Título de la caja")?>
+<!-- end title box -->
+</font></td></tr><tr><td bgcolor="#FFFFFF" class="text_box">
 <table border="0" cellspacing="0" cellpadding="10"><tr><td>
 <font
- color="#000000" class="texto_caja">
-<!-- texto caja -->
-Texto de la caja:<br>
-Igalia es una empresa de Ingeniería en Informática dedicada a la investigación y desarrollo de soluciones en el campo de las Tecnologías de la Información y las Comunicaciones, y está especializada en la consultoría de tecnologías basadas en Software Libre - GNU/Linux y sus aplicaciones asociadas.
-<!-- fin texto caja -->
+ color="#000000" class="text_box">
+<!-- text box -->
+<?=_("Texto de la caja:<br>
+Igalia es una empresa de Ingeniería en Informática dedicada a la investigación y desarrollo de soluciones en el campo de las Tecnologías de la Información y las Comunicaciones, y está especializada en la consultoría de tecnologías basadas en Software Libre - GNU/Linux y sus aplicaciones asociadas."?>
+<!-- end text box -->
 </font></td></tr></table></td></tr></table></td></tr></table>
-<!-- fin caja -->
+<!-- end box -->
 
 </body>
 </html>
