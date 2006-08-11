@@ -86,11 +86,13 @@ if (!empty($apply)) {
 
  $r=true;
  foreach ($e as $k) {
-  $result=@pg_exec($cnx,$query=
-   "UPDATE label SET activation='".checkbox_to_sql($activation[$k[0]][$k[1]])."'"
-  ." WHERE type='${k[0]}' AND code='${k[1]}'");
-  $r&=(!(!$result));
-  @pg_freeresult($result);
+  if ($k[0]!="name"){
+    $result=@pg_exec($cnx,$query=
+     "UPDATE label SET activation='".checkbox_to_sql($activation[$k[0]][$k[1]])."'"
+    ." WHERE type='${k[0]}' AND code='${k[1]}'");
+    $r&=(!(!$result));
+    @pg_freeresult($result);
+  }
  }
 
  if ($r) {
@@ -108,14 +110,16 @@ or die($die);
 
 for ($i=0;$row=@pg_fetch_array($result,$i,PGSQL_ASSOC);$i++) {
  $row["description"]=stripslashes($row["description"]);
+ if ($row["type"]=="name") $show="DISABLED";
+ else $show="";
  $row["activation"]="<input type=\"checkbox\" name=\"activation["
   .$row["type"]."][".$row["code"]."]\" "
-  .sql_to_checkbox($row["activation"])." >";
+  .sql_to_checkbox($row["activation"])." $show >";
  $delete=_("Delete");
  if ($row["type"]!="name")
    $row["deleted"]="<input type=\"submit\" name=\"deleted["
     .$row["type"]."][".$row["code"]."]\" value=\"$delete\">";
- 
+ else $row["deleted"]="";
  $label[]=$row;
 }
 @pg_freeresult($result);
@@ -123,7 +127,7 @@ $temp1=_("Apply activations");
 $temp2=_("Add label");
 $label[]=array(
  'type'=>"<select name=\"type\" size=\"1\">"
-  .array_to_option(array('type','name','phase','ttype'),$type)."</select>",
+  .array_to_option(array('type','phase','ttype'),$type)."</select>",
  'code'=>"<input type=\"text\" name=\"code\" value=\"".stripslashes($code)."\">",
  'description'=>"<input type=\"text\" name=\"description\" value=\"".stripslashes($description)."\">",
  'activation'=>"<input type=\"submit\" name=\"apply\" value=\"$temp1\">",

@@ -99,6 +99,17 @@ function date_sql_to_web($date_sql) {
  return($dateAMD[2]."/".$dateAMD[1]."/".$dateAMD[0]);
 }
 
+// Devuelve NULL si alguna fecha es nula
+function date_web_to_quoted_sql($web_date) {
+  if($web_date=="") return "NULL";
+  else {
+   $dateDMA=explode("/",$web_date);
+   if (strlen($dateDMA[0])==1) $dateDMA[0]="0".$dateDMA[0];
+   if (strlen($dateDMA[1])==1) $dateDMA[1]="0".$dateDMA[1];
+   return("'".$dateDMA[2]."-".$dateDMA[1]."-".$dateDMA[0]."'");
+  }
+}
+
 // Compara las dos fechas de inicio de dos arrays
 function cmp_init_dates ($a, $b) {
     if ($a["init"] == $b["init"]) return 0;

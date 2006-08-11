@@ -28,7 +28,7 @@ require_once("include/connect_db.php");
 require_once("include/prepare_calendar.php");
 
  $die=_("Can't finalize the operation");
- $code=@pg_exec($cnx,$query="SELECT code FROM label WHERE type='name'")
+ $code=@pg_exec($cnx,$query="SELECT code FROM label WHERE type='name' ORDER BY code")
   or die($die);
  $code_consult=array();
  $code_consult[]="(empty)";
@@ -138,9 +138,8 @@ WHERE tblTotal.name=tblYear.name  ORDER BY name")
    @pg_freeresult($data);
    $row_index=_("name");
    $row_title_var="code_consult";
-   $project_consult=array(_("total_hours"),_("est_hours"),_("desv1"),_("desv2"),_("invoice"),_("eur_real"),_("eur_pres"));
+   $project_consult=array("total_hours","est_hours","desv1","desv2","invoice","eur_real","eur_pres");
    $col_title_var="project_consult";
- }
 
  foreach($data_consult as $row2) {
   foreach ((array)$row2 as $value) {
@@ -165,13 +164,38 @@ WHERE tblTotal.name=tblYear.name  ORDER BY name")
   $add_eur_pres+=$a[$row2[$row_index]][$project_consult[6]];
   $add_totals=array($add_total_hours,$add_est_hours,$add_desv1,$add_desv2,$add_invoice,$add_eur_real,$add_eur_pres);
 
-
+ }
  } 
+
+/*if ($sheets==5) {
+   $data=pg_exec($cnx,$query="SELECT uid, SUM( _end - init ) / 60.0 AS total_hours FROM task WHERE ( ( _date >= '2006-01-01' AND _date <= '2006-12-31' ) ) GROUP BY uid ORDER BY uid ASC")
+   or die($die);
+   $data_consult=array();
+     for ($i=0;$row=@pg_fetch_array($data,$i,PGSQL_ASSOC);$i++) {
+      $data_consult[]=$row;
+     }
+   @pg_freeresult($data);
+   $row_index=_("uid");
+   $row_title_var="users_consult";
+   $project_consult=array("total_hours","extra_hours");
+   $col_title_var="project_consult";
+
+ foreach($data_consult as $row2) {
+  foreach ((array)$row2 as $value) {
+    $a[$row2[$row_index]][$project_consult[0]]=$row2["total_hours"];
+    $a[$row2[$row_index]][$project_consult[1]]=$row2["extra_hours"];       
+  }
+  $add_total_hours+=$row2["total_hours"];
+  $add_est_hours+=$row2["extra_hours"];
+  $add_totals=array($add_total_hours,$add_extra_hours);
+
+ }
+} */
 
 } //fin if !empty(sheets)
 
 
-$querys=array("---",_("Horas por proyecto y tipo"),_("Horas por persona y tipo"),_("Horas por persona y proyecto"),_("Valoración de proyectos"));
+$querys=array("---",_("Project template"),_("Person template"),_("Person/project"),_("Project evaluation"),_("Breef sheet"));
 
 $title=_("Project evaluation");
 require("include/template-pre.php");
@@ -183,7 +207,7 @@ require("include/template-pre.php");
 <center>
 <form name="results" method="post">
   <input type="hidden" name="day" value="<?=$day?>">
-<b><?=_("Query:")?></b>
+<b><?=_("Sheets")?>:</b>
 <select name="sheets" onchange="javascript: document.results.submit();">
 <?=array_to_option(array_values($querys),$sheets,array_keys($querys))?>
 </select>
@@ -214,10 +238,9 @@ foreach ((array)$$col_title_var as $col) {
 <td bgcolor="#FFFFFF" class="title_box"><?=_("Total result");?></td>
 <td bgcolor="#FFFFFF" class="title_box"><?=_("Percent");?></td>
 
-<?} else { $titles=array(_("Horas realizadas"),_("Horas presupuestadas"),_("Desvio %"),_("Desvio abs"),_("Facturacion"),_("€/h reales"),_("€/h presu."));
+<?} else { $titles=array(_("Performed hours"),_("Estimated hours"),_("Desviation %"),_("Desviation abs"),_("Invoice"),_("€/h real"),_("€/h est."));
 foreach ($titles as $col) {
 ?>
-
 <td bgcolor="#FFFFFF" class="title_box">
       <?=$col?>
       </td>

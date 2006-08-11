@@ -55,7 +55,9 @@ if (in_array("informesadm",(array)$session_groups)) {
    <br>
     <a href="users.php?day=<?=$day?>"
      style="font-weight: bold;">- <?=_("Users management")?></a>
-
+   <br>
+    <a href="projects.php?day=<?=$day?>"
+     style="font-weight: bold;">- <?=_("Project management")?></a>
 <!-- end text box -->
    </font></td></tr></table></td></tr>
 <?

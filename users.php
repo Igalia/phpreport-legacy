@@ -201,12 +201,6 @@ if (!empty($new_user_login)&&!empty($new_user_password)||!empty($create)) {
       $error=_("You must specify the user password");
       break;
     } 		
-    //Calculo del dia actual para insertarlo en la tabla periods por defecto
-    $init_date=getdate(time());
-    $init_date=getdate(mktime(0,0,0,$init_date["mon"],$init_date["mday"],$init_date["year"]));
-    $arrayDMA=array($init_date["mday"],$init_date["mon"],$init_date["year"]);
-    $init_date=date_arrayDMA_to_web($arrayDMA);
-    $end_date="NULL";
     $city="coruña";
     $jour_hours="8";
     if (!@pg_exec($cnx,$query=
@@ -220,7 +214,7 @@ if (!empty($new_user_login)&&!empty($new_user_password)||!empty($create)) {
 	.(($new_user_admin==1)?"t":"f")
 	."')"))||(!$result2=pg_exec($cnx,$query="INSERT INTO periods"
 	." (uid,journey,init,_end,city) VALUES ('$new_user_login', '$jour_hours'," 
-	."'$init_date', NULL,'$city')"))) {
+	."CURRENT_DATE, NULL,'$city')"))) {
 	$error=_("Can't finalize the operation");
     } else {
 	$confirmation=_("The user has been created correctly");
