@@ -25,7 +25,7 @@ manpage.1: manpage.sgml
        allowed: see man(7), man(1). -->
   <!ENTITY dhsection   "<manvolnum>SECTION</manvolnum>">
   <!ENTITY dhemail     "<email>eocanha@igalia.com</email>">
-  <!ENTITY dhusername  "Enrique Ocaña González">
+  <!ENTITY dhusername  "Enrique OcaÃ±a GonzÃ¡lez">
   <!ENTITY dhucpackage "<refentrytitle>PHPREPORT</refentrytitle>">
   <!ENTITY dhpackage   "phpreport">
 

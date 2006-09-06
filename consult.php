@@ -3,9 +3,9 @@
 //
 // Copyright (C) 2003-2005
 //  Igalia, S.L. <info@igalia.com>
-//  AndrÈs GÛmez GarcÌa <agomez@igalia.com>
-//  Enrique OcaÒa Gonz·lez <eocanha@igalia.com>
-//  JosÈ Riguera LÛpez <jriguera@igalia.com>
+//  Andr√©s G√≥mez Garc√≠a <agomez@igalia.com>
+//  Enrique Oca√±a Gonz√°lez <eocanha@igalia.com>
+//  Jos√© Riguera L√≥pez <jriguera@igalia.com>
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,18 +22,18 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 /**
- * PAR¡METROS HTTP QUE RECIBE ESTA P¡GINA:
+ * PAR√ÅMETROS HTTP QUE RECIBE ESTA P√ÅGINA:
  * consulta = Consulta seleccionada de entre todas las posibles
- * seleccionar = Se ha pulsado el botÛn SELECCIONAR CONSULTA
- * editar = Se ha pulsado el botÛn EDITAR CONSULTA
+ * seleccionar = Se ha pulsado el bot√≥n SELECCIONAR CONSULTA
+ * editar = Se ha pulsado el bot√≥n EDITAR CONSULTA
  * parameter_value = Array (parametro => valor) de valores introducidos
- *                   por el usuario para los par·metros de una consulta SQL
- * ejecutar = Se ha pulsado el botÛn EJECUTAR CONSULTA
- * aplicar = Se ha pulsado el botÛn APLICAR CAMBIOS en la p·g. de ediciÛn
- * cancelar = Se ha pulsado el botÛn CANCELAR en la p·g. de ediciÛn
- * borrar = Se ha pulsado el botÛn BORRAR CONSULTA
+ *                   por el usuario para los par√°metros de una consulta SQL
+ * ejecutar = Se ha pulsado el bot√≥n EJECUTAR CONSULTA
+ * aplicar = Se ha pulsado el bot√≥n APLICAR CAMBIOS en la p√°g. de edici√≥n
+ * cancelar = Se ha pulsado el bot√≥n CANCELAR en la p√°g. de edici√≥n
+ * borrar = Se ha pulsado el bot√≥n BORRAR CONSULTA
  * borrar_ok = 1 Se ha confirmado el borrado de la consulta
- * dia = Mantiene el dÌa que "nos llevamos" de p·ginas anteriores
+ * dia = Mantiene el d√≠a que "nos llevamos" de p√°ginas anteriores
  */
 
 require_once("include/autenticate.php");
@@ -46,7 +46,7 @@ print_r($pre_vars);
 echo("</pre>");
 */
       
-// Hay ciertas acciones que no est·n permitidas si el usuario no es
+// Hay ciertas acciones que no est√°n permitidas si el usuario no es
 // administrador
 if (!in_array("informesadm",(array)$session_groups) && (
      !empty($edit)
@@ -129,7 +129,7 @@ if (in_array("informesadm",(array)$session_groups)) {
 }
 @pg_freeresult($result);
 
-// Controlamos si el usuario est· viendo una consulta que no debe
+// Controlamos si el usuario est√° viendo una consulta que no debe
 if (!in_array("informesadm",(array)$session_groups)
  && !empty($consult)
  && !in_array($consult,array_keys($consults))
@@ -157,7 +157,7 @@ if (!empty($consult)) {
    unset($consult);
   }
 
-//Si no se realiza ninguna otra acciÛn y los campos no est·n vacÌos significa que hemos pulsado enter
+//Si no se realiza ninguna otra acci√≥n y los campos no est√°n vac√≠os significa que hemos pulsado enter
 if(empty($cancel)&&empty($execute)&&empty($delete)&&empty($apply)&&empty($edit)&&!empty($parameters)) $execute="Execute";
 
   @pg_freeresult($result);
@@ -172,7 +172,7 @@ if(empty($cancel)&&empty($execute)&&empty($delete)&&empty($apply)&&empty($edit)&
         } 
       }
     $i++;
-    //if (empty($parameter_value[$parameter])) $empty[$i]="Este campo no puede ser vacÌo";
+    //if (empty($parameter_value[$parameter])) $empty[$i]="Este campo no puede ser vac√≠o";
     $sql=str_replace($parameter,"'".$parameter_value[$parameter]."'",$sql);
     }
    do {

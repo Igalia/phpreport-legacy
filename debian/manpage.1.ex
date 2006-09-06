@@ -55,5 +55,5 @@ available via the Info system.
 .SH AUTHOR
 phpreport was written by <upstream author>.
 .PP
-This manual page was written by Enrique OcaÒa Gonz·lez <eocanha@igalia.com>,
+This manual page was written by Enrique Oca√±a Gonz√°lez <eocanha@igalia.com>,
 for the Debian project (but may be used by others).

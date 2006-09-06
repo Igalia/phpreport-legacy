@@ -3,9 +3,9 @@
 //
 // Copyright (C) 2003-2005
 //  Igalia, S.L. <info@igalia.com>
-//  AndrÈs GÛmez GarcÌa <agomez@igalia.com>
-//  Enrique OcaÒa Gonz·lez <eocanha@igalia.com>
-//  JosÈ Riguera LÛpez <jriguera@igalia.com>
+//  Andr√©s G√≥mez Garc√≠a <agomez@igalia.com>
+//  Enrique Oca√±a Gonz√°lez <eocanha@igalia.com>
+//  Jos√© Riguera L√≥pez <jriguera@igalia.com>
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -22,14 +22,14 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 /**
- * PAR¡METROS HTTP QUE RECIBE ESTA P¡GINA:
+ * PAR√ÅMETROS HTTP QUE RECIBE ESTA P√ÅGINA:
  *
- * dia = DÌa del que mostrar el calendario. Formato DD/MM/AAAA
+ * dia = D√≠a del que mostrar el calendario. Formato DD/MM/AAAA
  * activation[type][code] = La etiqueta [type][code] se encuentra activa
  * deleted[type][code] = Se ha pulsado BORRAR para la etiqueta [type][code]
  * type = type de la etiqueta a agregar
- * code = CÛdigo de la etiqueta a agregar
- * description = DescripciÛn de la etiqueta a agregar
+ * code = C√≥digo de la etiqueta a agregar
+ * description = Descripci√≥n de la etiqueta a agregar
  * aplicar = Se ha pulsado APLICAR activationES
  * agregar = Se ha pulsado AGREGAR ETIQUETA
  */

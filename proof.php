@@ -3,9 +3,9 @@
 //
 // Copyright (C) 2003-2005
 //  Igalia, S.L. <info@igalia.com>
-//  AndrÈs GÛmez GarcÌa <agomez@igalia.com>
-//  Enrique OcaÒa Gonz·lez <eocanha@igalia.com>
-//  JosÈ Riguera LÛpez <jriguera@igalia.com>
+//  Andr√©s G√≥mez Garc√≠a <agomez@igalia.com>
+//  Enrique Oca√±a Gonz√°lez <eocanha@igalia.com>
+//  Jos√© Riguera L√≥pez <jriguera@igalia.com>
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -33,7 +33,7 @@ for ($i=0;$row=@pg_fetch_array($result,$i,PGSQL_ASSOC);$i++)
 
 require_once("include/cerrar_db.php");
 
-$title="P·gina de prueba";
+$title="P√°gina de prueba";
 require("include/plantilla-pre.php");
 
 if (!empty($error)) msg_fallo($error);

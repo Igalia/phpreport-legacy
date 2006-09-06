@@ -3,9 +3,9 @@
 //
 // Copyright (C) 2003-2005
 //  Igalia, S.L. <info@igalia.com>
-//  AndrÈs GÛmez GarcÌa <agomez@igalia.com>
-//  Enrique OcaÒa Gonz·lez <eocanha@igalia.com>
-//  JosÈ Riguera LÛpez <jriguera@igalia.com>
+//  Andr√©s G√≥mez Garc√≠a <agomez@igalia.com>
+//  Enrique Oca√±a Gonz√°lez <eocanha@igalia.com>
+//  Jos√© Riguera L√≥pez <jriguera@igalia.com>
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,14 +23,14 @@
 
 
 /**
- * PAR¡METROS HTTP QUE RECIBE ESTA P¡GINA:
+ * PAR√ÅMETROS HTTP QUE RECIBE ESTA P√ÅGINA:
  *
- * dia = DÌa del informe. Formato DD/MM/AAAA	
+ * dia = D√≠a del informe. Formato DD/MM/AAAA	
 	* nueva_password[uid] = Array de passwords cambiadas
 	* administrador[uid] = Array de atributos administrador cambiados (a 1 cuando true)
-	* cambiar[uid] = Array de botones CAMBIAR. Habr· como mucho un elemento, cuyo uid indicar·
+	* cambiar[uid] = Array de botones CAMBIAR. Habr√° como mucho un elemento, cuyo uid indicar√°
  *                el usuario que se quiere cambiar.
-	* borrar[uid] = Array de botones BORRAR. Habr· como mucho un elemento, cuyo uid indicar·
+	* borrar[uid] = Array de botones BORRAR. Habr√° como mucho un elemento, cuyo uid indicar√°
 	*                el usuario que se quiere borrar.
 	* nuevo_usuario_login = Login del nuevo usuario a crear.
 	* nuevo_usuario_password = Password del nuevo usuario a crear.
@@ -153,7 +153,7 @@ for ($i=0;$i<sizeof($periods);$i++) {
 
   if (!empty($error)) {
 
-   // DepuraciÛn
+   // Depuraci√≥n
    $error.="<!-- $query -->";
    @pg_exec($cnx,$query="ROLLBACK TRANSACTION");
    break;
@@ -195,7 +195,7 @@ if (!empty($new_user_login)&&!empty($new_user_password)||!empty($create)) {
       $error=_("You must specify the user password");
       break;
     } 		
-    $city="coruÒa";
+    $city="coru√±a";
     $jour_hours="8";
     if (!@pg_exec($cnx,$query=
 	"SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; "
@@ -216,7 +216,7 @@ if (!empty($new_user_login)&&!empty($new_user_password)||!empty($create)) {
     }
     @pg_exec($cnx,$query="COMMIT TRANSACTION");
     if (!empty($error)) {
-      // DepuraciÛn
+      // Depuraci√≥n
       $error.="<!-- $query -->";
       @pg_exec($cnx,$query="ROLLBACK TRANSACTION");
       break;
@@ -238,7 +238,7 @@ while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
 
 require_once("include/close_db.php");
 
-$flag="edit"; //Para poner el focus en el botÛn de Edit
+$flag="edit"; //Para poner el focus en el bot√≥n de Edit
 $title=_("Users management");
 require("include/template-pre.php");
 

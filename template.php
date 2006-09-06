@@ -3,9 +3,9 @@
 //
 // Copyright (C) 2003-2005
 //  Igalia, S.L. <info@igalia.com>
-//  AndrÈs GÛmez GarcÌa <agomez@igalia.com>
-//  Enrique OcaÒa Gonz·lez <eocanha@igalia.com>
-//  JosÈ Riguera LÛpez <jriguera@igalia.com>
+//  Andr√©s G√≥mez Garc√≠a <agomez@igalia.com>
+//  Enrique Oca√±a Gonz√°lez <eocanha@igalia.com>
+//  Jos√© Riguera L√≥pez <jriguera@igalia.com>
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -35,10 +35,10 @@ PhpReport
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
  <tr>
   <td align="left"><img src="images/title.gif"></td>
-  <td align="right" class="title"><?=_("IntroducciÛn de informes")?></td>
+  <td align="right" class="title"><?=_("Introducci√≥n de informes")?></td>
  </tr>
 </table>
-<? msg_fail_("No se pudo completar la operaciÛn"); ?>
+<? msg_fail_("No se pudo completar la operaci√≥n"); ?>
 <? msg_ok_("Los cambios fueron realizados correctamente"); ?>
 
 <!-- box -->
@@ -48,7 +48,7 @@ PhpReport
 <td bgcolor="#000000" class="title_box"><font
  color="#FFFFFF" class="title_box">
 <!-- title box -->
-<?=_("TÌtulo de la caja")?>
+<?=_("T√≠tulo de la caja")?>
 <!-- end title box -->
 </font></td></tr><tr><td bgcolor="#FFFFFF" class="text_box">
 <table border="0" cellspacing="0" cellpadding="10"><tr><td>
@@ -56,7 +56,7 @@ PhpReport
  color="#000000" class="text_box">
 <!-- text box -->
 <?=_("Texto de la caja:<br>
-Igalia es una empresa de IngenierÌa en Inform·tica dedicada a la investigaciÛn y desarrollo de soluciones en el campo de las TecnologÌas de la InformaciÛn y las Comunicaciones, y est· especializada en la consultorÌa de tecnologÌas basadas en Software Libre - GNU/Linux y sus aplicaciones asociadas."?>
+Igalia es una empresa de Ingenier√≠a en Inform√°tica dedicada a la investigaci√≥n y desarrollo de soluciones en el campo de las Tecnolog√≠as de la Informaci√≥n y las Comunicaciones, y est√° especializada en la consultor√≠a de tecnolog√≠as basadas en Software Libre - GNU/Linux y sus aplicaciones asociadas."?>
 <!-- end text box -->
 </font></td></tr></table></td></tr></table></td></tr></table>
 <!-- end box -->

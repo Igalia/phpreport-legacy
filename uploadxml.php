@@ -3,9 +3,9 @@
 //
 // Copyright (C) 2003-2005
 //  Igalia, S.L. <info@igalia.com>
-//  AndrÈs GÛmez GarcÌa <agomez@igalia.com>
-//  Enrique OcaÒa Gonz·lez <eocanha@igalia.com>
-//  JosÈ Riguera LÛpez <jriguera@igalia.com>
+//  Andr√©s G√≥mez Garc√≠a <agomez@igalia.com>
+//  Enrique Oca√±a Gonz√°lez <eocanha@igalia.com>
+//  Jos√© Riguera L√≥pez <jriguera@igalia.com>
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
  * Crea un directorio temporal (en ruta_absoluta) unico y copia
  * alli los archivos subidos.
  *
- * Par·metros recibidos:
+ * Par√°metros recibidos:
  *
  * filedir: diretorio (dentro de $absolute_path) en donde se encuentran
  * los $reports XML que van a ser validados y/o guardados.
@@ -40,7 +40,7 @@
  *      nombre_renombrar: fichero a renombrar.
  *
  *
- * JosÈ Riguera, <jriguera@igalia.com>
+ * Jos√© Riguera, <jriguera@igalia.com>
  *
  */
 
@@ -103,7 +103,7 @@ if (!empty($send_button) && ($send_button == "Enviar"))
             if (file_exists($filename)) @unlink($filename);
             if (!@move_uploaded_file($file, $filename))
             {
-             	$error = _("Error del servidor mientras se trataba el archivo, intentelo m·s tarde o pongase en contacto con su administrador.");
+             	$error = _("Error del servidor mientras se trataba el archivo, intentelo m√°s tarde o pongase en contacto con su administrador.");
             }
             else
             {
@@ -142,7 +142,7 @@ if (!empty($send_button) && ($send_button == "Enviar"))
 	$files = array();
 	while ($entry = @readdir($dh))
 	{
-		// Busca sÛlo los archivos del directorio
+		// Busca s√≥lo los archivos del directorio
 		if (($entry != ".") && ($entry != "..")) $files[] = $entry;
 	}
 	@closedir($dh);

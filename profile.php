@@ -3,9 +3,9 @@
 //
 // Copyright (C) 2003-2005
 //  Igalia, S.L. <info@igalia.com>
-//  AndrÈs GÛmez GarcÌa <agomez@igalia.com>
-//  Enrique OcaÒa Gonz·lez <eocanha@igalia.com>
-//  JosÈ Riguera LÛpez <jriguera@igalia.com>
+//  Andr√©s G√≥mez Garc√≠a <agomez@igalia.com>
+//  Enrique Oca√±a Gonz√°lez <eocanha@igalia.com>
+//  Jos√© Riguera L√≥pez <jriguera@igalia.com>
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -23,13 +23,13 @@
 
 
 /**
- * PAR¡METROS HTTP QUE RECIBE ESTA P¡GINA:
+ * PAR√ÅMETROS HTTP QUE RECIBE ESTA P√ÅGINA:
  *
- * dia = DÌa del informe. Formato DD/MM/AAAA
+ * dia = D√≠a del informe. Formato DD/MM/AAAA
  * cambiar = Se ha pulsado CAMBIAR
  * actual_password = Password actual (por seguridad)
  * nueva_password = Nueva password
-	* nueva_password2 = ConfirmaciÛn de password
+	* nueva_password2 = Confirmaci√≥n de password
  */
 
 require_once("include/autenticate.php");

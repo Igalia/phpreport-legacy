@@ -3,9 +3,9 @@
 //
 // Copyright (C) 2003-2005
 //  Igalia, S.L. <info@igalia.com>
-//  AndrÈs GÛmez GarcÌa <agomez@igalia.com>
-//  Enrique OcaÒa Gonz·lez <eocanha@igalia.com>
-//  JosÈ Riguera LÛpez <jriguera@igalia.com>
+//  Andr√©s G√≥mez Garc√≠a <agomez@igalia.com>
+//  Enrique Oca√±a Gonz√°lez <eocanha@igalia.com>
+//  Jos√© Riguera L√≥pez <jriguera@igalia.com>
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@
  * validar los cambios realizados. Es conveniente abrirlo en una ventana diferente
  * para no entorpecer ...
  *
- * Par·metros recibidos:
+ * Par√°metros recibidos:
  *
  * file: file en XML que va a ser abierto y editado.
  * ruta: directorio temporal en donde esta el file
@@ -36,7 +36,7 @@
  * botonguardar: Se ha pulsado el boton guardar el file XML.
  *
  *
- * JosÈ Riguera, <jriguera@igalia.com>
+ * Jos√© Riguera, <jriguera@igalia.com>
  *
  */
 
@@ -116,7 +116,7 @@ if ((!empty($path_file)) && (!empty($file)) && $valid_path)
             $rt = ValidateDTD($tmpfname, $mesg);
 	    if ($rt == 1)
 	    {  
-  		$temp=_("Informe v·lido y coherente, listo para ser guardado");
+  		$temp=_("Informe v√°lido y coherente, listo para ser guardado");
             	$ret = ValidateXMLReport($tmpfname, $info, $msg);
                 if ($ret == 1) $mesg = "<font color=\"#00FF00\"><b>$temp</b></font>";
         	elseif ($ret == -1)

@@ -6,20 +6,20 @@ A {
   text-decoration: none
 }
 
-input, select, textarea, .boton {
+input, select, textarea {
   border-width: 1px;
   border-style: solid;
   border-color: #878eaf
 }
 
-.titulo {
+.title {
   font: bold 12pt tahoma, lucida, helvetica, sans­serif;
   text-transform: uppercase;
   text-align: right;
   color: #61667c
 }
 
-.msg_fallo {
+.msg_fail {
   font: bold 9pt tahoma, lucida, helvetica, sans­serif;
   border-width: 1px;
   color: #505050;
@@ -37,47 +37,47 @@ input, select, textarea, .boton {
   border-color: #808764
 }
 
-.titulo_caja {
+.title_box {
   font: bold 10pt tahoma, lucida, helvetica, sans­serif;
   text-align: center;
   background: #878eaf;
   color: #ffffff
 }
 
-.texto_caja {
+.text_box {
   font: normal 9pt tahoma, lucida, helvetica, sans­serif;
   background: #f0f0f9;
   color: #000000
 }
 
-.texto_caja A {
+.text_box A {
   text-decoration: none
 }
 
-.titulo_minicaja {
+.title_minibox {
   font: bold 9pt tahoma, lucida, helvetica, sans­serif;
   text-align: center;
   background: #878eaf;
   color: #ffffff
 }
 
-.texto_minicaja {
+.text_minibox {
   font: normal 8pt tahoma, lucida, helvetica, sans­serif;
   background: #f0f0f9;
   color: #000000
 }
 
-.texto_minicaja A {
+.text_minibox A {
   text-decoration: none
 }
 
 
-.dir_par { background-color: #fff; }
-.dir_impar { background-color: #ceb; }
+.dir_even { background-color: #fff; }
+.dir_odd { background-color: #ceb; }
 
-.dir_tabla { border: 1px solid; width: 100%; text-align: center; background-color: #FFFFFF; }
+.dir_table { border: 1px solid; width: 100%; text-align: center; background-color: #FFFFFF; }
 .info { background-color: #f0f0f9; text-align: left; padding: 2%; padding-left: 5%; }
-.dir_titulo { text-align: left; color: #FFFFFF; background-color: #4682B4; }
+.dir_title { text-align: left; color: #FFFFFF; background-color: #4682B4; }
 .error { 
   border-width: 1px;
   color: #505050;
@@ -86,9 +86,9 @@ input, select, textarea, .boton {
   border-color: #a57d5b;
 }
 
-.pie { color: #FFFFFF; background-color: #878eaf; padding: 10px; padding-left: 20px; }
+.foot { color: #FFFFFF; background-color: #878eaf; padding: 10px; padding-left: 20px; }
 
-.texto_caja_xml {
+.text_box_xml {
   font: normal 9pt tahoma, lucida, helvetica, sans­serif;
   background: #f0f0f9;
   color: #000000;
@@ -97,11 +97,11 @@ input, select, textarea, .boton {
   padding-right: 5%;  
 }
 
-.contenido_error { background-color: #F0F0F9; 
+.content_error { background-color: #F0F0F9; 
   padding: 2%;
   padding-left: 5%;  
 }
 
-.f_correcto { color: #0000FF; font-family: sans-serif, courier; font-weight: bold;}
-.f_incorrecto { color: #FF0000; font-family: courier, sans-serif; font-weight: bold; }
+.f_correct { color: #0000FF; font-family: sans-serif, courier; font-weight: bold;}
+.f_incorrect { color: #FF0000; font-family: courier, sans-serif; font-weight: bold; }
 

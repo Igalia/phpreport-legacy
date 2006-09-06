@@ -3,9 +3,9 @@
 //
 // Copyright (C) 2003-2005
 //  Igalia, S.L. <info@igalia.com>
-//  AndrÈs GÛmez GarcÌa <agomez@igalia.com>
-//  Enrique OcaÒa Gonz·lez <eocanha@igalia.com>
-//  JosÈ Riguera LÛpez <jriguera@igalia.com>
+//  Andr√©s G√≥mez Garc√≠a <agomez@igalia.com>
+//  Enrique Oca√±a Gonz√°lez <eocanha@igalia.com>
+//  Jos√© Riguera L√≥pez <jriguera@igalia.com>
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -140,7 +140,7 @@ while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
 
 require_once("include/close_db.php");
 
-$flag="edit"; //Para poner el focus en el botÛn de Edit
+$flag="edit"; //Para poner el focus en el bot√≥n de Edit
 $title=_("Projects management");
 require("include/template-pre.php");
 

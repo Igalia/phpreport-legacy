@@ -7,8 +7,8 @@
 <!-- Para ello es necesario tener iniciada una sesion en la BD definida   -->
 <!-- en la variable "$cnx" junto con la variable "$session_uid" la cual   -->
 <!-- identifica al usuario que introduce los datos.			  -->
-<!-- Esta hoja de estilo necesita recibir 6 parametros: el año inicial,   -->
-<!-- el mes inicial, el dia inicial y el año final, el mes final y el dia -->
+<!-- Esta hoja de estilo necesita recibir 6 parametros: el aÃ±o inicial,   -->
+<!-- el mes inicial, el dia inicial y el aÃ±o final, el mes final y el dia -->
 <!-- final, es decir, las fechas (semana) que abarca el informe (estan    -->
 <!-- en el nombre del informe XML). Este XSL no verifica si los datos son -->
 <!-- coherentes, y si se produce algun error durante la interpretacion    -->
@@ -18,10 +18,10 @@
 <!-- Antes de introducir las tareas del informe en la BD, se borran todas -->
 <!-- las que existan en la BD para ese periodo.                           -->
 
-<!-- Esto esta diseñado para su uso con la directiva "eval" de PHP, la    -->
+<!-- Esto esta diseÃ±ado para su uso con la directiva "eval" de PHP, la    -->
 <!-- cual evalua el codigo PHP que contiene una variable.                 -->
 
-<!-- xml2php.xsl,  José Riguera, 2003 <jriguera@igalia.com>               -->
+<!-- xml2php.xsl,  JosÃ© Riguera, 2003 <jriguera@igalia.com>               -->
 
 
 
@@ -48,12 +48,12 @@
         $num_tareas = 0;
         $num_dias = 0;
         
-        if (empty($session_uid)) $error = "sin sesión o sesión desconocida.";
-        if (empty($cnx)) $error = "no hay sesión iniciada en la BD.";
+        if (empty($session_uid)) $error = "sin sesiÃ³n o sesiÃ³n desconocida.";
+        if (empty($cnx)) $error = "no hay sesiÃ³n iniciada en la BD.";
         
         $usuario = "</xsl:text><xsl:value-of select="$Iusuario"/><xsl:text>";
         
-        if (empty($usuario)) $error = "sin sesión o sesión desconocida.";
+        if (empty($usuario)) $error = "sin sesiÃ³n o sesiÃ³n desconocida.";
         
  	/* GESTION DE BLOQUEOS */
 
@@ -64,7 +64,7 @@
 		$query = "SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; BEGIN TRANSACTION; ";
   		if (!@pg_exec($cnx, $query)) 
                 {
-   			$error = "imposible comenzar transacción.";
+   			$error = "imposible comenzar transacciÃ³n.";
   		}
                 else
                 {
@@ -85,7 +85,7 @@
 	   				$bloqueado = false;
 					if ($row = @pg_fetch_row($result)) $bloqueado = !('</xsl:text><xsl:call-template name="FechaInf2Sql"/><xsl:text>' > $row[0]);
 					@pg_freeresult($result);
-					if ($bloqueado) $error = "la introducción de informes está bloqueada para fechas anteriores a ".$row[0]." .";
+					if ($bloqueado) $error = "la introducciÃ³n de informes estÃ¡ bloqueada para fechas anteriores a ".$row[0]." .";
 	   			}
 			}
                         
@@ -193,7 +193,7 @@
   			if (empty($error)) $query = "COMMIT TRANSACTION";
   			else $query = "ROLLBACK TRANSACTION";
   
-   			if (!@pg_exec($cnx,$query)) $error = "imposible cerrar transacción.";
+   			if (!@pg_exec($cnx,$query)) $error = "imposible cerrar transacciÃ³n.";
 		}
 		/* FIN INSERCION TAREAS */
         }
@@ -270,7 +270,7 @@
 					<xsl:with-param name="ano" select="$ano"/>
 				</xsl:call-template><xsl:text>'";
 			
-				if (!$result = @pg_exec($cnx, $query)) $error = "imposible determinar la última fecha de modificación.";
+				if (!$result = @pg_exec($cnx, $query)) $error = "imposible determinar la Ãºltima fecha de modificaciÃ³n.";
 				else
 				{
   			 		if (@pg_numrows($result) > 0)
@@ -283,7 +283,7 @@
 							<xsl:with-param name="ano" select="$ano"/>
 						</xsl:call-template><xsl:text>'";
 					
-  		  				if (!$result = @pg_exec($cnx, $query)) $error = "imposible actualizar la última fecha de modificación.";
+  		  				if (!$result = @pg_exec($cnx, $query)) $error = "imposible actualizar la Ãºltima fecha de modificaciÃ³n.";
    					}
    					else
    					{
@@ -295,7 +295,7 @@
 							<xsl:with-param name="ano" select="$ano"/>
 						</xsl:call-template><xsl:text>',now())";
 					
-						if (!$result = @pg_exec($cnx, $query)) $error = "imposible establecer fecha de modificación.";
+						if (!$result = @pg_exec($cnx, $query)) $error = "imposible establecer fecha de modificaciÃ³n.";
     					}
 				}
 			
@@ -316,7 +316,7 @@
 
   						if (!@pg_exec($cnx, $query)) 
                                         	{
-                                        		$error = "imposible realizar preinserción de datos en la BD.";
+                                        		$error = "imposible realizar preinserciÃ³n de datos en la BD.";
                                         	}
                                                 $nuevo_dia = false;
                                         }

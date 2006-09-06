@@ -3,9 +3,9 @@
 //
 // Copyright (C) 2003-2005
 //  Igalia, S.L. <info@igalia.com>
-//  Andrés Gómez García <agomez@igalia.com>
-//  Enrique Ocaña González <eocanha@igalia.com>
-//  José Riguera López <jriguera@igalia.com>
+//  AndrÃ©s GÃ³mez GarcÃ­a <agomez@igalia.com>
+//  Enrique OcaÃ±a GonzÃ¡lez <eocanha@igalia.com>
+//  JosÃ© Riguera LÃ³pez <jriguera@igalia.com>
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -27,13 +27,13 @@
  * semanales en XML. Emplean los files XSL para realizar las comprobaciones
  * necesarias
  *
- * José Riguera, <jriguera@igalia.com>
+ * JosÃ© Riguera, <jriguera@igalia.com>
  *
  */
 
 
 // Devuelve el numero de dias de un mes teniendo en cuenta
-// los años bisiestos
+// los aÃ±os bisiestos
 
 function DaysMonth ($month, $year)
 {
@@ -338,7 +338,7 @@ function ValidateDTD ($file, &$msg)
     //$dom = domxml_open_file($file, DOMXML_LOAD_PARSING, $error);
     if (!is_object($dom))
     {
-      	$msg = $msg."El documento xml está mal formado.";
+      	$msg = $msg."El documento xml estÃ¡ mal formado.";
       	//print_r($error);
       	return(-2);
     }
@@ -414,7 +414,7 @@ function ValidateXMLphp ($doc, $year, $month, $day_ini, $day_end, &$msg)
 
     if (count($sections) > 2)
     {
-       $msg .= _("El documento XML abarca varios meses. ¡Es semanal!");
+       $msg .= _("El documento XML abarca varios meses. Â¡Es semanal!");
        return(-30);
     }
     foreach($sections as $section)

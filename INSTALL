@@ -1,37 +1,37 @@
-INSTALACI”N DE PHPREPORT
+INSTALACI√ìN DE PHPREPORT
 ========================
 
 Modificar los ficheros include/config_db.php y sql/install.sh, poniendo 
 en ambos la base de datos, usuario y clave elegidos para ejecutar la 
-aplicaciÛn. En include/config.php se especificar· tambiÈn el mÈtodo de 
-autenticaciÛn (contra tabla de usuarios o contra LDAP) y otras 
+aplicaci√≥n. En include/config.php se especificar√° tambi√©n el m√©todo de 
+autenticaci√≥n (contra tabla de usuarios o contra LDAP) y otras 
 configuraciones.
 
 Entrar en el directorio sql y ejecutar (como root) install.sh, que 
-crear· la base de datos, el usuario, las tablas, los datos b·sicos de 
+crear√° la base de datos, el usuario, las tablas, los datos b√°sicos de 
 ejemplo y el virtual host.
 
-Mover phpreport a la ubicaciÛn definitiva, tÌpicamente 
+Mover phpreport a la ubicaci√≥n definitiva, t√≠picamente 
 /var/www/phpreport. Asignarle permisos y propietario adecuados:
 
  chown -R www-data:www-data /var/www/phpreport
  chmod go-rw
 
-Recargar la configuraciÛn del apache:
+Recargar la configuraci√≥n del apache:
 
  /etc/init.d/apache reload
 
-Para probar la aplicaciÛn con la configuraciÛn por defecto, es necesario 
-que la m·quina donde se instale responda al nombre de phpreport, por lo 
-que aÒadiremos ese alias a /etc/hosts (acordarse de quitarlo una vez se 
+Para probar la aplicaci√≥n con la configuraci√≥n por defecto, es necesario 
+que la m√°quina donde se instale responda al nombre de phpreport, por lo 
+que a√±adiremos ese alias a /etc/hosts (acordarse de quitarlo una vez se 
 haya configurado correctamente el virtual host).
 
 127.0.0.1       localhost.localdomain localhost phpreport
 
 Configurar a medida el virtual host en /etc/apache/vhosts.d/20-phpreport
 
-Existen dos usuarios por defecto en la aplicaciÛn cuando se trabaja en 
-modo de autenticaciÛn contra tablas:
+Existen dos usuarios por defecto en la aplicaci√≥n cuando se trabaja en 
+modo de autenticaci√≥n contra tablas:
 
  admin/admin
  usuario/usuario

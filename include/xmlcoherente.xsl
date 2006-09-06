@@ -3,23 +3,23 @@
 
 
 <!-- xmlcoherente.xsl: Este XSL realiza una serie de comprobaciones sobre -->
-<!-- un informe XML, para decidir si la información que contiene el       -->
+<!-- un informe XML, para decidir si la informaciÃ³n que contiene el       -->
 <!-- XML es coherente, es decir, comprueba: si se solapan tareas, si      -->
-<!-- abarca más de siete días, si contiene dos meses no consecutivos,     -->
-<!-- el número de días de un mes, etc. No comprueba valores de los        -->
+<!-- abarca mÃ¡s de siete dÃ­as, si contiene dos meses no consecutivos,     -->
+<!-- el nÃºmero de dÃ­as de un mes, etc. No comprueba valores de los        -->
 <!-- atributos definidos en el DTD, por lo que, antes de aplicar este XSL,-->
-<!-- es necesario comprobar que el informe esta bien formado y es válido. -->
-<!-- Esta hoja de estilo necesita recibir 6 parámetros: el año inicial,   -->
-<!-- el mes inicial, el día inicial y el año final, el mes final y el día -->
-<!-- final, es decir, las fechas (semana) que abarca el informe (están    -->
+<!-- es necesario comprobar que el informe esta bien formado y es vÃ¡lido. -->
+<!-- Esta hoja de estilo necesita recibir 6 parÃ¡metros: el aÃ±o inicial,   -->
+<!-- el mes inicial, el dÃ­a inicial y el aÃ±o final, el mes final y el dÃ­a -->
+<!-- final, es decir, las fechas (semana) que abarca el informe (estÃ¡n    -->
 <!-- en el nombre del informe XML).                                       -->
 
-<!-- xmlcoherente.xsl:  José Riguera, 2003 <jriguera@igalia.com>          -->
+<!-- xmlcoherente.xsl:  JosÃ© Riguera, 2003 <jriguera@igalia.com>          -->
 
 
-<!-- P1: adaptacion para cambiar el rango de horas del día de 0 a 23 h a  -->
+<!-- P1: adaptacion para cambiar el rango de horas del dÃ­a de 0 a 23 h a  -->
 <!-- 1 a 24 horas, es decir las tareas deben tener fechas de inicio y fin -->
-<!-- 0 < fecha <= 24.  (José Riguera <jriguera@igalia.com>, 10-01-2004)   --> 
+<!-- 0 < fecha <= 24.  (JosÃ© Riguera <jriguera@igalia.com>, 10-01-2004)   --> 
 
 
 
@@ -82,7 +82,7 @@
                        		<xsl:when test="$mesesinforme != $abarcameses">
                                 	<xsl:choose>
 						<xsl:when test="count(dedicacion[1]/dedicacionDiaria) > 6">
-							<xsl:text>Error, primer mes del informe con muchos días</xsl:text>
+							<xsl:text>Error, primer mes del informe con muchos dÃ­as</xsl:text>
 							<xsl:value-of select="$n"/>
 						</xsl:when>
 						<xsl:otherwise>
@@ -142,7 +142,7 @@
 							<xsl:value-of select="$n"/>
 			       			</xsl:when>
 						<xsl:when test="($Idiafin - $Idiaini) != 6">
-							<xsl:text>Error, el informe no abarca 7 días</xsl:text>
+							<xsl:text>Error, el informe no abarca 7 dÃ­as</xsl:text>
 							<xsl:value-of select="$n"/>
 			       			</xsl:when>
 						<xsl:otherwise>
@@ -182,13 +182,13 @@
 						</xsl:call-template>
 					</xsl:variable>
 					<xsl:if test="($diasmes1 + $diasmes2) > 7">
-						<xsl:text>Error, informe con más de 7 días</xsl:text>
+						<xsl:text>Error, informe con mÃ¡s de 7 dÃ­as</xsl:text>
 						<xsl:value-of select="$n"/>
 					</xsl:if>
 					<xsl:if test="(($mesdias1 - $Idiaini) + $Idiafin) != 6">
 						<xsl:text>Mes1:</xsl:text><xsl:value-of select="$diasmes1"/>
 						<xsl:value-of select="$n"/>
-						<xsl:text>Error, el informe no abarca 7 días</xsl:text>
+						<xsl:text>Error, el informe no abarca 7 dÃ­as</xsl:text>
 						<xsl:value-of select="$n"/>
 					</xsl:if>
 
@@ -236,7 +236,7 @@
 
 		<xsl:for-each select="following-sibling::dedicacionDiaria">
 			<xsl:if test="$ult = @dia">
-				<xsl:text>Error, informe con dos días iguales</xsl:text>
+				<xsl:text>Error, informe con dos dÃ­as iguales</xsl:text>
 				<xsl:value-of select="$n"/>
 			</xsl:if>
 		</xsl:for-each>
@@ -266,23 +266,23 @@
 			<xsl:value-of select="$n"/>
 		</xsl:when>
 		<xsl:when test="$idiaini > $mesdini">
-			<xsl:text>Error, fecha (día) inicial incorrecto</xsl:text>
+			<xsl:text>Error, fecha (dÃ­a) inicial incorrecto</xsl:text>
 			<xsl:value-of select="$n"/>
 		</xsl:when>
 		<xsl:when test="$mesdfin > $idiafin">
-			<xsl:text>Error, fecha (día) final incorrecto</xsl:text>
+			<xsl:text>Error, fecha (dÃ­a) final incorrecto</xsl:text>
 			<xsl:value-of select="$n"/>
 		</xsl:when>
 		<xsl:when test="($mesdfin - $mesdini) > 6">
-			<xsl:text>Error, mas de siete días en el informe</xsl:text>
+			<xsl:text>Error, mas de siete dÃ­as en el informe</xsl:text>
 			<xsl:value-of select="$n"/>
 		</xsl:when>
 		<xsl:when test="1 > $mesdini">
-			<xsl:text>Error, día inicial del mes ¡negativo!</xsl:text>
+			<xsl:text>Error, dÃ­a inicial del mes Â¡negativo!</xsl:text>
 			<xsl:value-of select="$n"/>
 		</xsl:when>
 		<xsl:when test="$mesdfin > $mesnumdias">
-			<xsl:text>Error, ¡el mes no tiene tantos días!</xsl:text>
+			<xsl:text>Error, Â¡el mes no tiene tantos dÃ­as!</xsl:text>
 			<xsl:value-of select="$n"/>
 		</xsl:when>
 		<xsl:otherwise>
@@ -431,14 +431,14 @@
 		<xsl:choose>
 			<xsl:when test="($thinicio = 'NaN') or ($thfin = 'NaN') or ($tminicio = 'NaN') or ($tmfin = 'NaN')">
 				<xsl:text>Error, tarea </xsl:text><xsl:value-of select="position()"/>
-				<xsl:text> del día </xsl:text><xsl:value-of select="$dia"/>
+				<xsl:text> del dÃ­a </xsl:text><xsl:value-of select="$dia"/>
 				<xsl:text>, formato de horario incorrecto</xsl:text>
 				<xsl:value-of select="$n"/>
 			</xsl:when>
 			<xsl:when test="$tinicio >= $tfin">
 				<xsl:if test="($thfin != 0) or (($thfin = 0) and ($tmfin != 0))">
 					<xsl:text>Error, tarea </xsl:text><xsl:value-of select="position()"/>
-					<xsl:text> del día </xsl:text><xsl:value-of select="$dia"/>
+					<xsl:text> del dÃ­a </xsl:text><xsl:value-of select="$dia"/>
 					<xsl:text>, horario incorrecto</xsl:text>
 					<xsl:value-of select="$n"/>
 				</xsl:if>
@@ -448,14 +448,14 @@
 				<xsl:when test="$thinicio = 24">
 					<xsl:if test="$tminicio != 0">
 						<xsl:text>Error, tarea </xsl:text><xsl:value-of select="position()"/>
-						<xsl:text> del día </xsl:text><xsl:value-of select="$dia"/>
+						<xsl:text> del dÃ­a </xsl:text><xsl:value-of select="$dia"/>
 						<xsl:text>, hora de inicio incorrecta</xsl:text>
 						<xsl:value-of select="$n"/>
 					</xsl:if>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:text>Error, tarea </xsl:text><xsl:value-of select="position()"/>
-					<xsl:text> del día </xsl:text><xsl:value-of select="$dia"/>
+					<xsl:text> del dÃ­a </xsl:text><xsl:value-of select="$dia"/>
 					<xsl:text>, hora de inicio incorrecta</xsl:text>
 					<xsl:value-of select="$n"/>
 				</xsl:otherwise>
@@ -466,14 +466,14 @@
 				<xsl:when test="$thfin = 24">
 					<xsl:if test="$tmfin != 0">
 						<xsl:text>Error, tarea </xsl:text><xsl:value-of select="position()"/>
-						<xsl:text> del día </xsl:text><xsl:value-of select="$dia"/>
+						<xsl:text> del dÃ­a </xsl:text><xsl:value-of select="$dia"/>
 						<xsl:text>, hora de fin incorrecta</xsl:text>
 						<xsl:value-of select="$n"/>
 					</xsl:if>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:text>Error, tarea </xsl:text><xsl:value-of select="position()"/>
-					<xsl:text> del día </xsl:text><xsl:value-of select="$dia"/>
+					<xsl:text> del dÃ­a </xsl:text><xsl:value-of select="$dia"/>
 					<xsl:text>, hora de fin incorrecta</xsl:text>
 					<xsl:value-of select="$n"/>
 				</xsl:otherwise>
@@ -481,13 +481,13 @@
 			</xsl:when>
 			<xsl:when test="($tminicio > 59) or (0 > $tminicio)">
 				<xsl:text>Error, tarea </xsl:text><xsl:value-of select="position()"/>
-				<xsl:text> del día </xsl:text><xsl:value-of select="$dia"/>
+				<xsl:text> del dÃ­a </xsl:text><xsl:value-of select="$dia"/>
 				<xsl:text>, minuto de inicio incorrecto</xsl:text>
 				<xsl:value-of select="$n"/>
 			</xsl:when>
 			<xsl:when test="($tmfin > 59) or (0 > $tmfin)">
 				<xsl:text>Error, tarea </xsl:text><xsl:value-of select="position()"/>
-				<xsl:text> del día </xsl:text><xsl:value-of select="$dia"/>
+				<xsl:text> del dÃ­a </xsl:text><xsl:value-of select="$dia"/>
 				<xsl:text>, minuto de fin incorrecto</xsl:text>
 				<xsl:value-of select="$n"/>
 			</xsl:when>
@@ -501,7 +501,7 @@
 				<xsl:when test="$tinicio >= @inicio">
 					<xsl:if test="@fin > $tinicio">
 						<xsl:text>Error, tarea </xsl:text><xsl:value-of select="position()"/>
-						<xsl:text> del día </xsl:text><xsl:value-of select="$dia"/>
+						<xsl:text> del dÃ­a </xsl:text><xsl:value-of select="$dia"/>
 						<xsl:text> solapada con la </xsl:text><xsl:value-of select="$tindice"/>
 						<xsl:value-of select="$n"/>
 					</xsl:if>
@@ -509,7 +509,7 @@
 				<xsl:otherwise>
 					<xsl:if test="$tfin > @inicio">
 						<xsl:text>Error, tarea </xsl:text><xsl:value-of select="position()"/>
-						<xsl:text> del día </xsl:text><xsl:value-of select="$dia"/>
+						<xsl:text> del dÃ­a </xsl:text><xsl:value-of select="$dia"/>
 						<xsl:text> solapada con la </xsl:text><xsl:value-of select="$tindice"/>
 						<xsl:value-of select="$n"/>
 					</xsl:if>

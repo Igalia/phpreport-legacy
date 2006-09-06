@@ -40,7 +40,7 @@
     </tr>
     <tr>
      <?
-      // Cálculo de los titles de los días
+      // CÃ¡lculo de los titles de los dÃ­as
       foreach ($days_minical as $d) {
      ?>
      <td style="<?=$style["T"]?>">

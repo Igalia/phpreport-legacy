@@ -13,6 +13,14 @@ allow from all
 <IfModule mod_php4.c>
   php_flag magic_quotes_gpc On
   php_flag register_globals On
+  
+  # This solves a bug about too short sessions. All php sessions
+  # are stored at the same directory, and if one application
+  # lowers the session time, the other ones get affected.
+  # You must create the session path by hand for this to work.
+
+  # php_admin_value session.save_path /var/tmp/phpreport_sessions
+  # php_admin_value session.gc_maxlifetime 72000
 </IfModule>
 
 </DirectoryMatch>

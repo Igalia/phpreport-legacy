@@ -3,9 +3,9 @@
 //
 // Copyright (C) 2003-2005
 //  Igalia, S.L. <info@igalia.com>
-//  AndrÈs GÛmez GarcÌa <agomez@igalia.com>
-//  Enrique OcaÒa Gonz·lez <eocanha@igalia.com>
-//  JosÈ Riguera LÛpez <jriguera@igalia.com>
+//  Andr√©s G√≥mez Garc√≠a <agomez@igalia.com>
+//  Enrique Oca√±a Gonz√°lez <eocanha@igalia.com>
+//  Jos√© Riguera L√≥pez <jriguera@igalia.com>
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -25,12 +25,12 @@
 /** procesarxml.php
  *
  * Aqui se validan los ficheros de reports XML que hay en un directorio,
- * es decir, se comprueba si los XML est·n bien formados, son valids y
+ * es decir, se comprueba si los XML est√°n bien formados, son valids y
  * si son coherentes. Para la realizacion de estas acciones se usan las
  * funciones de apoyo definidas en "infxml.php" y los ficheros "xsl". Una
  * vez que se ha validado los reports, se introducen en la BD.
  *
- * Par·metros recibidos:
+ * Par√°metros recibidos:
  *
  * filedir: diretorio (dentro de $absolute_path) en donde se encuentran
  * los reports XML que van a ser validados y/o guardados.
@@ -39,7 +39,7 @@
  * botonguardar: Se ha pulsado el boton guardar reports en la BD.
  *
  *
- * JosÈ Riguera, <jriguera@igalia.com>
+ * Jos√© Riguera, <jriguera@igalia.com>
  *
  */
 
@@ -89,10 +89,10 @@ if ($count_valids > 0)
 ?>
     <form name="editor" action="<? echo "$PHP_SELF"; ?>" enctype="multipart/form-data" method="post">
 
-    <table class="dir_tabla" cellpadding="4" cellspacing="1">
-    <tr class="dir_titulo">
+    <table class="dir_table" cellpadding="4" cellspacing="1">
+    <tr class="dir_title">
         <td align="center" width="40%"><?_("Informe Semanal")?></td>
-        <td align="center" width="20%"><?_("V·lido")?></td>
+        <td align="center" width="20%"><?_("V√°lido")?></td>
         <td align="center" width="20%"><?_("Coherente")?></td>
         <td align="center" width="20%"><?_("Guardado")?></td>
     </tr>
@@ -181,8 +181,8 @@ if ($count_valids > 0)
 	     	<input type="submit" name="validate_button" value="Revalidate"/>
       	</td>
         <td align="left">
-                <?_("Comprueba si los reports est·n bien formados, son v·lidos conforme al DTD y
-                si son coherentes (si se solapan tareas, dÌas incorrectos, ...).")?>
+                <?_("Comprueba si los reports est√°n bien formados, son v√°lidos conforme al DTD y
+                si son coherentes (si se solapan tareas, d√≠as incorrectos, ...).")?>
         </td>
     </tr>
     <tr>
@@ -194,7 +194,7 @@ if ($count_valids > 0)
                 ?>
         </td>
         <td align="left">
-                <?_("Introduce los datos de los reports XML que son correctos (v·lidos y coherentes) en la BD.")?>
+                <?_("Introduce los datos de los reports XML que son correctos (v√°lidos y coherentes) en la BD.")?>
         </td>
     </tr>
     </table>
@@ -215,10 +215,10 @@ if (!empty($save_button))
 {
     if ($count_v == $count_g)
     {
-	$temp=_("Todos los reports v·lidos han sido guardados correctamente.");
+	$temp=_("Todos los reports v√°lidos han sido guardados correctamente.");
     	$msg = "<font color=\"#00FF00\"> $temp </font>";
     }
-    else $msg = "<font color=\"#FF0000\">OJO, sÛlo ".$count_g." reports de ".$count_v." v·lidos han sido guardados. </font>";
+    else $msg = "<font color=\"#FF0000\">OJO, s√≥lo ".$count_g." reports de ".$count_v." v√°lidos han sido guardados. </font>";
     EndGeneralTable($msg);
 
     unset($save_button);
@@ -229,9 +229,9 @@ else
 
     if ($count_v == $count_valids)
     {
-    	$msg = "<font color=\"#00FF00\">Todos los reports son v·lidos y coherentes. Est·n listos para guardar.</font>";
+    	$msg = "<font color=\"#00FF00\">Todos los reports son v√°lidos y coherentes. Est√°n listos para guardar.</font>";
     }
-    else $msg = "<font color=\"#FF0000\">OJO, solo ".$count_v." reports de ".$count_valids." son v·lidos y coherentes. Edite los que considere oportuno.</font>";
+    else $msg = "<font color=\"#FF0000\">OJO, solo ".$count_v." reports de ".$count_valids." son v√°lidos y coherentes. Edite los que considere oportuno.</font>";
     EndGeneralTable($msg);
 }
 //else FinTablaGeneral();

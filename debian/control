@@ -1,7 +1,7 @@
 Source: phpreport
 Section: web
 Priority: optional
-Maintainer: Enrique OcaÒa Gonz·lez <eocanha@igalia.com>
+Maintainer: Enrique Oca√±a Gonz√°lez <eocanha@igalia.com>
 Build-Depends: debhelper (>= 4.0.0)
 Standards-Version: 3.6.1
 
