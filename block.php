@@ -241,9 +241,9 @@ if (!empty($confirmation)) msg_ok($confirmation);
      <br><br>
      <table border="0" cellpadding="1" cellspacing="0"><tr><td bgcolor="#999999">
      <table border="0" cellpadding="0" cellspacing="0" style="text-align: center;">
-      <tr><td style="<?=$style["B"]?>"><?=_("Day blocked")?></td></tr>
-      <tr><td style="<?=$style["H"]?>"><?=_("Day selected")?></td></tr>
-      <tr><td style="<?=$style["N"]?>"><?=_("Day not blocked")?></td></tr>
+      <tr><td style="<?=$style["B"]?>"><?=_("Blocked day")?></td></tr>
+      <tr><td style="<?=$style["H"]?>"><?=_("Selected day")?></td></tr>
+      <tr><td style="<?=$style["N"]?>"><?=_("Unblocked day")?></td></tr>
       <tr><td style="<?=$style["G"]?>"><?=_("Day of the previous or later month")?></td></tr>
      </table>
      </td></tr></table>

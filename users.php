@@ -146,12 +146,6 @@ for ($i=0;$i<sizeof($periods);$i++) {
   }
 }
 
-/*
-echo("<pre>");
-print_r($city);
-echo("</pre>");
-*/
-
   // Y SE HACE TODO EL PROCESO
 
    @pg_exec($cnx,$query="COMMIT TRANSACTION");
@@ -176,16 +170,16 @@ $periods=del_elements_shifting($periods, current(array_keys($del_period)));
 
 if (!empty($delete)) {
   $k=array_keys($delete);
-  $uid=$k[0];
-  if ($uid==$session_uid) {
+  $admin=$k[0];
+  if ($admin=="t") {
     $error=_("An administrator cannot be erased to itself");
   } else {
-    $result=@pg_exec($cnx,$query="DELETE FROM users WHERE uid='$uid'")
+    $result=@pg_exec($cnx,$query="DELETE FROM users WHERE uid='$user'")
 	or die("$die $query");
     $confirmation=_("The user has been deleted correctly");
     @pg_freeresult($result);
 
-    $result2=pg_exec($cnx,$query="DELETE FROM periods WHERE uid='$uid'")
+    $result2=pg_exec($cnx,$query="DELETE FROM periods WHERE uid='$user'")
         or die("$die $query");
     @pg_freeresult($result2);
  }
@@ -242,7 +236,6 @@ while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
 }
 @pg_freeresult($result);
 
-
 require_once("include/close_db.php");
 
 $flag="edit"; //Para poner el focus en el botón de Edit
@@ -292,6 +285,7 @@ if (empty($id)||!empty($delete)) {
 }
 else $user["uid"]=$id;
 ?>
+
  <td>
 <select name="id" onchange="javascript: document.results.submit();">
 <?=array_to_option(
@@ -377,10 +371,6 @@ if (!empty($edit)||!empty($id)&&(empty($new)&&empty($create))||!empty($del_perio
  color="#000000" class="text_box">
 <!-- text box -->
 <?
-//foreach ($edit as $key=>$value){
-// $user["uid"]=$key;
-//}
-
 if ($authentication_mode=="sql") {
 ?>
 
@@ -397,13 +387,17 @@ if ($authentication_mode=="sql") {
    <td style="text-align: center; vertical-align: top;"><?=$user["uid"]?></td>
    <td></td>
    <td><input type="password" name="new_password[<?=$user["uid"]?>]" value=""></td>
+<?foreach ($users as $u) {
+  if ($user["uid"]==$u["uid"]) $user["admin"]=$u["admin"];
+}?>
    <td><input type="checkbox" name="administrator[<?=$user["uid"]?>]" 
 		 value="1" <?=($user['admin']=='t'?"checked":"")?>>
    </td>
  </tr>
 </table>
 
-<?}else {?>
+<?
+}else {?>
 
 <table border="0">
  <tr>
@@ -416,15 +410,15 @@ if ($authentication_mode=="sql") {
 <br>
 
 <?
-$journey=array(8=>_("Jornada completa"),4=>_("Media jornada"),6=>_("Jornada prácticas"));
+$journey=array(8=>_("Full time"),4=>_("Half time"),6=>_("Practice journey"));
 if (!empty($periods)) {?>
-<table border="0" cellspacing="0" cellpadding="0">
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr><td bgcolor="#000000">
 <table border="0" cellspacing="1" cellpadding="0" width="100%"><tr>
 <td bgcolor="#000000" class="title_box"><font
  color="#FFFFFF" class="title_box">
 <!-- title box -->
-<?=_("Periodos existentes")?> 
+<?=_("Existing periods")?> 
 <!-- end title box -->
 </font></td></tr>
 
@@ -437,25 +431,25 @@ for ($i=0;$i<sizeof($periods);$i++) {
  color="#000000" class="text_box">
 <!-- text box -->
 <tr>
-  <td><?=_("Horas: ");?></td>
+  <td><?=_("Hours");?>:</td>
   <td><select name="<?="periods[$i][journey]"?>"><?=array_to_option(array_values($journey),$periods[$i]["journey"],array_keys($journey))?>
    </select>
 </tr>
 <tr>
-  <td><?=_("Data inicio: ");?></td>
+  <td><?=_("Init date");?>:</td>
   <td><input type="text" name="<?="periods[$i][init]"?>" value="<?=$periods[$i]["init"]?>"></td>
 </tr>
 <tr>
-  <td><?=_("Data fin: ");?></td>
+  <td><?=_("End date");?>:</td>
   <td><input type="text" name="<?="periods[$i][_end]"?>" value="<?=$periods[$i]["_end"]?>"></td>
 </tr>
 <tr>
-  <td><?=_("Cidade: ");?></td>
+  <td><?=_("City");?>:</td>
   <td><input type="text" name="<?="periods[$i][city]"?>" value="<?=$periods[$i]["city"]?>"></td>
 </tr>
 
  <tr>
-  <td colspan="3" align="right">
+  <td></td><td align="center">
 
    <input type="submit" name="<?="del_period[$i]"?>" value="<?=_("Delete period")?>">
   </td>
@@ -473,7 +467,7 @@ for ($i=0;$i<sizeof($periods);$i++) {
 <table>
  <tr>
   <td>
-<?=_("Tipo de jornada: ");?>
+<?=_("Type of journey");?>:
    <select name="jour_hours"><?=array_to_option(array_values($journey),$journey,array_keys($journey))?>
    </select>
   </td>
@@ -482,7 +476,7 @@ for ($i=0;$i<sizeof($periods);$i++) {
 <table><br>
  <tr>
   <td>
-<?=_("Fecha de comienzo: ");?>
+<?=_("Init date");?>:
   </td>
   <td>
     <input type="text" name="init_date">
@@ -490,7 +484,7 @@ for ($i=0;$i<sizeof($periods);$i++) {
  </tr>
  <tr>
   <td>
-<?=_("Fecha de fin: ");?>
+<?=_("End date");?>:
   </td>
   <td>
     <input type="text" name="end_date">
@@ -498,7 +492,7 @@ for ($i=0;$i<sizeof($periods);$i++) {
  </tr>
  <tr>
   <td><br>
-<?=_("Ciudad: ");?>
+<?=_("City");?>
   </td>
   <td><br>
     <input type="text" name="city">
@@ -513,9 +507,9 @@ for ($i=0;$i<sizeof($periods);$i++) {
   <td>
      <input type="submit" name="change[<?=$user["uid"]?>]" value="<?=_("Change")?>">
   </td>
-<? if ($authentication_mode=="sql") {  ?>
+<? if ($authentication_mode=="sql") {?>
   <td>
-    <input type="submit" name="delete[<?=$user["uid"]?>]" value="<?=_("Delete")?>"></td>
+   <input type="submit" name="delete[<?=$user["admin"]?>]" value="<?=_("Delete")?>"></td>
 <?}?>
   </tr>
 </table>

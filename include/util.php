@@ -265,21 +265,12 @@ function make_calendar($day) {
    $tmp=getdate(mktime(0,0,0,$arrayDMA[1],$dt["mday"],$arrayDMA[2]));
    $calendar[$s][$i]=array($dt["mday"],$letter_colour,
     date_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"])));
-//   $calendar2[$s][$i]=$calendar[$s][$i];
-//echo($i);
-//$proba[]=date_web_to_SQL($calendar2[$s][$i][2]);
-//echo("\n");
    if ($i==7) {
     $i=0;
-//    $proba[]="|";
     $s++;
-//echo("<".$s.">");
    }
   } else break;
  }
-//echo("<pre>");
-//print_r($proba);
-//echo("</pre>");
  // Cálculo de los días en gris del mes siguiente
  for ($j=1;($i>1)&&($i<=7);$i++) {
   $tmp=getdate(mktime(0,0,0,$arrayDMA[1]+1,$j,$arrayDMA[2]));
@@ -367,4 +358,114 @@ GROUP BY uid");
  pg_freeresult($result);
  return $minutes;
 }
+
+function workable_days ($init, $end, $holidays, $periods){
+foreach ($periods as $period) {
+  $i=date_web_to_arrayDMA($period["init"]);
+  $i=date(mktime(0,0,0,$i[1],$i[0],$i[2]));
+  $init=$i;
+  if ($period["_end"]=="NULL"){
+   $e=getdate(time());
+   $e=date(mktime(0,0,0,$e["mon"],$e["mday"],$e["year"]));
+  }
+  else {
+    $e=date_web_to_arrayDMA($period["_end"]);
+    $e=date(mktime(0,0,0,$e[1],$e[0],$e[2]));
+  }
+  $end=$e;
+  while ($init<=$e&&$e<=$end){
+    $init=getdate($init);
+    $search=array_search($init,$holidays);
+    if ($search===false) {
+      if($init["weekday"] != 'Sunday' && $init["weekday"] != 'Saturday')
+            $hours[$init["year"]][$init["mon"]]+=$period["journey"];
+    }
+    $init=getdate(mktime(0,0,0,$init["mon"],$init["mday"]+1,$init["year"]));
+    $init=date(mktime(0,0,0,$init["mon"],$init["mday"],$init["year"]));
+  }
+} //end foreach ($periods...
+return $hours;
+}
+
+
+function make_calendar2($holidays,$day) {
+$empty=false;
+
+if (!empty($day)) {
+  $arrayDMA=date_web_to_arrayDMA($day);
+  $day=getdate(mktime(0,0,0,$arrayDMA[1],$arrayDMA[0],$arrayDMA[2]));
+ } else {
+  $empty=true;
+  $day=getdate(time());
+  $day=getdate(mktime(0,0,0,$day["mon"],$day["mday"],$day["year"]));
+ }
+
+ $calendar=array();
+
+ // Cálculo de los días en gris del mes anterior
+
+ $dt=getdate(mktime(0,0,0,$day["mon"],1,$day["year"]));
+ $d=getdate(mktime(0,0,0,$day["mon"],
+  1-((($dt["wday"]+6)%7)+1),$day["year"]));
+ $s=1; // Semana
+ for ($i=1;$i<((($dt["wday"]+6)%7)+1);$i++) {
+  $tmp=getdate(mktime(0,0,0,$arrayDMA[1]-1,$d["mday"]+$i,$arrayDMA[2]));
+  $calendar[$s][$i]=array($d["mday"]+$i,"G",
+   date_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"]))
+  );
+ }
+
+ // Cálculo de los días en negro (de este mes)
+ for ($k=0;;$k++,$i++) {
+  $t=mktime(0,0,0,$day["mon"],$k+1,$day["year"]);
+  $dt=getdate($t);
+  if (($dt["mon"])==($day["mon"])) {  
+
+   if ($dt==$day && !$empty)$letter_colour="A";
+   else $letter_colour="N";
+   
+   if($dt["weekday"]=="Saturday"||$dt["weekday"]=="Sunday") $letter_colour="A"; else $letter_colour="N";
+   $tmp=getdate(mktime(0,0,0,$arrayDMA[1],$dt["mday"],$arrayDMA[2]));
+if (!empty ($holidays)) {
+foreach ($holidays as $d) {
+if($tmp==$d&&!$empty)$letter_colour="A";
+     else $letter_colour="N";
+   if ($tmp!=$d){
+     if($dt["weekday"]=="Saturday"||$dt["weekday"]=="Sunday") $letter_colour="A";
+     $calendar[$s][$i]=array($dt["mday"],$letter_colour,
+      date_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"])));
+   }
+   else {
+    $calendar[$s][$i]=array($dt["mday"],"A",
+    date_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"])));
+    break;
+   }
+}
+}
+
+else {
+  if($day["mday"]==$tmp["mday"]&&empty($holidays)){ 
+   $calendar[$s][$i]=array($dt["mday"],$letter_colour,
+      date_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"])));}
+  else { $calendar[$s][$i]=array($dt["mday"],$letter_colour,
+      date_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"])));}
+  
+}
+
+   if ($i==7) {
+    $i=0;
+    $s++;
+   }
+  } else break;
+ } 
+ // Cálculo de los días en gris del mes siguiente
+ for ($j=1;($i>1)&&($i<=7);$i++) {
+  $tmp=getdate(mktime(0,0,0,$arrayDMA[1]+1,$j,$arrayDMA[2]));
+  $calendar[$s][$i]=array($j,"G",
+    date_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"])));
+  $j++;
+ }
+ return($calendar);
+}
+
 ?>

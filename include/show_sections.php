@@ -50,14 +50,20 @@ if (in_array("informesadm",(array)$session_groups)) {
     <a href="adminlabels.php?day=<?=$day?>"
      style="font-weight: bold;">- <?=_("Labels")?></a>
    <br>
-    <a href="projevaluation.php?day=<?=$day?>"
+    <a href="projevaluation.php?day=<?=$day?>&amp;flag=PROJECTS"
      style="font-weight: bold;">- <?=_("Project evaluation")?></a>
+   <br>
+    <a href="projevaluation.php?day=<?=$day?>&amp;flag=PERSONS"
+     style="font-weight: bold;">- <?=_("Users evaluation")?></a>
+   <br>
+    <a href="projects.php?day=<?=$day?>"
+     style="font-weight: bold;">- <?=_("Project management")?></a>
    <br>
     <a href="users.php?day=<?=$day?>"
      style="font-weight: bold;">- <?=_("Users management")?></a>
    <br>
-    <a href="projects.php?day=<?=$day?>"
-     style="font-weight: bold;">- <?=_("Project management")?></a>
+    <a href="cal_manag.php?day=<?=$day?>"
+     style="font-weight: bold;">- <?=_("Calendar management")?></a>
 <!-- end text box -->
    </font></td></tr></table></td></tr>
 <?

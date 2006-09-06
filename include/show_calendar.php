@@ -4,7 +4,7 @@
    <table border="0" cellspacing="1" cellpadding="0" width="100%"><tr>
    <!-- title box -->
    <td bgcolor="#000000" class="title_minibox"
-    ><a href="?day=<?=$day_month_previous?>"
+    ><a href="report.php?day=<?=$day_month_previous?>"
     ><font color="#FFFFFF" class="title_minibox">
    &nbsp;&lt;&nbsp;
    </font></a></td>
@@ -13,7 +13,7 @@
    <?=_("Calendar")?>
    </font></td>
    <td bgcolor="#000000" class="title_minibox"
-    ><a href="?day=<?=$day_month_next?>"
+    ><a href="report.php?day=<?=$day_month_next?>"
     ><font color="#FFFFFF" class="title_minibox">
    &nbsp;&gt;&nbsp;
    </font></a></td>
@@ -34,6 +34,7 @@
      ?>
     <tr>
      <td colspan="7" style="<?=$style["T"]?>">
+<?$arrayDMA=date_web_to_arrayDMA($day); ?>
       <?=$arrayDMA[0]._(" of ").$months_minical[$arrayDMA[1]-1]._(" of ").$arrayDMA[2]?>
      </td>
     </tr>
@@ -72,7 +73,6 @@
    <table border="0" cellpadding="0" cellspacing="0" width="100%">
    <form name="mini_calendar" action="report.php" method="post">
    <tr><td style="background: #FFFFFF; color: #000000; text-align: center">
-   
    <input type="text" name="day" value="<?=$day?>" size="10"
     style="color: #000000; width: 100%; height: 20px"
     onchange="javascript: document.mini_calendar.submit();">
