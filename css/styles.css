@@ -44,10 +44,37 @@ input, select, textarea {
   color: #ffffff
 }
 
+.title_table {
+  font: bold 10pt tahoma, lucida, helvetica, sans­serif;
+  text-align: center;
+  background: #DCDCDC;
+  color: #000000
+}
+
 .text_box {
   font: normal 9pt tahoma, lucida, helvetica, sans­serif;
   background: #f0f0f9;
   color: #000000
+}
+
+.text_data {
+  font: normal 9pt tahoma, lucida, helvetica, sans­serif;
+  text-align: right;
+  background: #f0f0f9;
+  color: #000000
+}
+.text_result {
+  font: normal 9pt tahoma, lucida, helvetica, sans­serif;
+  text-align: right;
+  background: #f0f0f9;
+  color: #000000
+}
+
+.text_percent {
+  font: normal 9pt tahoma, lucida, helvetica, sans­serif;
+  text-align: right;
+  background: #f0f0f9;
+  color: #FF0000
 }
 
 .text_box A {
@@ -70,7 +97,6 @@ input, select, textarea {
 .text_minibox A {
   text-decoration: none
 }
-
 
 .dir_even { background-color: #fff; }
 .dir_odd { background-color: #ceb; }

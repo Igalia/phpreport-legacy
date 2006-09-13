@@ -65,6 +65,7 @@ switch($lang)
     setlocale(LC_ALL, 'en_EN');
   break;
 }
+
 bindtextdomain('messages', './locale');
 
 $absolut_path = "/tmp/phpreport/";

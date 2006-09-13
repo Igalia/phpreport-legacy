@@ -73,6 +73,11 @@ function del_elements_shifting($array, $i) {
  return(array_values($array));
 }
 
+// Tests if a date is valid DD/MM/AAAA or D/M/AAAA
+function validate_date_web($web_date) {
+ return preg_match("/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4,4}/",$web_date);
+}
+
 // Convierte una fecha de formato "español" (DD/MM/AAAA) a un
 // array(DD,MM,AAAA)
 function date_web_to_arrayDMA($web_date) {
@@ -217,12 +222,18 @@ function day_year_moved($day, $shift) {
  return(date_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"])));
 }
 
+// Devuelve la fecha que se le pasa con tantos días hacia adelante o atras como se le indique
+// en los parametros. La fecha debe estar en formato DD/MM/AAAA
+function day_day_moved($day, $shif){
+  $arrayDMA=date_web_to_arrayDMA($day);
+  $tmp=getdate(mktime(0,0,0,$arrayDMA[1],$arrayDMA[0]+$shift,$arrayDMA[2]));
+  return(date_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"])));
+}
+
 //Dada una fecha, devuelve la fecha correspondiente al día anterior
 //(útil para la acción copiar informe del día anterior)
 function day_yesterday($day){
-  $arrayDMA=date_web_to_arrayDMA($day);
-  $tmp=getdate(mktime(0,0,0,$arrayDMA[1],$arrayDMA[0]-1,$arrayDMA[2]));
-  return(date_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"])));
+  return day_day_moved($day,-1);
 }
 
 // Crea un array con el calendario del mes de una fecha dada.
@@ -337,7 +348,7 @@ function sql_to_checkbox($i) {
 // Calcula los minutos que un trabajador lleva trabajados la semana actual
 function worked_minutes_this_week($cnx,$uid,$day) {
  $hours="---";
- $result=pg_exec($cnx,$query="
+ $result=@pg_exec($cnx,$query="
 SELECT uid, SUM(_end-init) - 60*COALESCE((
   SELECT SUM(hours)
   FROM compensation
@@ -354,8 +365,8 @@ WHERE _date>=(timestamp '$day' -
  ((int2(date_part('dow',timestamp '$day')+7-1) % 7)-6||' days')::interval)::date
  AND uid='$uid'
 GROUP BY uid");
- if ($row=pg_fetch_row($result)) $minutes=$row[1];
- pg_freeresult($result);
+ if ($row=@pg_fetch_row($result)) $minutes=$row[1];
+ @pg_freeresult($result);
  return $minutes;
 }
 
@@ -466,6 +477,123 @@ else {
   $j++;
  }
  return($calendar);
+}
+
+// Compute the days passed since a reference date called "epoch"
+// NOTE: For convenience reasons, the epoch ISN'T THE SAME as the standard
+//       unix epoch.
+function days_from_epoch($date) {
+  // We use gmmktime() to be immune to daily saving time issues
+  $val=date_sql_to_web($date);
+  $arrayDMA=date_web_to_arrayDMA($val);
+  $tm_date=gmmktime(0,0,0,$arrayDMA[1],$arrayDMA[0],$arrayDMA[2]);
+
+  // 1970-01-05 is a better epoch day, because it's Monday and can be
+  // used to compute the week day doing modulus
+  $arrayDMA=array("5","1","1970");
+  $tm_epoch=gmmktime(0,0,0,$arrayDMA[1],$arrayDMA[0],$arrayDMA[2]);
+
+  return ($tm_date-$tm_epoch)/(60*60*24);
+}
+
+function num_weekend_days($init,$end) {
+  // Let's call "days" to the number of days since "epoch" for a
+  // Particular date.
+  // So, floor(days/7)*2 is the number of *complete* weeks happened
+  // if (days%7==5) a Saturday has also happened
+  // if (days%7==6) a Saturday and a Sunday have also happened
+
+  // Computing the number of weekend days happened since epoch for one date2 (both included)
+  // and then, the number of weekend days happened since epoch for another date1 (both)
+  // and substracting both, gives the number of weekend days happened from
+  // date1 to date2 (both)
+
+  // NOTE: -1 because we also include the start date
+  // (init<=x<=end, INSTEAD OF init<x<=end)
+  $days_epoch_to_init=days_from_epoch($init)-1;
+  $days_epoch_to_end=days_from_epoch($end);
+
+  $weekend_days_epoch_to_init=floor($days_epoch_to_init/7)*2;
+  if ($days_epoch_to_init%7==5) $weekend_days_epoch_to_init+=1;
+  else if ($days_epoch_to_init%7==6) $weekend_days_epoch_to_init+=2;
+
+  $weekend_days_epoch_to_end=floor($days_epoch_to_end/7)*2;
+  if ($days_epoch_to_end%7==5) $weekend_days_epoch_to_end+=1;
+  else if ($days_epoch_to_end%7==6) $weekend_days_epoch_to_end+=2;
+
+  $result = $weekend_days_epoch_to_end - $weekend_days_epoch_to_init;
+
+  return $result;
+}
+
+function net_extra_hours($cnx,$init,$end,$uid=null) {
+  if (empty($uid)) $uid_condition=" true";
+  else $uid_condition=" uid='$uid'";
+  $worked_hours=@pg_exec($cnx,$query="SELECT uid, SUM( _end - init ) / 60.0 AS total_hours FROM task 
+        WHERE ((_date >= '$init' AND _date <= '$end' AND ".$uid_condition.")) 
+        GROUP BY uid ORDER BY uid ASC")
+  or die($die);
+
+  $worked_hours_consult=array();
+  for ($i=0;$row=@pg_fetch_array($worked_hours,$i,PGSQL_ASSOC);$i++) {
+    $worked_hours_consult[$row["uid"]]["total_hours"]=$row["total_hours"];
+  }
+  @pg_freeresult($worked_hours);
+
+  // Get hired intervals, but they can start before the init date or end after end date, so they
+  // have to be clipped.
+  $hired_intervals=@pg_exec($cnx,$query="SELECT uid,journey,init,_end,city FROM periods 
+        WHERE _end >= '$init' AND init <= '$end' AND ".$uid_condition."
+        ORDER BY uid ASC, init ASC")
+  or die($die);
+  for ($i=0;$row=@pg_fetch_array($hired_intervals,$i,PGSQL_ASSOC);$i++) {
+    // Clipping
+    if ($row["init"]===NULL || cmp_init_dates($row["init"],$init)<0) $row["init"]=$init;
+    if ($row["_end"]===NULL || cmp_init_dates($row["_end"],$end)>0) $row["_end"]=$end;
+    
+    $days=0;
+    $hours=0;
+    
+    // Count workable days
+    //  +1 because we also count the init day
+    $days+=days_from_epoch($row["_end"])-days_from_epoch($row["init"])+1;
+    
+    // Discount the weekend days
+    $days-=num_weekend_days($row["init"],$row["_end"]);
+    
+    // Discount the holidays for that city on that interval
+    $query="SELECT count(fest) as days FROM holiday 
+        WHERE city='".$row["city"]."'";
+    if (!($row["init"]===NULL)) $query.=" AND fest>='".$row["init"]."'";
+    if (!($row["_end"]===NULL)) $query.=" AND fest<='".$row["_end"]."'";
+    $r=@pg_exec($cnx,$query) or die($die);
+    $days-=@pg_fetch_result($r,"days");
+    @pg_freeresult($r);
+    
+    // Discount the compensated (already paid) hours
+    // The compensation blocks aren't clipped by the current interval. Only the
+    // compensation blocks that full lay inside the interval are taken into account.
+    // Have it in mind when adding new compensations!!
+    $query="SELECT sum(hours) as hours FROM compensation
+        WHERE uid='".$row["uid"]."'";
+    if (!($row["init"]===NULL)) $query.=" AND init>='".$row["init"]."'";
+    if (!($row["_end"]===NULL)) $query.=" AND _end<='".$row["_end"]."'";
+    $r=@pg_exec($cnx,$query)
+    or die($die);
+    $hours-=@pg_fetch_result($r,"hours");
+    @pg_freeresult($r);
+
+    // Put it all and compute net extra hours
+    $worked_hours_consult[$row["uid"]]["workable_hours"]+=($days*$row["journey"]+$hours);        
+  }
+  @pg_freeresult($hired_intervals);
+
+  foreach(array_keys($worked_hours_consult) as $k)
+    $worked_hours_consult[$k]["period_extra_hours"]=
+      $worked_hours_consult[$k]["total_hours"]
+      -$worked_hours_consult[$k]["workable_hours"];
+
+  return $worked_hours_consult;
 }
 
 ?>

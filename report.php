@@ -159,7 +159,7 @@ if (!empty($save)) {
 
   for ($i=0;$i<sizeof($task);$i++) {
    foreach (array("init","_end") as $field) {
-    if (!preg_match("/[0-9]{1,2}:[0-9]{2,2}/",$task[$i][$field])) {
+    if (!validate_date_web($task[$i][$field])) {
      $error=_("Errors exist that must be corrected");
      $error_task[$i][$field]=_("You must use the format HH:MM");
     } else {     
