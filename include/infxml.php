@@ -23,46 +23,44 @@
 
 /** infxml.php
  *
- * Funciones de apoyo necesarias para el tratamiento de los informes
- * semanales en XML. Emplean los files XSL para realizar las comprobaciones
- * necesarias
+ * Support functions needed for XML weekly report processing. They use
+ * the XSL files to do all needed checks.
  *
  * José Riguera, <jriguera@igalia.com>
  *
  */
 
 
-// Devuelve el numero de dias de un mes teniendo en cuenta
-// los años bisiestos
+// Returns the number of days in a month taking into account leap years
 
 function DaysMonth ($month, $year)
 {
-    $d_mes = array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+    $d_month = array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
 
     if (($month < 1) || ($month > 12)) return 0;
-    if ($month != 2) return $d_mes[$month - 1];
+    if ($month != 2) return $d_month[$month - 1];
     return (checkdate($month, 29, $year)) ? 29 : 28;
 }
 
 
 
-// Devuelve el numero de mes en el calendario
+// Returns month number in the calendar
 
 function Month2Number ($name)
 {
     $month = array(
-      		_("enero") => 1,
-	  	_("febrero") => 2,
-		_("marzo") => 3,
-		_("abril") => 4,
-		_("mayo") => 5,
-		_("junio") => 6,
-		_("julio") => 7,
-		_("agosto") => 8,
-		_("septiembre") => 9,
-		_("octubre") => 10,
-		_("noviembre") => 11,
-		_("diciembre") => 12
+ 		"january" => 1,
+  	"february" => 2,
+		"march" => 3,
+		"april" => 4,
+		"may" => 5,
+		"june" => 6,
+		"july" => 7,
+		"august" => 8,
+		"september" => 9,
+		"october" => 10,
+		"november" => 11,
+		"december" => 12
     );
 
     $name = trim($name);
@@ -73,87 +71,86 @@ function Month2Number ($name)
 
 
 
-// Devuelve el mes asociado al numero que recibe como argumento
+// Returns the month related to the number passed as argument
 
 function Number2Month ($number)
 {
     $month = array(
-		1 => _("enero"),
-	  	2 => _("febrero"),
-		3 => _("marzo"),
-		4 => _("abril"),
-		5 => _("mayo"),
-		6 => _("junio"),
-		7 => _("julio"),
-		8 => _("agosto"),
-		9 => _("septiembre"),
-		10 => _("octubre"),
-		11 => _("noviembre"),
-		12 => _("diciembre")
+		1 => "january",
+    2 => "february",
+		3 => "march",
+		4 => "april",
+		5 => "may",
+		6 => "june",
+		7 => "july",
+		8 => "august",
+		9 => "september",
+		10 => "october",
+		11 => "november",
+		12 => "december"
     );
     return $month[$number];
 }
 
 
-
-// Determina si un nombre de un informe XML en formato "informesemanal-<usuario>-
-// -<anoini>-<mesini>-<diaini>-<anofin>-<mesfin>-<diafin>.xml. Para ello comprueba
-// que el informe abarca una semana y que el usuario existe
+// Checks an XML report name in the format "weeklyreport-<user>-
+// <startyear>-<startmonth>-<startday>-<endyear>-<endmonth>-<endday>.xml".
+// For that, checks if the report matchs a week and that the user exists.
 
 function ValidName ($users, $file, &$ret)
 {
     $ret["file"] = $file;
 
-    if (ereg("^informesemanal-([a-z_]+)-([0-9]{4})-([0-9]{2})-([0-9]{2})-([0-9]{4})-([0-9]{2})-([0-9]{2})\.xml$", $file, $regs))
+    if (ereg("^weeklyreport-([a-z_]+)-([0-9]{4})-([0-9]{2})-([0-9]{2})-([0-9]{4})-([0-9]{2})-([0-9]{2})\.xml$", $file, $regs))
     {
       	if (date("w", mktime(0, 0, 0, $regs[3], $regs[4], $regs[2])) != 1)
        	{
-      	    $ret["error"] = _("El nombre de file no se corresponde a un informe semanal, no existe ninguna semana que comienze en la fecha indicada.");
+      	    $ret["error"] = _("Filename doesn't match a weekly report, there aren't a week starting at the specified date.");
 	    return (-3);
 	}
 	if (date("w", mktime(0, 0, 0, $regs[6], $regs[7], $regs[5])) != 0)
 	{
-	    $ret["error"] = _("El nombre de file no se corresponde a un informe semanal, no existe ninguna semana que finalize en la fecha indicada.");
+	    $ret["error"] = _("Filename doesn't match a weekly report, there aren't a week ending at the specified date.");
 	    return (-2);
 	}
-        $ret["usuario"] = $regs[1];
-        $ret["Ianoini"] = $regs[2];
-        $ret["Imesini"] = $regs[3];
-        $ret["Idiaini"] = $regs[4];
-        $ret["Ianofin"] = $regs[5];
-        $ret["Imesfin"] = $regs[6];
-        $ret["Idiafin"] = $regs[7];
+        $ret["user"] = $regs[1];
+        $ret["Iyearini"] = $regs[2];
+        $ret["Imonthini"] = $regs[3];
+        $ret["Idayini"] = $regs[4];
+        $ret["Iyearend"] = $regs[5];
+        $ret["Imonthend"] = $regs[6];
+        $ret["Idayend"] = $regs[7];
         if (in_array($regs[1], (array)$users)) return 1;
         else
         {
-            $ret["error"] = _("Propietario del informe no reconocido.");
+            $ret["error"] = _("Unknown report owner.");
             return 0;
         }
     }
     else
     {
-       	$ret["error"] = _("Nombre con formato incorrecto.");
+       	$ret["error"] = _("Incorrect name format.");
        	return (-1);
     }
 }
 
 
 
-// Comprueba si la informacion de un informe XML es coherente.
+// Checks if XML report info is coherent.
 
 function ValidateXMLReport ($file, $fields, &$msg)
 {
     unset($array_rsl);
     $ret = 0;
-    $result = exec("xsltproc --novalid -param Ianoini $fields[Ianoini] ".
-    		      "-param Imesini $fields[Imesini] -param Idiaini $fields[Idiaini] ".
-                      "-param Ianofin $fields[Ianofin] -param Imesfin $fields[Imesfin] ".
-                      "-param Idiafin $fields[Idiafin] include/xmlcoherente.xsl $file", $array_rsl, $ret);
+    $result = exec($cmd="xsltproc --novalid -param Iyearini $fields[Iyearini] ".
+    		      "-param Imonthini $fields[Imonthini] -param Idayini $fields[Idayini] ".
+                      "-param Iyearend $fields[Iyearend] -param Imonthend $fields[Imonthend] ".
+                      "-param Idayend $fields[Idayend] include/xmlcoherent.xsl $file", $array_rsl, $ret);
 
     $result = implode("\n", $array_rsl);
     if ($ret != 0)
     {
-        $msg = "XSLT Error: ".$ret._(". (Mas informacion en el manual de 'xsltproc').");
+        $msg = "XSLT Error: ".$ret._(". (More info in the 'xsltproc' manual).");
         return (-1);
     }
     else
@@ -177,24 +174,24 @@ function ValidateXML ($file, $dir, $session_logins, &$msg)
 {
 
     //$xsltproc = xslt_create();
-    //xslt_set_encoding($xsltproc, "ISO-8859-1");
+    //xslt_set_encoding($xsltproc, "UTF-8");
     //...
     $ret = ValidName($session_logins, $file, $fields);
     if ($ret != 1)
     {
-        $msg = _("Informe con formato de nombre erroneo: ").$file.".";
+        $msg = _("Report with wrong name format: ").$file.".";
         return (-2);
     }
     unset($array_rsl);
-    $result = exec("xsltproc --novalid -param Ianoini $fields[Ianoini] ".
-    		      "-param Imesini $fields[Imesini] -param Idiaini $fields[Idiaini] ".
-                      "-param Ianofin $fields[Ianofin] -param Imesfin $fields[Imesfin] ".
-                      "-param Idiafin $fields[Idiafin] include/xmlcoherente.xsl ".$dir.$file, $array_rsl, $ret);
+    $result = exec($cmd="xsltproc --novalid -param Iyearini $fields[Iyearini] ".
+    		      "-param Imonthini $fields[Imonthini] -param Idayini $fields[Idayini] ".
+                      "-param Iyearend $fields[Iyearend] -param Imonthend $fields[Imonthend] ".
+                      "-param Idayend $fields[Idayend] include/xmlcoherent.xsl ".$dir.$file, $array_rsl, $ret);
 
     $result = implode("\n", $array_rsl);
     if ($ret != 0)
     {
-        $msg = "XSLT Error: ".$ret._(". (Mas informacion en el manual de 'xsltproc').");
+        $msg = "XSLT Error: ".$ret._(". (More info in the 'xsltproc' manual).");
         return (-1);
     }
     else
@@ -213,41 +210,40 @@ function ValidateXML ($file, $dir, $session_logins, &$msg)
 }
 
 
-
-// Inserta los datos de un informe XML en la BD, mediante XSLT y hojas de estilo
+// Insert XML report data into DB, using XSLT and stylesheets
 
 function SaveXML2SQL ($cnx, $session_uid, $session_logins, $dir, $file, &$msg)
 {
     $ret = ValidName($session_logins, $file, $fields);
     if ($ret != 1)
     {
-        $msg = _("Informe con nombre erroneo");
+        $msg = _("Report with wrong name");
         return (-2);
     }
     unset($array_rsl);
-    $result = exec("xsltproc --novalid -param Ianoini $fields[Ianoini] ".
-		      "-param Imesini $fields[Imesini] -param Idiaini $fields[Idiaini] ".
-		      "-param Ianofin $fields[Ianofin] -param Imesfin $fields[Imesfin] ".
-		      "-param Idiafin $fields[Idiafin] --stringparam Iusuario $fields[usuario] ".
+    $result = exec($cmd="xsltproc --novalid -param Iyearini $fields[Iyearini] ".
+		      "-param Imonthini $fields[Imonthini] -param Idayini $fields[Idayini] ".
+		      "-param Iyearend $fields[Iyearend] -param Imonthend $fields[Imonthend] ".
+		      "-param Idayend $fields[Idayend] --stringparam Iuser $fields[user] ".
                       "include/xml2php.xsl ".$dir.$file, $array_rsl, $ret);
 
     $result = implode("\n", $array_rsl);
     if ($ret != 0)
     {
-        $msg = "XSLT Error: ".$ret._(". (Mas informacion en el manual de 'xsltproc').");
+        $msg = "XSLT Error: ".$ret._(". (More info in the 'xsltproc' manual).");
         return 0;
     }
     else
     {
         unset($error);
 
-        // peligrorrrr ;-)
+        // dangerrrr ;-)
 
         eval($result);
 
         if (!empty($error))
         {
-            $msg = "BD Error ".$error;
+            $msg = "DB Error ".$error;
             return (-1);
         }
         return 1;
@@ -255,8 +251,7 @@ function SaveXML2SQL ($cnx, $session_uid, $session_logins, $dir, $file, &$msg)
 }
 
 
-
-// Obtiene todos los informes bien nombrados y del propio usuario de un directorio
+// Get all the reports well named and belonging to the user of a directory
 
 function DirValidReports ($session_uid, $session_grupos, $session_logins, $dir, &$valids)
 {
@@ -269,16 +264,16 @@ function DirValidReports ($session_uid, $session_grupos, $session_logins, $dir, 
     while ($entry = @readdir($dh))
     {
     	if ((($entry != ".") && ($entry != "..")) &&
-        (NombreValido($session_logins, $entry, $fields) == 1))
+        (ValidName($session_logins, $entry, $fields) == 1))
     	{
-     	    if (in_array("informesadm", (array)$session_grupos))
+     	    if (in_array($admin_group_name, (array)$session_grupos))
     	    {
             	$valids++;
             	$valid_reports[] = $entry;
             }
             else
             {
-	    	if ($session_uid == $fields["usuario"])
+	    	if ($session_uid == $fields["user"])
             	{
              	    $valids++;
 	            $valid_reports[] = $entry;
@@ -294,7 +289,7 @@ function DirValidReports ($session_uid, $session_grupos, $session_logins, $dir, 
 
 
 
-// Crea un file temporal
+// Create a temporary file
 
 function fileTemp ($dir, $prefix, $postfix)
 {
@@ -317,18 +312,18 @@ function fileTemp ($dir, $prefix, $postfix)
 
 
 
-// Valida un file XML contra su DTD
+// Validate an XML file against its DTD
 
 function ValidateDTD ($file, &$msg)
 {
     //$error = array();
 
-    // Regeneramos el file reglas.dtd a partir de reglas.dtd.php
+    // Regenerate rules.dtd file from rules.dtd.php
     update_dtd();
 
     if (!(is_file($file) && is_readable($file)))
     {
-      	$msg .= _("Imposible acceder al file");
+      	$msg .= _("File access impossible");
       	return(-1);
     }
 
@@ -338,7 +333,7 @@ function ValidateDTD ($file, &$msg)
     //$dom = domxml_open_file($file, DOMXML_LOAD_PARSING, $error);
     if (!is_object($dom))
     {
-      	$msg = $msg."El documento xml está mal formado.";
+      	$msg = $msg."The XML document is bad formed.";
       	//print_r($error);
       	return(-2);
     }
@@ -347,7 +342,7 @@ function ValidateDTD ($file, &$msg)
     $dom->validate($erro);
     if (!empty($erro))
     {
-       	$msg = $msg."El documento XML no cumple las especificaciones del DTD.";
+       	$msg = $msg."Document doesn't satisfy DTD specifications.";
       	return(-3);
     }
     return 1;
@@ -356,7 +351,7 @@ function ValidateDTD ($file, &$msg)
     $ar = array();
     $ret = 0;
 /*
-echo "file LEIDO";
+echo "file READ";
 
     unset($data);
     $file = @fopen(EscapeShellCmd($file), "r+");
@@ -370,24 +365,24 @@ echo "file LEIDO";
                 if ($control > 10000) break;
         }
         fseek($file, 0); */
-//    	$extract = ereg_replace("^<!DOCTYPE[[:space:]]+dedicacionSemanal[[:space:]]+SYSTEM[[:space:]]+([[:alpha:]\"\'\./]){4,}>",
-//    				"<!DOCTYPE dedicacionSemanal SYSTEM \"reglas.dtd\">", $data);
-/*    	$extract = ereg_replace("^<!DOCTYPE dedicacionSemanal SYSTEM ([[:alpha:]\"\'\./]){4,}>",
-    				"<!DOCTYPE dedicacionSemanal SYSTEM \"reglas.dtd\">", $data);
+//    	$extract = ereg_replace("^<!DOCTYPE[[:space:]]+weeklyDedication[[:space:]]+SYSTEM[[:space:]]+([[:alpha:]\"\'\./]){4,}>",
+//    				"<!DOCTYPE weeklyDedication SYSTEM \"rules.dtd\">", $data);
+/*    	$extract = ereg_replace("^<!DOCTYPE weeklyDedication SYSTEM ([[:alpha:]\"\'\./]){4,}>",
+    				"<!DOCTYPE weeklyDedication SYSTEM \"rules.dtd\">", $data);
         fwrite($file, $extract);
         fclose($file);
     }
-echo "file ESCRITO";
+echo "file WRITTEN";
 */
-    $result = exec("cat ".EscapeShellCmd($file)." | rxp -x -s -V" , $ar, $ret);
+    $result = exec($cmd="cat ".EscapeShellCmd($file)." | rxp -x -s -V" , $ar, $ret);
     if ($ret == 0)
     {
-    	$msg .= _("Informe validado");
+    	$msg .= _("Report validated");
         return 1;
     }
     elseif ($ret == 1)
     {
-    	$msg .= _("Mal formado");
+    	$msg .= _("Bad formed");
         return (-2);
     }
     elseif ($ret == 2)
@@ -397,24 +392,23 @@ echo "file ESCRITO";
     }
     else
     {
-    	$msg .= _("Error con rxp ...");
+    	$msg .= _("Error using rxp ...");
         return (-4);
     }
 }
 
 
-
-// Comprueba si la informacion que contiene un file XML es coherente, es
-// decir, comprueba que el XML abarca 2 meses consecutivos, que no solapen
-// tareas, etc
+// Check if the info contained in the XML file is coherent, that is
+// check if XML ranges 2 consecutive months, that tasks aren't 
+// overlapped, etc... 
 
 function ValidateXMLphp ($doc, $year, $month, $day_ini, $day_end, &$msg)
 {
-    $sections = $doc->get_elements_by_tagname("dedicacion");
+    $sections = $doc->get_elements_by_tagname("dedication");
 
     if (count($sections) > 2)
     {
-       $msg .= _("El documento XML abarca varios meses. ¡Es semanal!");
+       $msg .= _("XML document ranges some months. Is weekly!");
        return(-30);
     }
     foreach($sections as $section)
@@ -424,50 +418,50 @@ function ValidateXMLphp ($doc, $year, $month, $day_ini, $day_end, &$msg)
         $worked_days = $section->child_nodes();
         foreach ($worked_days as $day)
         {
-            if ($day->node_name() != "dedicacionDiaria") continue;
+            if ($day->node_name() != "dailyDedication") continue;
             $hours_day = array(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 
             $worked_tasks = $day->child_nodes();
             foreach ($worked_tasks as $hours)
             {
-                if ($hours->node_name() != "tarea") continue;
+                if ($hours->node_name() != "task") continue;
 
-                $hour_init = intval($hours->get_attribute("inicio"));
-                $hora_end = intval($hours->get_attribute("fin"));
+                $hour_init = intval($hours->get_attribute("start"));
+                $hora_end = intval($hours->get_attribute("end"));
 
                 if (($hour_end - $hour_init) < 1)
                 {
-                    $msg .= _("dia ").$day->get_attribute("dia")._(", tarea con horario erroneo ");
-                    $msg .= _("(hora fin anterior a hora de inicio)");
+                    $msg .= _("day ").$day->get_attribute("day")._(", task with wrong timetable ");
+                    $msg .= _("(end hour previous to start hour)");
 		    
                     return(-10);
                 }
                 $h_ini = intval($hour_init/100);
                 if (($h_ini < 0) || ($h_ini > 23))
                 {
-                    $msg .= _("dia ").$day->get_attribute("dia").
-                    _(", tarea con horario inicial erroneo");	
+                    $msg .= _("day ").$day->get_attribute("day").
+                    _(", task with wrong start time (hour)");	
                     return(-11);
                 }
                 $m_ini = intval($hour_init%100);
                 if (($m_ini < 0) || ($m_ini > 59))
                 {
-                    $msg .= _("dia ").$day->get_attribute("dia").
-                    _(", tarea con horario inicial (minutos) erroneo");
+                    $msg .= _("day ").$day->get_attribute("day").
+                    _(", task with wrong start time (minutes)");
                     return(-12);
                 }
                 $h_end = intval($hour_end/100);
                 if (($h_end < 0) || ($h_end > 23))
                 {
-                    $msg .= _("dia ").$day->get_attribute("dia").
-                    _(", tarea con horario final erroneo");
+                    $msg .= _("day ").$day->get_attribute("day").
+                    _(", task with wrong end time (hour)");
                     return(-13);
                 }
                 $m_end = intval($hour_end%100);
                 if (($m_end < 0) || ($m_end > 59))
                 {
-                    $msg .= _("dia ").$day->get_attribute("dia").
-                    _(", tarea con horario final (minutos) erroneo");
+                    $msg .= _("day ").$day->get_attribute("day").
+                    _(", task with wrong end time (minutes)");
                     return(-14);
                 }
                 for ($i = $h_ini; $i <= $h_end; $i++)
@@ -482,19 +476,19 @@ function ValidateXMLphp ($doc, $year, $month, $day_ini, $day_end, &$msg)
 
                     if ($hours_day[$i] > 60)
                     {
-                        $msg .= _("la tarea del dia ").$day->get_attribute("dia").
-                        _("(de ").$hour_init;
-                        $msg .= _(" a ").$hour_end._("), se solapa");
+                        $msg .= _("task at day ").$day->get_attribute("day").
+                        _("(from ").$hour_init;
+                        $msg .= _(" to ").$hour_end._("), overlaps");
                         return(-15);
                     }
                 }
             }
-            $days[] = intval($day->get_attribute("dia"));
+            $days[] = intval($day->get_attribute("day"));
         }
         $num_days = count($days);
         if ($num_days > 7)
         {
-           $msg .= _("El informe abarca mas de 7 dias");
+           $msg .= _("Report ranges more than 7 days");
            return(-20);
         }
         sort($days);
@@ -502,31 +496,30 @@ function ValidateXMLphp ($doc, $year, $month, $day_ini, $day_end, &$msg)
         $greater_day = $days[$num_days - 1];
         if ($minor_day < 1)
         {
-           $msg .= _("Dia de inicio del informe incorrecto");
+           $msg .= _("Incorrect report first day");
            return(-21);
         }
-        $month_report = month_to_number($section->get_attribute("mes"));
+        $month_report = month_to_number($section->get_attribute("month"));
         if ($day_ini > $minor_day)
         {
-           $msg .= _("Primer dia del informe incorrecto");
+           $msg .= _("Incorrect report first day");
            return(-22);
         }
 	}
     $num_days_mes = days_of_month($month_report, $year);
     if (($greater_day > $num_days_mes) || ($day_end < $greater_day))
     {
-        $msg .= _("Ultimo dia del informe incorrecto");
+        $msg .= _("Incorrect report last day");
         return(-23);
     }
     if ($month_report != $month)
     {
-        $msg .= _("El mes del informe es incorrecto");
+        $msg .= _("Incorrect report month");
         return(-24);
     }
-	$msg .= _("OK, documento verificado");
+	$msg .= _("OK, document verified");
    	return 1;
 }
 
 
 ?>
-

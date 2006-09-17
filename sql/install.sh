@@ -6,7 +6,7 @@ export DBPWD="phpreport"
 su postgres -c "\
 psql template1 -c \"CREATE USER $DBUSER WITH ENCRYPTED PASSWORD '$DBPWD'\" \
  || { echo "User exists. Aborting install."; exit 0; } ; \
-psql template1 -c \"CREATE DATABASE $DBNAME WITH OWNER=$DBUSER ENCODING='latin1'\" \
+psql template1 -c \"CREATE DATABASE $DBNAME WITH OWNER=$DBUSER ENCODING='UNICODE'\" \
  || { echo "Database exists. Aborting install."; exit 0; } ; \
 if [ -f tablas.sql.gz ]; then gunzip tablas.sql.gz -c \
  > /tmp/phpreport_tablas.sql; \

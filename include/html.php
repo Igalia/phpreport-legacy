@@ -24,12 +24,12 @@
 
 /** html.php
  *
- * Funciones de apoyo necesarias para el html
+ * Html needed help functions
  *
  */
 
 
-// Crea una tabla de error con el mensaje que recibe
+// Creates an error table with the received message
 
 function ErrorTable ($error)
 {
@@ -53,10 +53,9 @@ function ErrorTable ($error)
 }
 
 
-
-// Crea una tabla con tres filas (junto con la funcion que la cierra) para
-// presentar la informacion de forma general. Recibe el title que va a tener
-// la tabla y la documentacion de lo que hace.
+// Create a 3 row table (and the function that closes it) to show information
+// in a general way. It receives the table title and the documentation of what
+// it does.
 
 function IniGeneralTable ($title)
 {
@@ -86,9 +85,9 @@ function IniGeneralTable ($title)
 }
 
 
-
-// Cierra la tabla que la funcion anterior creo, recibe opcionalmente el
-// pie (parecido al pie de pagina, se corresponde con la tercera fila)
+// Close the table created by the previous function. Optionally,
+// it receives the footer (similar to page footer, it corresponds
+// with the 3rd row)
 
 function EndGeneralTable ()
 {
@@ -111,17 +110,17 @@ function EndGeneralTable ()
 
 
 
-// crea un enlace que se abrira en una nueva ventana para editar el fichero
+// Create a link for being opened in a new window to edit the file
 
 function LinkEditorXML ($xmldir, $entry)
 {
- //*************************************REVISAR EDITOR DE INFORMES
-    echo "\t<td align=\"left\"><a href=\"editorxml.php?fichero=".urlencode($entry)."&ruta=".
-    urlencode($xmldir)."\" onclick=\"javascript:window.open(this.href,'Editor de informes XML',".
+    // *** REVIEW REPORT EDITOR
+    echo "\t<td align=\"left\"><a href=\"editorxml.php?file=".urlencode($entry)."&path=".
+    urlencode($xmldir)."\" onclick=\"javascript:window.open(this.href,'"
+    ._("XML report editor")."',".
     "'width=800,height=600,location=no, menubar=no,status=no,toolbar=no,scrollbars=yes,".
     "resizable=yes'); return false;\">".$entry."</a></td>";
 }
 
 
 ?>
-

@@ -22,21 +22,20 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-/** procesarxml.php
+/** processxml.php
  *
- * Aqui se validan los ficheros de reports XML que hay en un directorio,
- * es decir, se comprueba si los XML están bien formados, son valids y
- * si son coherentes. Para la realizacion de estas acciones se usan las
- * funciones de apoyo definidas en "infxml.php" y los ficheros "xsl". Una
- * vez que se ha validado los reports, se introducen en la BD.
+ * Here the XML report files in a directory are validated, that is,
+ * checked if they are well formed, valid and coherent. For this task,
+ * help functions defined at "infxml.php" and XSL files are used.
+ * When report validation is finished, they are inserted into the DB.
  *
- * Parámetros recibidos:
+ * Received parameters:
+ * 
+ * filedir: directory (inside $absolute_path) where XML reports to be
+ * validated or inserted are located
  *
- * filedir: diretorio (dentro de $absolute_path) en donde se encuentran
- * los reports XML que van a ser validados y/o guardados.
- *
- * botonvalidar: Se ha pulsado el boton validar reports.
- * botonguardar: Se ha pulsado el boton guardar reports en la BD.
+ * validate_button: Validate reports button has been pressed.
+ * save_button: Save reports button has been pressed.
  *
  *
  * José Riguera, <jriguera@igalia.com>
@@ -52,7 +51,7 @@ if (strstr($filedir, "/")) header("Location: uploadxml.php");
 require("include/infxml.php");
 require("include/html.php");
 
-$title = _("Validar reports semanales XML");
+$title = _("Validate XML weekly reports");
 require("include/template-pre.php");
 
 require_once("include/prepare_calendar.php");
@@ -75,7 +74,7 @@ $count_v = 0;
 $count_g = 0;
 
 
-IniGeneralTable(_("reports XML"), _("Procesar los reports XML. Puede editar los reports y revalidarlos tantas veces como sea necesario para finalmente guardarlos en la BD."));
+IniGeneralTable(_("XML reports"), _("Process XML reports. You can edit and revalidate the reports as many times as needed in order to be finally inserted in the DB"));
 
 if (is_dir($absolute_path.$filedir))
 {
@@ -91,17 +90,16 @@ if ($count_valids > 0)
 
     <table class="dir_table" cellpadding="4" cellspacing="1">
     <tr class="dir_title">
-        <td align="center" width="40%"><?_("Informe Semanal")?></td>
-        <td align="center" width="20%"><?_("Válido")?></td>
-        <td align="center" width="20%"><?_("Coherente")?></td>
-        <td align="center" width="20%"><?_("Guardado")?></td>
+        <td align="center" width="40%"><?=_("Weekly report")?></td>
+        <td align="center" width="20%"><?=_("Valid")?></td>
+        <td align="center" width="20%"><?=_("Coherent")?></td>
+        <td align="center" width="20%"><?=_("Saved")?></td>
     </tr>
 <?php
 
     $count = 0;
     $error_sql = false;
 
-    //if (!empty($botonvalidar))
     require_once("include/connect_db.php");
 
     foreach($valid_reports as $entry)
@@ -115,7 +113,7 @@ if ($count_valids > 0)
     	if (ValidateDTD($absolute_path.$filedir.$entry, $msg) == 1)
         {
             echo "<td><font class=\"f_correct\">OK</font></td>";
-	    $ret = ValidarXML($entry, $absolute_path.$filedir, $session_logins, $msg);
+	    $ret = ValidateXML($entry, $absolute_path.$filedir, $session_logins, $msg);
 
             if ($ret == 1)
             {
@@ -130,22 +128,22 @@ if ($count_valids > 0)
                     	$retg = SaveXML2SQL($cnx, $session_uid, $session_logins, $absolute_path.$filedir, $entry, $mesg);
                     	if ($retg == 1)
                         {
-                            echo "<td><font class=\"f_correct\">OK</font></td>";
+                            echo "<td><font class=\"f_correct\">"._("OK")."</font></td>";
     			    $count_g++;
                         }
                     	elseif ($retg == 0)
                     	{
-                     	    echo "<td><font class=\"f_incorrect\">XSLT Error</font></td>";
+                     	    echo "<td><font class=\"f_incorrect\">"._("XSLT Error")."</font></td>";
                             $error = $mesg;
 		    	}
                     	else
                     	{
-                     	    echo "<td><font class=\"f_incorrect\">BD SQL Error</font></td>";
+                     	    echo "<td><font class=\"f_incorrect\">"._("BD SQL Error")."</font></td>";
                             $error_sql = true;
                             $error = $mesg;
                     	}
                     }
-                    else echo "<td><font class=\"f_incorrect\">BD SQL Error</font></td>";
+                    else echo "<td><font class=\"f_incorrect\">"._("BD SQL Error")."</font></td>";
                 }
             }
             elseif ($ret == 0)
@@ -156,7 +154,7 @@ if ($count_valids > 0)
             else
             {
                 $error = $msg;
-            	echo "<td><font class=\"f_incorrect\">XSLT Error</font></td>";
+            	echo "<td><font class=\"f_incorrect\">".("XSLT Error")."</font></td>";
 	        echo "<td><font class=\"f_incorrecto\">---</font></td>";
             }
   	}
@@ -181,20 +179,19 @@ if ($count_valids > 0)
 	     	<input type="submit" name="validate_button" value="Revalidate"/>
       	</td>
         <td align="left">
-                <?_("Comprueba si los reports están bien formados, son válidos conforme al DTD y
-                si son coherentes (si se solapan tareas, días incorrectos, ...).")?>
+          <?_("Tests if the reports are well formed, valid against the DTD and coherent (overlapping tasks, incorrect days...).")?>
         </td>
     </tr>
     <tr>
       	<td align="center" width="30%">
     	  	<?
-		$temp=_("Guardar");
+		$temp=_("Save");
                 if ($count_valids > 0)
                 	echo "<input type=\"submit\" name=\"save_button\" value=\"$temp\"/>";
                 ?>
         </td>
         <td align="left">
-                <?_("Introduce los datos de los reports XML que son correctos (válidos y coherentes) en la BD.")?>
+                <?_("Inserts into the DB the data of correct (coherent and valid) XML reports.")?>
         </td>
     </tr>
     </table>
@@ -207,7 +204,7 @@ if ($count_valids > 0)
 <?php
 
 }
-else $error = _("Imposible encontrar reports o todos los enviados son incorrectos.");
+else $error = _("It's impossible to find reports, or all the submitted ones are incorrect.");
 
 require_once("include/close_db.php");
 
@@ -215,26 +212,28 @@ if (!empty($save_button))
 {
     if ($count_v == $count_g)
     {
-	$temp=_("Todos los reports válidos han sido guardados correctamente.");
+	$temp=_("All valid reports have been correctly saved");
     	$msg = "<font color=\"#00FF00\"> $temp </font>";
     }
-    else $msg = "<font color=\"#FF0000\">OJO, sólo ".$count_g." reports de ".$count_v." válidos han sido guardados. </font>";
+    else $msg = "<font color=\"#FF0000\">"
+    .sprintf(_('WARNING, only %1$s of %2$s reports were valid and had been inserted'),$count_g,$count_v)
+    ."</font>";
     EndGeneralTable($msg);
 
     unset($save_button);
 }
 else
 {
-    //require_once("include/cerrar_db.php");
 
     if ($count_v == $count_valids)
     {
-    	$msg = "<font color=\"#00FF00\">Todos los reports son válidos y coherentes. Están listos para guardar.</font>";
+    	$msg = "<font color=\"#00FF00\">"._("All reports are valid and coherent. They are ready to be inserted.").".</font>";
     }
-    else $msg = "<font color=\"#FF0000\">OJO, solo ".$count_v." reports de ".$count_valids." son válidos y coherentes. Edite los que considere oportuno.</font>";
+    else $msg = "<font color=\"#FF0000\">"
+    .sprintf(_('WARNING, only %1$s of %2$s reports were valid and had been inserted. Edit the ones you like'),
+    $count_g,$count_v)."</font>";
     EndGeneralTable($msg);
 }
-//else FinTablaGeneral();
 
 
 if (!empty($error)) ErrorTable($error);

@@ -22,16 +22,16 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 /**
- * PARÁMETROS HTTP QUE RECIBE ESTA PÁGINA:
+ * HTTP PARAMETERS RECEIVED BY THIS PAGE:
  *
- * dia = Día del que mostrar el calendario. Formato DD/MM/AAAA
- * activation[type][code] = La etiqueta [type][code] se encuentra activa
- * deleted[type][code] = Se ha pulsado BORRAR para la etiqueta [type][code]
- * type = type de la etiqueta a agregar
- * code = Código de la etiqueta a agregar
- * description = Descripción de la etiqueta a agregar
- * aplicar = Se ha pulsado APLICAR activationES
- * agregar = Se ha pulsado AGREGAR ETIQUETA
+ * day = Day to show calendar for. DD/MM/YYYY format.
+ * activation[type][code] = Label [type][code] is enabled
+ * deleted[type][code] = DELETE has been clicked for label [type][code] 
+ * type = Type of the label to be added
+ * code = Code of the label to be added
+ * description = Code of the label to be added
+ * apply = APPLY ACTIVATION has been clicked
+ * add = ADD has been clicked
  */
 
 require_once("include/autenticate.php");
@@ -39,7 +39,7 @@ require_once("include/util.php");
 require_once("include/prepare_calendar.php");
 require_once("include/connect_db.php");
 
-if (!in_array("informesadm",(array)$session_groups)) {
+if (!in_array($admin_group_name,(array)$session_groups)) {
  header("Location: login.php");
 }
 
@@ -68,7 +68,7 @@ if (!empty($add)) {
 
 if (!empty($apply)) {
 
- // LISTAMOS TODOS LOS VALORES Y OBTENEMOS LOS QUE HAN CAMBIADO (e)
+ // LIST ALL THE VALUES AND GET THOSE THAT HAVE CHANGED (e)
 
  $e=array();
  $die=_("Can't finalize the operation");
@@ -82,7 +82,7 @@ if (!empty($apply)) {
  }
  @pg_freeresult($result);
 
- // ACTUALIZAMOS LOS CAMBIADOS
+ // UPDATE CHANGES
 
  $r=true;
  foreach ($e as $k) {
@@ -136,7 +136,7 @@ $label[]=array(
 
 require_once("include/close_db.php");
 
-$title=_("Labels administration");
+$title=_("Label administration");
 require("include/template-pre.php");
 
 if (!empty($error)) msg_fail($error);

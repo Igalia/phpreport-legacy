@@ -77,13 +77,13 @@
     style="color: #000000; width: 100%; height: 20px"
     onchange="javascript: document.mini_calendar.submit();">
    </td><td style="color: #000000; text-align: right">
-   <input type="submit" name="change" value="<?=_("Go to day")?>" style="width: 95%; height: 20px"> 
+   <input type="submit" name="change" value="<?=_("Go")?>" style="width: 95%; height: 20px"> 
    </td></tr>
    
    <tr>
-    <input type="hidden" name="hoxe" value="<?=$hoxe?>"  onchange="javascript: document.mini_calendar.submit();">
+    <input type="hidden" name="today" value="<?=$today?>"  onchange="javascript: document.mini_calendar.submit();">
     <td colspan="2">
-     <input type="submit" name="change2" value="<?=_("Go to today")?>" style="width: 100%; height: 20px">
+     <input type="submit" name="change2" value="<?=_("Today")?>" style="width: 100%; height: 20px">
 
 
     </td>
@@ -110,24 +110,28 @@
 
    	<tr><td bgcolor="#FFFFFF" class="text_minibox">
 
-<table border="0" cellpadding="0" cellspacing="0" width="100%">
-   <form name="mini" method="post">
-   <tr><td style="background: #FFFFFF; color: #000000; text-align: center">
-   <input type="hidden" name="copy_day" value="<?=$day?>">  
-   <input type="text" name="day" value="<?=$day?>" size="10"
-    style="color: #000000; width: 100%; height: 20px"
-    onchange="javascript: document.mini_calendar.submit();">
-   </td><td style="color: #000000; text-align: right">
-   <input type="submit" name="copy" value="<?=_("Copy to day")?>" style="width: 95%; height: 20px"> 
-
-   </td></tr>
-   <tr>
-    <td colspan="2">
-     <input type="submit" name="copy2" value="<?=_("Copy yesterday report")?>" style="width: 100%; height: 20px">
-    </td>
-   </tr>
-   </form>
-   </table>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <form name="mini" method="post">
+      <tr>
+        <td style="background: #FFFFFF; color: #000000; text-align: center">
+          <input type="hidden" name="copy_day" value="<?=$day?>">  
+          <input type="text" name="day" value="<?=$day?>" size="10"
+          style="color: #000000; width: 100%; height: 20px"
+          onchange="javascript: document.mini_calendar.submit();">
+        </td>
+      </tr>
+      <tr>
+        <td style="color: #000000; text-align: right">
+          <input type="submit" name="copy" value="<?=_("To day")?>" style="width: 100%; height: 20px"> 
+          </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <input type="submit" name="copy2" value="<?=_("From yesterday")?>" style="width: 100%; height: 20px">
+        </td>
+      </tr>
+      </form>
+    </table>
    </td></tr>
    </table></td></tr></table>
    <!-- end box -->

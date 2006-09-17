@@ -22,15 +22,15 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 /**
- * PARÁMETROS HTTP QUE RECIBE ESTA PÁGINA:
+ * HTTP PARAMETERS RECEIVED BY THIS PAGE
  *
- * Ninguno
+ * None
  *
  */
 
 require_once("include/autenticate.php");
 
-$title=_("Equivalence of codes");
+$title=_("Code equivalence");
 require("include/template-pre.php");
 
 if (!empty($error)) msg_fail($error);

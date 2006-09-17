@@ -26,7 +26,7 @@ require_once("include/autenticate.php");
 require_once("include/connect_db.php");
 require_once("include/prepare_calendar.php");
 
-if (!in_array("informesadm",(array)$session_groups)) {
+if (!in_array($admin_group_name,(array)$session_groups)) {
  header("Location: login.php");
 }
 if (!empty($ok)) $editing=true;
@@ -34,103 +34,102 @@ if (!empty($new_place))
 $place=$new_place;
 
 if (empty ($ok)&&empty($copy)&&empty($change)) {
-if ($insert=="true"&&!empty($place)){
-  $day=date_web_to_SQL($day);
-
-  if (!$result=pg_exec($cnx,$query=
-      "INSERT INTO holiday (fest,city)"
-     ." VALUES ('$day','$place')")) {
-     $error=_("Can't finalize the operation");
+  if ($insert=="true"&&!empty($place)) {
+    $day=date_web_to_SQL($day);
+  
+    if (!$result=pg_exec($cnx,$query=
+        "INSERT INTO holiday (fest,city)"
+      ." VALUES ('$day','$place')")) {
+      $error=_("Can't finalize the operation");
+    }
+  $day=date_SQL_to_web($day);
   }
-$day=date_SQL_to_web($day);
-}
-if ($insert=="false") {
-$day=date_web_to_SQL($day);
-  if (!@pg_exec($cnx,$query=
-   	  "DELETE FROM holiday WHERE fest='$day' AND city='$place'")) {
-   	 $error=_("Can't finalize the operation");
+  if ($insert=="false") {
+    $day=date_web_to_SQL($day);
+    if (!@pg_exec($cnx,$query=
+        "DELETE FROM holiday WHERE fest='$day' AND city='$place'")) {
+      $error=_("Can't finalize the operation");
+    }
+    $day=date_SQL_to_web($day);
   }
-$day=date_SQL_to_web($day);
-}
 }
 $die=_("Can't finalize the operation");
 
-
 if (!empty($place)&&!empty($copy)){
 
-$arrayDMA=date_web_to_arrayDMA($day);
-$arrayDMA[0]="01";
-$arrayDMA[1]="01";
-$init1=date_web_to_SQL(date_arrayDMA_to_web($arrayDMA));
-$arrayDMA[2]=$arrayDMA[2]-1;
-$init=date_web_to_SQL(date_arrayDMA_to_web($arrayDMA));
-$arrayDMA[0]="31";
-$arrayDMA[1]="12";
-$arrayDMA[2]=$arrayDMA[2]+1;
-$end1=date_web_to_SQL(date_arrayDMA_to_web($arrayDMA));
-$arrayDMA[2]=$arrayDMA[2]-1;
-$end=date_web_to_SQL(date_arrayDMA_to_web($arrayDMA));
-
- if (!@pg_exec($cnx,$query=
+  $arrayDMA=date_web_to_arrayDMA($day);
+  $arrayDMA[0]="01";
+  $arrayDMA[1]="01";
+  $init1=date_web_to_SQL(date_arrayDMA_to_web($arrayDMA));
+  $arrayDMA[2]=$arrayDMA[2]-1;
+  $init=date_web_to_SQL(date_arrayDMA_to_web($arrayDMA));
+  $arrayDMA[0]="31";
+  $arrayDMA[1]="12";
+  $arrayDMA[2]=$arrayDMA[2]+1;
+  $end1=date_web_to_SQL(date_arrayDMA_to_web($arrayDMA));
+  $arrayDMA[2]=$arrayDMA[2]-1;
+  $end=date_web_to_SQL(date_arrayDMA_to_web($arrayDMA));
+  
+  if (!@pg_exec($cnx,$query=
     "SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; "
-   ."BEGIN TRANSACTION; ")) {
-   $error=_("Can't finalize the operation");
-   break;
+    ."BEGIN TRANSACTION; ")) {
+    $error=_("Can't finalize the operation");
+    break;
   }
-
-if (!pg_exec($cnx,$query=
-   	  "DELETE FROM holiday WHERE city='$place' AND (fest>='$init1' AND fest<='$end1')")) {
-   	 $error=_("Can't finalize the operation");
+  
+  if (!pg_exec($cnx,$query=
+    "DELETE FROM holiday WHERE city='$place' AND (fest>='$init1' AND fest<='$end1')")) {
+    $error=_("Can't finalize the operation");
   }
- $result=pg_exec($cnx,$query="SELECT fest,city FROM holiday WHERE city='$place' AND (fest>='$init' AND fest<='$end')  ORDER BY fest")
-   or die($die);
-
-for ($i=0;$row=@pg_fetch_array($result,$i,PGSQL_ASSOC);$i++) {
-  $row=date_SQL_to_web($row["fest"]);
-  $arrayDMA=date_web_to_arrayDMA($row);
-  $fest=getdate(mktime(0,0,0,$arrayDMA[1],$arrayDMA[0],$arrayDMA[2]+1));
-  if ($fest["weekday"]!="Saturday"&&$fest["weekday"]!="Sunday") {
-    $holidays[]=$fest;
-    $arrayDMA[2]=$arrayDMA[2]+1;
-    $temp=date_web_to_SQL(date_arrayDMA_to_web($arrayDMA));
-    if (!$ss=pg_exec($cnx,$query=
-      "INSERT INTO holiday (fest,city)"
-     ." VALUES ('$temp','$place')")) {
-     $error=_("Can't finalize the operation");
+  
+  $result=pg_exec($cnx,$query="SELECT fest,city FROM holiday WHERE city='$place' 
+    AND (fest>='$init' AND fest<='$end')  ORDER BY fest")
+    or die($die);
+  
+  for ($i=0;$row=@pg_fetch_array($result,$i,PGSQL_ASSOC);$i++) {
+    $row=date_SQL_to_web($row["fest"]);
+    $arrayDMA=date_web_to_arrayDMA($row);
+    $fest=getdate(mktime(0,0,0,$arrayDMA[1],$arrayDMA[0],$arrayDMA[2]+1));
+    if ($fest["weekday"]!="Saturday"&&$fest["weekday"]!="Sunday") {
+      $holidays[]=$fest;
+      $arrayDMA[2]=$arrayDMA[2]+1;
+      $temp=date_web_to_SQL(date_arrayDMA_to_web($arrayDMA));
+      if (!$ss=pg_exec($cnx,$query=
+        "INSERT INTO holiday (fest,city)"
+      ." VALUES ('$temp','$place')")) {
+        $error=_("Can't finalize the operation");
+      }
     }
   }
- }
-
-@pg_exec($cnx,$query="COMMIT TRANSACTION");
-
-if (!empty($error)) {
-
-   // Depuración
-   $error.="<!-- $query -->";
-   @pg_exec($cnx,$query="ROLLBACK TRANSACTION");
-   break;
+  
+  @pg_exec($cnx,$query="COMMIT TRANSACTION");
+  
+  if (!empty($error)) {
+    // Debugging
+    $error.="<!-- $query -->";
+    @pg_exec($cnx,$query="ROLLBACK TRANSACTION");
+    break;
   }
-@pg_freeresult($result);
+  @pg_freeresult($result);
+} else {
+  $result=@pg_exec($cnx,$query="SELECT fest,city FROM holiday WHERE city='$place' ORDER BY fest")
+    or die($die);
 
+  for ($i=0;$row=@pg_fetch_array($result,$i,PGSQL_ASSOC);$i++) {
+    $row=date_SQL_to_web($row["fest"]);
+    $arrayDMA=date_web_to_arrayDMA($row);
+    $holidays[]=getdate(mktime(0,0,0,$arrayDMA[1],$arrayDMA[0],$arrayDMA[2]));
+  }
+  @pg_freeresult($result);
 }
-else {
-$result=@pg_exec($cnx,$query="SELECT fest,city FROM holiday WHERE city='$place' ORDER BY fest")
-   or die($die);
 
-for ($i=0;$row=@pg_fetch_array($result,$i,PGSQL_ASSOC);$i++) {
-$row=date_SQL_to_web($row["fest"]);
-$arrayDMA=date_web_to_arrayDMA($row);
-$holidays[]=getdate(mktime(0,0,0,$arrayDMA[1],$arrayDMA[0],$arrayDMA[2]));
- }
-@pg_freeresult($result);
-}
 $city[]="---";
 $result=@pg_exec($cnx,$query="SELECT DISTINCT city FROM holiday ORDER BY city")
    or die($die);
 
 for ($i=0;$row=@pg_fetch_array($result,$i,PGSQL_ASSOC);$i++) {
-$city[]=$row["city"];
- }
+  $city[]=$row["city"];
+}
 @pg_freeresult($result);
 
 $months=array(
@@ -144,13 +143,10 @@ $day_month_next=day_month_moved($day, 1);
 $day_year_previous=day_year_moved($day, -1);
 $day_year_next=day_year_moved($day, 1);
 
-
-
 if (empty($day)) $calendar=make_calendar2($holidays);
 else $calendar=make_calendar2($holidays,$day);
 
 require_once("include/close_db.php");
-
 
 $title=_("Calendar management");
 require("include/template-pre.php");
@@ -222,7 +218,8 @@ if (!empty($place)&&$place!="---"||!empty($holidays)||!empty($ok)||!empty($new_p
           "B"=>"background: #FFE9E9; color: #000000; font-weight: regular; text-align: center",	  
           "T"=>"background: #C0C0D0; color: #000000; font-weight: bold; text-align: center",
           "G"=>"background: #E0E0F0; color: #808080; font-weight: regular; text-align: center",
-          "N"=>"background: #E9FFE9; color: #000000; font-weight: regular; text-align: center", 	  "A"=>"background: #FFE9E9; color: #808080; font-weight: regular; text-align: center"
+          "N"=>"background: #E9FFE9; color: #000000; font-weight: regular; text-align: center", 	  
+          "A"=>"background: #FFE9E9; color: #808080; font-weight: regular; text-align: center"
          );
         ?>
          <tr>
@@ -256,7 +253,7 @@ if (!empty($place)&&$place!="---"||!empty($holidays)||!empty($ok)||!empty($new_p
          </tr>
          <tr>
         <?
-         // Cálculo de los títulos de los días
+         // Day titles computation
          foreach ($days as $d) {
         ?>
           <td style="<?=$style["T"]?>">
@@ -306,7 +303,7 @@ if (!empty($place)&&$place!="---"||!empty($holidays)||!empty($ok)||!empty($new_p
      <table border="0" cellpadding="0" cellspacing="0" style="text-align: center;">
       <tr><td style="<?=$style["B"]?>"><?=_("Non workable day")?></td></tr>
       <tr><td style="<?=$style["N"]?>"><?=_("Workable day")?></td></tr>
-      <tr><td style="<?=$style["G"]?>"><?=_("Day of the previous or later month")?></td></tr>      
+      <tr><td style="<?=$style["G"]?>"><?=_("Day of the previous or next month")?></td></tr>      
      </table>
      </td></tr></table>
 <br>

@@ -23,9 +23,9 @@
 
 
 /**
- * PARÁMETROS HTTP QUE RECIBE ESTA PÁGINA:
+ * HTTP PARAMETERS RECEIVED BY THIS PAGE:
  *
- * dia = Día del que mostrar el calendario. Formato DD/MM/AAAA
+ * day = Day to show the calendar for. DD/MM/YYYY format.
  */
 
 require_once("include/autenticate.php");
@@ -48,12 +48,12 @@ if (!empty($day)) {
  $today=getdate(mktime(0,0,0,$today["mon"],$today["mday"],$today["year"]));
 }
 
-if($change==_("Go to day")){
+if($change==_("Go")){
   $arrayDMA=array($today["mday"],$today["mon"],$today["year"]);
   $day=date_arrayDMA_to_web($arrayDMA);
   $calendar=make_calendar($day);
 }
-else if($change2==_("Go to today")){
+else if($change2==_("Today")){
   $arrayDMA=array($hoxe["mday"],$hoxe["mon"],$hoxe["year"]);
   $hoxe=date_arrayDMA_to_web($arrayDMA);
   $day=$hoxe;

@@ -23,18 +23,19 @@
 
 /** editorxml.php
  *
- * Esta pag. permite editar un file XML en un "textarea". Permite guardar y
- * validar los cambios realizados. Es conveniente abrirlo en una ventana diferente
- * para no entorpecer ...
+
+ * This page allows for an XML file to be edited in a textarea. It allows
+ * storage and validation of the changes performed. It's good to open it in
+ * a different window in order to avoid disturbing.
+ * 
+ * Received parameters:
  *
- * Parámetros recibidos:
+ * file: XML file to be opened and edited
+ * path: Temporary path where the file has been stored
  *
- * file: file en XML que va a ser abierto y editado.
- * ruta: directorio temporal en donde esta el file
- *
- * botonvalidar: Se ha pulsado el boton validar informes.
- * botonguardar: Se ha pulsado el boton guardar el file XML.
- *
+ * validbutton: Validate report button has been pressed
+ * savebutton: Save button has been pressed
+ * closebutton: Close window button has been pressed
  *
  * José Riguera, <jriguera@igalia.com>
  *
@@ -47,7 +48,7 @@ if (empty($file) || empty($path)) header("Location: uploadxml.php");
 require("include/infxml.php");
 require("include/html.php");
 
-$title = "Editor de informes XML";
+$title = _("XML report editor");
 require("include/template-pre.php");
 
 ?>
@@ -57,7 +58,6 @@ require("include/template-pre.php");
 <?
 
 $path_file = $absolute_path.$path;
-$file_valido = false;
 
 unset($session_logins);
 foreach ($session_users as $u=>$v) $session_logins[] = $u;
@@ -65,7 +65,7 @@ foreach ($session_users as $u=>$v) $session_logins[] = $u;
 if (strstr($path, "/") || strstr($file, "/"))
 {
     $valid_path = false;
-    $error = "Ruta no valida ... XP";
+    $error = _("Invalid path");
 }
 else $valid_path = true;
 
@@ -77,36 +77,36 @@ if ((!empty($path_file)) && (!empty($file)) && $valid_path)
     $write = true;
     $mesg = "OK";
 
-    if (!is_dir($path_file)) $error = _("No se encuentra ruta al file");
+    if (!is_dir($path_file)) $error = _("File path not found");
     elseif (!ValidName($session_logins, $file, $info))
     {
      	if (!empty($info["error"])) $error = $info["error"];
-      	else $error = _("file con nombre no valido");
+      	else $error = _("File has an invalid name");
     }
-    elseif (!is_file($dirfile)) $error = _("file no reconocido");
-    elseif (!is_readable($dirfile)) $error = _("No se puede abrir el file");
+    elseif (!is_file($dirfile)) $error = _("File not recognized");
+    elseif (!is_readable($dirfile)) $error = _("File can't be opened");
     else
     {
      	$write = is_writeable($dirfile);
       	$show = true;
 
-       	if ((!empty($close_button)) && ($close_button == _("Cerrar")))
+       	if ((!empty($close_button)) && ($close_button == _("Close")))
        	{
     		// Cerrar
       	}
-     	elseif ((!empty($save_button)) && ($save_button == _("Guardar")))
+     	elseif ((!empty($save_button)) && ($save_button == _("Save")))
       	{
      	    if (($fp = @fopen($dirfile, "w")) && $write)
             {
 	     	$bytes = @fwrite($fp, stripslashes($report));
 	      	@fclose($fp);
-	      	$mesg = $mesg.", ".$bytes._(" bytes escritos correctamente.");
+	      	$mesg = $mesg.", ".$bytes._(" bytes correctly written.");
 	    }
-	    else $mesg = _("Imposible guardar los cambios realizados");
+	    else $mesg = _("The changes couldn't be saved");
    	}
-   	elseif ((!empty ($valid_button)) && ($valid_button == _("Validar")))
+   	elseif ((!empty ($valid_button)) && ($valid_button == _("Validate")))
    	{
-            $mesg = _("Validando informe ").$file." ... ";
+            $mesg = _("Validating report ").$file." ... ";
             $tmpfname = fileTemp($absolute_path, "tmp_", "_".$file);
             //$tmpfname = tempnam($absolute_path, $file."_");
             $fp = @fopen($tmpfname, "w");
@@ -116,20 +116,20 @@ if ((!empty($path_file)) && (!empty($file)) && $valid_path)
             $rt = ValidateDTD($tmpfname, $mesg);
 	    if ($rt == 1)
 	    {  
-  		$temp=_("Informe válido y coherente, listo para ser guardado");
+  		$temp=_("Report valid and coherent, prepared to be saved.");
             	$ret = ValidateXMLReport($tmpfname, $info, $msg);
                 if ($ret == 1) $mesg = "<font color=\"#00FF00\"><b>$temp</b></font>";
         	elseif ($ret == -1)
                 {
                 	$error = $msg;
-                        $mesg = "<font color=\"#FF0000\"><b>Error ... </b></font>";
+                        $mesg = "<font color=\"#FF0000\"><b>"._("Error ...")." </b></font>";
                 }
                 else $mesg = $msg;
    	    }
 	    elseif ($rt == -4)
             {
             	$error = $mesg;
-                $mesg = "<font color=\"#FF0000\"><b>Error ...</b></font>";
+              $mesg = "<font color=\"#FF0000\"><b>"._("Error ...")."</b></font>";
             }
             @unlink($tmpfname);
 	}
@@ -142,7 +142,7 @@ if ((!empty($path_file)) && (!empty($file)) && $valid_path)
 if ($show)
 {
 
-    IniGeneralTable(_("Editor de informes en formato XML"));
+    IniGeneralTable(_("XML report editor"));
 
 ?>
 	<form name="editor" action="<? echo "$PHP_SELF"; ?>" enctype="multipart/form-data" method="post">
@@ -171,13 +171,13 @@ if ($show)
       	</tr>
       	<tr>
         	<td align="left" colspan="1">
-          		<input type="submit" name="valid_button" value=<?=_("Validar")?> />
+          		<input type="submit" name="valid_button" value=<?=_("Validate")?> />
 			<? if ($write) { ?>
-          		<input type="submit" name="save_button" value=<?=_("Guardar")?> />
+          		<input type="submit" name="save_button" value=<?=_("Save")?> />
 			<? } ?>
          	</td>
          	<td align="right" colspan="2">
-                	<input type="button" name="close_button" value=<?=_("Cerrar")?> onclick="window.close()"/>
+                	<input type="button" name="close_button" value=<?=_("Close")?> onclick="window.close()"/>
          	</td>
       	</tr>
 	</table>

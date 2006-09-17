@@ -22,33 +22,27 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 /**
- * PARÁMETROS HTTP QUE RECIBE ESTA PÁGINA:
- * consulta = Consulta seleccionada de entre todas las posibles
- * seleccionar = Se ha pulsado el botón SELECCIONAR CONSULTA
- * editar = Se ha pulsado el botón EDITAR CONSULTA
- * parameter_value = Array (parametro => valor) de valores introducidos
- *                   por el usuario para los parámetros de una consulta SQL
- * ejecutar = Se ha pulsado el botón EJECUTAR CONSULTA
- * aplicar = Se ha pulsado el botón APLICAR CAMBIOS en la pág. de edición
- * cancelar = Se ha pulsado el botón CANCELAR en la pág. de edición
- * borrar = Se ha pulsado el botón BORRAR CONSULTA
- * borrar_ok = 1 Se ha confirmado el borrado de la consulta
- * dia = Mantiene el día que "nos llevamos" de páginas anteriores
+ * HTTP PARAMETERS RECEIVED BY THIS PAGE:
+ * consult = Query selected from all the possible ones
+ * select = SELECT QUERY button was pressed
+ * edit = EDIT QUERY button was pressed
+ * parameter_value = Array (parameter => value) of values input by the user
+                     for the parameters of a SQL query
+ * execute = QUERY EXECUTE button was pressed
+ * apply = APPLY CHANGES button was pressed in the edit page
+ * cancel = CANCEL button was pressed in the edit page
+ * delete = DELETE QUERY button was pressed
+ * delete_ok = 1 Query deletion was confirmed
+ * day = Keeps the day inherited from previous pages 
  */
 
 require_once("include/autenticate.php");
 require_once("include/connect_db.php");
 require_once("include/predefined_vars.php");
 require_once("include/prepare_calendar.php");
-/*
-echo("<pre>");
-print_r($pre_vars);
-echo("</pre>");
-*/
       
-// Hay ciertas acciones que no están permitidas si el usuario no es
-// administrador
-if (!in_array("informesadm",(array)$session_groups) && (
+// There are some actions not allowed if the user isn't administrator
+if (!in_array($admin_group_name,(array)$session_groups) && (
      !empty($edit)
   || !empty($apply)
   || !empty($cancel)
@@ -62,12 +56,12 @@ if (!empty($apply)) {
   do {
    if (!$result=@pg_exec($cnx,
     $query="SELECT NEXTVAL('consult_id_seq') AS id")) {
-    $error=_("It has not been possible to obtain an identifier for the new query");
+    $error=_("It has not been possible to get an identifier for the new query");
     break;
    }
 
    if (!$row=@pg_fetch_array($result,0,PGSQL_ASSOC)) {
-    $error=_("It has not been possible to obtain an identifier for the new query");
+    $error=_("It has not been possible to get an identifier for the new query");
     break;
    }
    $consult=$row["id"];
@@ -110,7 +104,7 @@ if (!empty($delete)) {
  }
 }
 
-if (!in_array("informesadm",(array)$session_groups)) 
+if (!in_array($admin_group_name,(array)$session_groups)) 
  $string_restriction=" WHERE public='t'";
 else 
  $string_restriction="";
@@ -124,13 +118,13 @@ for ($i=0;$row=@pg_fetch_array($result,$i,PGSQL_ASSOC);$i++) {
  $consults[$row["id"]]=$row["title"];
 }
 $temp=_("New query");
-if (in_array("informesadm",(array)$session_groups)) {
+if (in_array($admin_group_name,(array)$session_groups)) {
  $consults["new"]="&lt;$temp&gt;";
 }
 @pg_freeresult($result);
 
-// Controlamos si el usuario está viendo una consulta que no debe
-if (!in_array("informesadm",(array)$session_groups)
+// Check if the user is viewing an unauthorized query
+if (!in_array($admin_group_name,(array)$session_groups)
  && !empty($consult)
  && !in_array($consult,array_keys($consults))
 ) {
@@ -157,8 +151,9 @@ if (!empty($consult)) {
    unset($consult);
   }
 
-//Si no se realiza ninguna otra acción y los campos no están vacíos significa que hemos pulsado enter
-if(empty($cancel)&&empty($execute)&&empty($delete)&&empty($apply)&&empty($edit)&&!empty($parameters)) $execute="Execute";
+  // If no other action is performed and fields aren't void, it means that we've pressed ENTER
+  if(empty($cancel)&&empty($execute)&&empty($delete)&&empty($apply)
+    &&empty($edit)&&!empty($parameters)) $execute=_("Execute");
 
   @pg_freeresult($result);
   if (!empty($execute)) {
@@ -167,12 +162,12 @@ if(empty($cancel)&&empty($execute)&&empty($delete)&&empty($apply)&&empty($edit)&
       foreach ($pre_vars as $var_key=>$var_value) {
         $parameter_value[$var_key]=$var_value;
         if ($var_key==$parameter){
-	  if (in_array("informesadm",(array)$session_groups))   
+	  if (in_array($admin_group_name,(array)$session_groups))   
 	    $show_vars.="$var_key = $var_value ; ";            
         } 
       }
     $i++;
-    //if (empty($parameter_value[$parameter])) $empty[$i]="Este campo no puede ser vacío";
+    //if (empty($parameter_value[$parameter])) $empty[$i]=_("This field can't be void");
     $sql=str_replace($parameter,"'".$parameter_value[$parameter]."'",$sql);
     }
    do {
@@ -255,14 +250,14 @@ if (!empty($consult)) {
 <?
 foreach (set_to_array($parameters) as $parameter) {
     $parameter=trim($parameter);
-      foreach ($pre_vars as $var_key=>$var_value) {
-       //$parameter_value[$var_key]=$var_value;
+    foreach ($pre_vars as $var_key=>$var_value) {
+      //$parameter_value[$var_key]=$var_value;
       if ($var_key==$parameter){
-	if (in_array("informesadm",(array)$session_groups)) {    
-	  $show_vars.="$var_key = $var_value ; ";     
-        }
-      } 
+      if (in_array($admin_group_name,(array)$session_groups)) {    
+	     $show_vars.="$var_key = $var_value ; ";     
       }
+    } 
+  }
 }
 
  if (empty($edit)) {
@@ -302,14 +297,13 @@ foreach(set_to_array($parameters) as $parameter) {
       value="<?=$parameter_value[$parameter]?>">
     </td>
    </tr>
-<?/*   <tr><td></td>
+   <?
+/*
+   <tr><td></td>
     <td><?if (!empty($empty[$i])) msg_fail($empty[$i]);?>
     </td>
    </tr>
-
-echo("<pre>");
-//print_r($parameter_value);
-echo("</pre>");*/
+*/
   }
   $disabled=false;  
 }
@@ -325,7 +319,7 @@ echo("</pre>");*/
   -->
   </script>
   <br>
-  <?=_("See equivalence of codes")?>
+  <?=_("View code equivalence")?>
   <a href="#" onclick="javascript:window.open('labels.php','remote',
    'scrollbars=yes,toolbar=no,menubar=no,status=no,width=700,height=400');"
   ><?=_("in window")?></a> / <a href="labels.php"
@@ -343,7 +337,7 @@ echo("</pre>");*/
 <table border="0">
  <tr>
 <?
-  if (in_array("informesadm",(array)$session_groups)) {
+  if (in_array($admin_group_name,(array)$session_groups)) {
 ?>
   <td width="50%">
    <input type="checkbox" name="delete_ok" value="1">
@@ -355,7 +349,7 @@ echo("</pre>");*/
 ?>
   <td width="25%"><input type="submit" name="execute" value="<?=_("Execute")?>"></td>
 <?
-  if (in_array("informesadm",(array)$session_groups)) {
+  if (in_array($admin_group_name,(array)$session_groups)) {
 ?>
   <td width="25%"><input type="submit" name="edit" value="<?=_("Edit")?>"></td>
 <?
@@ -453,13 +447,13 @@ echo("</pre>");*/
  </tr>
  <tr>
   <td>
-   <?=_("Parameters list (separated by comas):")?><br>
+   <?=_("Parameter list (separated by commas)")?>:<br>
    <input type="text" name="parameters" value="<?=$parameters?>" size="80">
   </td>
  </tr>
  <tr>
 <?
-  if (in_array("informesadm",(array)$session_groups)) {
+  if (in_array($admin_group_name,(array)$session_groups)) {
 ?>
   <td>
   <?=_("Predefined variables:");?><br>
@@ -472,7 +466,7 @@ echo("</pre>");*/
  <tr>
   <td>
    <input type="checkbox" name="public" value="t" <?=sql_to_checkbox($public)?>>
-   <?=_("Allow to all users to use this query")?>
+   <?=_("Allow all users to use this query")?>
   </td>
  </tr>
 </table>

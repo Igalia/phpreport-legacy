@@ -1,129 +1,129 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+<!-- xml2php.xsl: This file defines all PHP sentences needed to input         -->
+<!-- all the data of a XML weekly report into the DB.                         -->
+<!-- To do that, a started session in the DB defined by $cnx is needed        -->
+<!-- together with $session_uid variable, which identifies the user that      -->
+<!-- inputs the data.                                                         -->
 
-<!-- xml2php.xsl: Este fichero define todas las sentencias PHP necesarias -->
-<!-- para introducir los datos de un informe semanal en XML en la BD.     -->
-<!-- Para ello es necesario tener iniciada una sesion en la BD definida   -->
-<!-- en la variable "$cnx" junto con la variable "$session_uid" la cual   -->
-<!-- identifica al usuario que introduce los datos.			  -->
-<!-- Esta hoja de estilo necesita recibir 6 parametros: el año inicial,   -->
-<!-- el mes inicial, el dia inicial y el año final, el mes final y el dia -->
-<!-- final, es decir, las fechas (semana) que abarca el informe (estan    -->
-<!-- en el nombre del informe XML). Este XSL no verifica si los datos son -->
-<!-- coherentes, y si se produce algun error durante la interpretacion    -->
-<!-- del codigo php generado, aparecera definida una variable "$error"    -->
-<!-- con el correspondiente mensaje.                                      -->
+<!-- This stylesheet needs to receive 6 parameters: start year, start month,  -->
+<!-- start day, end year, end month and end day, that is, the dates (week)    -->
+<!-- for which the report ranges (they are in the XML report filename).       -->
+<!-- This XSL doesn't verify that the data is coherent, and if some error     -->
+<!-- happens during interpretation of the generated PHP code, an $error       -->
+<!-- variable will appear defined containing the related message.             -->
 
-<!-- Antes de introducir las tareas del informe en la BD, se borran todas -->
-<!-- las que existan en la BD para ese periodo.                           -->
+<!-- Before doing the report task saving onto DB, all the existing tasks for  -->
+<!-- that period are deleted.                                                 -->
 
-<!-- Esto esta diseñado para su uso con la directiva "eval" de PHP, la    -->
-<!-- cual evalua el codigo PHP que contiene una variable.                 -->
+<!-- This is designed to be used with PHP "eval" directive, which evaluates   -->
+<!-- the PHP code contained in a variable.                                    -->
 
-<!-- xml2php.xsl,  José Riguera, 2003 <jriguera@igalia.com>               -->
+<!-- xml2php.xsl,  José Riguera, 2003 <jriguera@igalia.com>                   -->
 
+<xsl:output method="text" encoding="UTF-8"/>
 
+<xsl:param name="Iuser" select="0"/>
 
-<xsl:output method="text" encoding="ISO-8859-1"/>
+<xsl:param name="Iyearini" select="0"/>
+<xsl:param name="Imonthini" select="0"/>
+<xsl:param name="Idayini" select="0"/>
 
-<xsl:param name="Iusuario" select="0"/>
-
-<xsl:param name="Ianoini" select="0"/>
-<xsl:param name="Imesini" select="0"/>
-<xsl:param name="Idiaini" select="0"/>
-
-<xsl:param name="Ianofin" select="3000"/>
-<xsl:param name="Imesfin" select="12"/>
-<xsl:param name="Idiafin" select="31"/>
+<xsl:param name="Iyearend" select="3000"/>
+<xsl:param name="Imonthend" select="12"/>
+<xsl:param name="Idayend" select="31"/>
 
 
 
-<xsl:template name="Programa" match="/">
+<xsl:template name="Program" match="/">
 
 	<xsl:text>
 	
-	/* INSERCION DE TODAS LAS TAREAS DE UN INFORME SEMANAL */
+	/* INSERTION OF ALL THE TASKS INTO A WEEKLY REPORT */
 	
-        $num_tareas = 0;
-        $num_dias = 0;
+        $num_tasks = 0;
+        $num_days = 0;
         
-        if (empty($session_uid)) $error = "sin sesión o sesión desconocida.";
-        if (empty($cnx)) $error = "no hay sesión iniciada en la BD.";
+        if (empty($session_uid)) $error = _("without session or with an unknown one.");
+        if (empty($cnx)) $error = _("the DB session was not started.");
         
-        $usuario = "</xsl:text><xsl:value-of select="$Iusuario"/><xsl:text>";
+        $user = "</xsl:text><xsl:value-of select="$Iuser"/><xsl:text>";
         
-        if (empty($usuario)) $error = "sin sesión o sesión desconocida.";
+        if (empty($user)) $error = _("without session or with an unknown one.");
         
- 	/* GESTION DE BLOQUEOS */
+ 	/* LOCK MANAGEMENT */
 
 	if (empty($error))
         {        
-          	/* TRANSACCION DE ALMACENAMIENTO DE INFORME Y TAREAS */
+          	/* REPORTS AND TASKS SAVING TRANSACTION */
 
 		$query = "SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; BEGIN TRANSACTION; ";
   		if (!@pg_exec($cnx, $query)) 
                 {
-   			$error = "imposible comenzar transacción.";
+   			$error = _("transaction starting impossible.");
   		}
                 else
                 {
-			$query = "SELECT fecha FROM bloqueo WHERE uid='$usuario'";
-			if (!$result = @pg_exec($cnx, $query)) $error = "imposible determinar fecha de bloqueo.";
+			$query = "SELECT _date FROM block WHERE uid='$user'";
+			if (!$result = @pg_exec($cnx, $query)) $error = _("lock date computing impossible.");
 	    		else
 	    		{
 	   			if (@pg_numrows($result) == 0)
 	   			{
-	    				/* ESTABLECER BLOQUEO POR DEFECTO */
+	    				/* DEFAULT LOCK SETTING */
 	    				@pg_freeresult($result);
-	    				$query = "INSERT INTO bloqueo (uid,fecha) VALUES ('$usuario', '1999-12-31')";
-	    				if (!$result = @pg_exec($cnx, $query)) $error = "imposible establecer fecha de bloqueo por defecto.";
+	    				$query = "INSERT INTO block (uid,_date) VALUES ('$user', '1999-12-31')";
+              if (!$result = @pg_exec($cnx, $query)) 
+                $error = _("default lock setting impossible.");
 	    				else @pg_freeresult($result);
 	   			}
 	   			else
 	   			{
-	   				$bloqueado = false;
-					if ($row = @pg_fetch_row($result)) $bloqueado = !('</xsl:text><xsl:call-template name="FechaInf2Sql"/><xsl:text>' > $row[0]);
+	   				$locked = false;
+					if ($row = @pg_fetch_row($result)) $locked = !('</xsl:text><xsl:call-template name="DateInf2Sql"/><xsl:text>' > $row[0]);
 					@pg_freeresult($result);
-					if ($bloqueado) $error = "la introducción de informes está bloqueada para fechas anteriores a ".$row[0]." .";
+          if ($locked) 
+            $error = sprintf(_('report inserting is locked for dates before %1$s .'),
+              $row[0]);
 	   			}
 			}
                         
-                        /* ANTES HAY QUE BORRAR LAS POSIBLES TAREAS YA INTRODUCIDAS */
+                        /* BEFORE, PREVIOUSLY INSERTED TASKS SHOULD BE DELETED */
                         
 			if (empty($error))
                         {
-				$query = "DELETE FROM tarea WHERE uid='$usuario' AND fecha BETWEEN DATE('</xsl:text>
-				<xsl:call-template name="Fecha2Sql">
-					<xsl:with-param name="dia" select="$Idiaini"/>
-					<xsl:with-param name="mes" select="$Imesini"/>
-					<xsl:with-param name="ano" select="$Ianoini"/>
+				$query = "DELETE FROM task WHERE uid='$user' AND _date BETWEEN DATE('</xsl:text>
+				<xsl:call-template name="Date2Sql">
+					<xsl:with-param name="day" select="$Idayini"/>
+					<xsl:with-param name="month" select="$Imonthini"/>
+					<xsl:with-param name="year" select="$Iyearini"/>
 				</xsl:call-template><xsl:text>') AND DATE('</xsl:text>
-				<xsl:call-template name="Fecha2Sql">
-					<xsl:with-param name="dia" select="$Idiafin"/>
-					<xsl:with-param name="mes" select="$Imesfin"/>
-					<xsl:with-param name="ano" select="$Ianofin"/>
+				<xsl:call-template name="Date2Sql">
+					<xsl:with-param name="day" select="$Idayend"/>
+					<xsl:with-param name="month" select="$Imonthend"/>
+					<xsl:with-param name="year" select="$Iyearend"/>
 				</xsl:call-template><xsl:text>')";
                                 
-	    			if (!$result = @pg_exec($cnx, $query)) $error = "imposible borrar tareas previas ...";
+	    			if (!$result = @pg_exec($cnx, $query)) $error = _("previous task deletion impossible ...");
 	    			else @pg_freeresult($result);
                         }                                               
                         
-                        /* Obtiene la tabla de traduccion de entidades HTML a sus simbolos */
-                        $trans_table = get_html_translation_table(HTML_ENTITIES, ENT_QUOTES);                                                
+                        /* Gets HTML entity to symbol translation table */
+                        $trans_table = get_html_translation_table(HTML_ENTITIES, ENT_QUOTES);
                         $trans_table = array_flip($trans_table);
                         $trans_table["&amp;apos;"] = "'"; 
                         $trans_table["&amp;divide;"] = "\n"; 
                         
-			/* INSERCION DE TODAS LAS TAREAS DEL INFORME */
+			/* ALL REPORT TASKS INSERTION */
 		
 	</xsl:text>
 
-	<xsl:variable name="mesesinforme" select="count(dedicacionSemanal/dedicacion)"/>
+	<xsl:variable name="monthsreport" select="count(weeklyDedication/dedication)"/>
 
-	<xsl:variable name="abarcameses">
+	<xsl:variable name="rangesmonths">
   		<xsl:choose>
-    			<xsl:when test="$Imesfin = $Imesini">
+    			<xsl:when test="$Imonthend = $Imonthini">
   				<xsl:value-of select="1"/>
       			</xsl:when>
     			<xsl:otherwise>
@@ -133,36 +133,36 @@
   	</xsl:variable>
 
 	<xsl:choose>
-		<xsl:when test="$mesesinforme = 2">
+		<xsl:when test="$monthsreport = 2">
 
-  			<xsl:apply-templates select="dedicacionSemanal/dedicacion[1]">
-				<xsl:with-param name="ano" select="$Ianoini"/>
+  			<xsl:apply-templates select="weeklyDedication/dedication[1]">
+				<xsl:with-param name="year" select="$Iyearini"/>
   			</xsl:apply-templates>
   
-  			<xsl:apply-templates select="dedicacionSemanal/dedicacion[2]">
-				<xsl:with-param name="ano" select="$Ianofin"/>
+  			<xsl:apply-templates select="weeklyDedication/dedication[2]">
+				<xsl:with-param name="year" select="$Iyearend"/>
   			</xsl:apply-templates>
     
     		</xsl:when>
-		<xsl:when test="$mesesinforme = 1"> 
+		<xsl:when test="$monthsreport = 1"> 
     			<xsl:choose>
-    				<xsl:when test="$mesesinforme != $abarcameses">
+    				<xsl:when test="$monthsreport != $rangesmonths">
       
-					<xsl:variable name="numeromes">
-						<xsl:call-template name="Mes2numero">
-							<xsl:with-param name="mes" select="dedicacionSemanal/dedicacion[1]/@mes"/>
+					<xsl:variable name="numbermonth">
+						<xsl:call-template name="Month2number">
+							<xsl:with-param name="month" select="weeklyDedication/dedication[1]/@month"/>
 						</xsl:call-template>
 					</xsl:variable>
           
  					<xsl:choose>
-	 					<xsl:when test="$numeromes = $Imesini">
-  	 					<xsl:apply-templates select="dedicacionSemanal/dedicacion[1]">
-    							<xsl:with-param name="ano" select="$Ianoini"/>
+	 					<xsl:when test="$numbermonth = $Imonthini">
+  	 					<xsl:apply-templates select="weeklyDedication/dedication[1]">
+    							<xsl:with-param name="year" select="$Iyearini"/>
       						</xsl:apply-templates>
 						</xsl:when>
 						<xsl:otherwise>
-						 	<xsl:apply-templates select="dedicacionSemanal/dedicacion[1]">
-								<xsl:with-param name="ano" select="$Ianofin"/>
+						 	<xsl:apply-templates select="weeklyDedication/dedication[1]">
+								<xsl:with-param name="year" select="$Iyearend"/>
 							</xsl:apply-templates>
  						</xsl:otherwise>
  					</xsl:choose>
@@ -170,8 +170,8 @@
 				</xsl:when>
     				<xsl:otherwise>
         
-	  				<xsl:apply-templates select="dedicacionSemanal/dedicacion[1]">
-						<xsl:with-param name="ano" select="$Ianoini"/>
+	  				<xsl:apply-templates select="weeklyDedication/dedication[1]">
+						<xsl:with-param name="year" select="$Iyearini"/>
   					</xsl:apply-templates>
           
       				</xsl:otherwise>
@@ -181,7 +181,7 @@
     
 			<xsl:text>
       
-  			$error = "informe incorrecto";
+  			$error = _("incorrect report");
         
       			</xsl:text>
       
@@ -193,9 +193,9 @@
   			if (empty($error)) $query = "COMMIT TRANSACTION";
   			else $query = "ROLLBACK TRANSACTION";
   
-   			if (!@pg_exec($cnx,$query)) $error = "imposible cerrar transacción.";
+   			if (!@pg_exec($cnx,$query)) $error = _("transaction closing impossible.");
 		}
-		/* FIN INSERCION TAREAS */
+		/* END OF TASK INSERTION */
         }
 	
 	</xsl:text>
@@ -204,154 +204,165 @@
 
 
 
-<xsl:template name="InsertarTarea" match="dedicacion">
-	<xsl:param name="ano"/>
+<xsl:template name="InsertTask" match="dedication">
+	<xsl:param name="year"/>
 
-	<xsl:variable name="nummes">
-		<xsl:call-template name="Mes2numero">
-			<xsl:with-param name="mes" select="@mes"/>
+	<xsl:variable name="nummonth">
+		<xsl:call-template name="Month2number">
+			<xsl:with-param name="month" select="@month"/>
 		</xsl:call-template>
 	</xsl:variable>
 
-	<xsl:for-each select="dedicacionDiaria">
-		<xsl:variable name="dia" select="@dia"/>
+	<xsl:for-each select="dailyDedication">
+		<xsl:variable name="day" select="@day"/>
 
                	<xsl:text>
 
-		$num_dias++;
-                $nuevo_dia = true;
+		            $num_days++;
+                $new_day = true;
                         
                 </xsl:text>
 
 
-		<xsl:for-each select="tarea">
+		<xsl:for-each select="task">
 		                
-			<xsl:variable name="nombre">
+			<xsl:variable name="name">
 				<xsl:choose>
-					<xsl:when test="@nombre">
-						<xsl:value-of select="@nombre"/>
+					<xsl:when test="@name">
+						<xsl:value-of select="@name"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:text></xsl:text>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
-			<xsl:variable name="fase">
+			<xsl:variable name="phase">
 				<xsl:choose>
-					<xsl:when test="@fase">
-						<xsl:value-of select="@fase"/>
+					<xsl:when test="@phase">
+						<xsl:value-of select="@phase"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:text></xsl:text>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
-			<xsl:variable name="ttipo">
+			<xsl:variable name="ttype">
 				<xsl:choose>
-					<xsl:when test="@ttipo">
-						<xsl:value-of select="@ttipo"/>
+					<xsl:when test="@ttype">
+						<xsl:value-of select="@ttype"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:text></xsl:text>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
-
+      <xsl:variable name="telework">
+        <xsl:choose>
+          <xsl:when test="@telework">
+            <xsl:text>true</xsl:text>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:text>false</xsl:text>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      
 			<xsl:text>
 			
 			if (empty($error))
 			{
-				/* INSERCION DE UNA TAREA */
+				/* TASK INSERT */
 
-				$query = "SELECT fecha_modificacion FROM informe WHERE uid='$usuario' AND fecha='</xsl:text>
-				<xsl:call-template name="Fecha2Sql">
-					<xsl:with-param name="dia" select="$dia"/>
-					<xsl:with-param name="mes" select="$nummes"/>
-					<xsl:with-param name="ano" select="$ano"/>
+				$query = "SELECT modification_date FROM report WHERE uid='$user' AND _date='</xsl:text>
+				<xsl:call-template name="Date2Sql">
+					<xsl:with-param name="day" select="$day"/>
+					<xsl:with-param name="month" select="$nummonth"/>
+					<xsl:with-param name="year" select="$year"/>
 				</xsl:call-template><xsl:text>'";
 			
-				if (!$result = @pg_exec($cnx, $query)) $error = "imposible determinar la última fecha de modificación.";
+				if (!$result = @pg_exec($cnx, $query)) $error = _("last modification time can't be computed.");
 				else
 				{
   			 		if (@pg_numrows($result) > 0)
    					{
    						@pg_freeresult($result);
-						$query = "UPDATE informe SET fecha_modificacion=now() WHERE uid='$usuario' AND fecha='</xsl:text>
-						<xsl:call-template name="Fecha2Sql">
-							<xsl:with-param name="dia" select="$dia"/>
-							<xsl:with-param name="mes" select="$nummes"/>
-							<xsl:with-param name="ano" select="$ano"/>
+						$query = "UPDATE report SET modification_date=now() WHERE uid='$user' AND _date='</xsl:text>
+						<xsl:call-template name="Date2Sql">
+							<xsl:with-param name="day" select="$day"/>
+							<xsl:with-param name="month" select="$nummonth"/>
+							<xsl:with-param name="year" select="$year"/>
 						</xsl:call-template><xsl:text>'";
 					
-  		  				if (!$result = @pg_exec($cnx, $query)) $error = "imposible actualizar la última fecha de modificación.";
+  		  				if (!$result = @pg_exec($cnx, $query)) $error = _("last modification time updating impossible.");
    					}
    					else
    					{
    						@pg_freeresult($result);
-  						$query = "INSERT INTO informe (uid,fecha,fecha_modificacion) VALUES ('$usuario','</xsl:text>
-						<xsl:call-template name="Fecha2Sql">
-							<xsl:with-param name="dia" select="$dia"/>
-							<xsl:with-param name="mes" select="$nummes"/>
-							<xsl:with-param name="ano" select="$ano"/>
+  						$query = "INSERT INTO report (uid,_date,modification_date) VALUES ('$user','</xsl:text>
+						<xsl:call-template name="Date2Sql">
+							<xsl:with-param name="day" select="$day"/>
+							<xsl:with-param name="month" select="$nummonth"/>
+							<xsl:with-param name="year" select="$year"/>
 						</xsl:call-template><xsl:text>',now())";
 					
-						if (!$result = @pg_exec($cnx, $query)) $error = "imposible establecer fecha de modificación.";
+						if (!$result = @pg_exec($cnx, $query)) $error = _("modification time setting impossible.");
     					}
 				}
 			
 				if (empty($error))
 				{                                
                                         /*
-                                        // Si se activa esto, se permiten insertar informes complementarios en la
-                                        // BD, pero esto no es lo deseado, ...
+                                        // If this is activated, complementary reports will be allowed for
+                                        // insertion into the DB, but that isn't wanted...
                                         
-                                	if ($nuevo_dia)
+                                	if ($new_day)
                                         {
-						$query = "DELETE FROM tarea WHERE uid='$usuario' AND fecha='</xsl:text>
-                                        	<xsl:call-template name="Fecha2Sql">
-					    		<xsl:with-param name="dia" select="$dia"/>
-					    		<xsl:with-param name="mes" select="$nummes"/>
-					      		<xsl:with-param name="ano" select="$ano"/>
+						$query = "DELETE FROM task WHERE uid='$user' AND _date='</xsl:text>
+                                        	<xsl:call-template name="Date2Sql">
+					    		<xsl:with-param name="day" select="$day"/>
+					    		<xsl:with-param name="month" select="$nummonth"/>
+					      		<xsl:with-param name="year" select="$year"/>
 						</xsl:call-template><xsl:text>'";
 
   						if (!@pg_exec($cnx, $query)) 
                                         	{
-                                        		$error = "imposible realizar preinserción de datos en la BD.";
+                                        		$error = _("date preinsertion into the DB impossible.");
                                         	}
-                                                $nuevo_dia = false;
+                                                $new_day = false;
                                         }
                                         */
                                         
   					if (empty($error))
-  					{                                        
-                                        	$texto_tarea = "</xsl:text><xsl:apply-templates select="."/><xsl:text>";
+  					{
+                                        	$task_text = "</xsl:text><xsl:apply-templates select="."/><xsl:text>";
                                                 
-                                                $texto_tarea =  addslashes(strtr($texto_tarea, $trans_table));
+                                                $task_text =  addslashes(strtr($task_text, $trans_table));
                                         
-						$query = "INSERT INTO tarea (uid,fecha,inicio,fin,nombre,tipo,fase,story,ttipo,texto) VALUES ('$usuario','</xsl:text>
-						<xsl:call-template name="Fecha2Sql">
-							<xsl:with-param name="dia" select="$dia"/>
-							<xsl:with-param name="mes" select="$nummes"/>
-							<xsl:with-param name="ano" select="$ano"/>
+						$query = "INSERT INTO task (uid,_date,init,_end,name,type,phase,story,ttype,telework,text) VALUES ('$user','</xsl:text>
+						<xsl:call-template name="Date2Sql">
+							<xsl:with-param name="day" select="$day"/>
+							<xsl:with-param name="month" select="$nummonth"/>
+							<xsl:with-param name="year" select="$year"/>
 						</xsl:call-template><xsl:text>', '</xsl:text>
-						<xsl:call-template name="Hora2Sqlm">
-							<xsl:with-param name="hora" select="@inicio"/>
+						<xsl:call-template name="Time2Sqlm">
+							<xsl:with-param name="time" select="@start"/>
 						</xsl:call-template><xsl:text>', '</xsl:text>
-						<xsl:call-template name="Hora2Sql24m">
-							<xsl:with-param name="hora" select="@fin"/>
+						<xsl:call-template name="Time2Sql24m">
+							<xsl:with-param name="time" select="@end"/>
 						</xsl:call-template><xsl:text>', '</xsl:text>
-						<xsl:value-of select="$nombre"/><xsl:text>', lower('</xsl:text>
-						<xsl:value-of select="@tipo"/><xsl:text>'), '</xsl:text>
-						<xsl:value-of select="$fase"/><xsl:text>', '</xsl:text>
+						<xsl:value-of select="$name"/><xsl:text>', lower('</xsl:text>
+						<xsl:value-of select="@type"/><xsl:text>'), '</xsl:text>
+						<xsl:value-of select="$phase"/><xsl:text>', '</xsl:text>
 						<xsl:value-of select="@story"/><xsl:text>', '</xsl:text>
-						<xsl:value-of select="$ttipo"/><xsl:text>', '$texto_tarea')";
+            <xsl:value-of select="$ttype"/><xsl:text>', '</xsl:text>
+            <xsl:value-of select="$telework"/><xsl:text>', '$task_text')";
      
-   				 		if (!@pg_exec($cnx, $query)) $error = "imposible insertar valores en la BD.";
-                                                else $num_tareas++; 
+   				 		if (!@pg_exec($cnx, $query)) $error = _("DB value inserting impossible.");
+                                                else $num_tasks++; 
 					}
 				}
 				
-				/* FIN INSERCCION TAREA	*/
+				/* TASK INSERTION END	*/
 			}
 			
 			</xsl:text>
@@ -362,57 +373,57 @@
 
 
 
-<xsl:template name="FechaInf2Sql">
-	<xsl:value-of select="$Ianoini"/><xsl:text>-</xsl:text>
+<xsl:template name="DateInf2Sql">
+	<xsl:value-of select="$Iyearini"/><xsl:text>-</xsl:text>
 
 	<xsl:variable name="len1">
-		<xsl:value-of select="string-length($Imesini)" />
+		<xsl:value-of select="string-length($Imonthini)" />
 	</xsl:variable>
         <xsl:if test="2 != $len1">
         	<xsl:text>0</xsl:text>
         </xsl:if>
-	<xsl:value-of select="$Imesini"/><xsl:text>-</xsl:text>
+	<xsl:value-of select="$Imonthini"/><xsl:text>-</xsl:text>
 
 	<xsl:variable name="len2">
-		<xsl:value-of select="string-length($Idiaini)" />
+		<xsl:value-of select="string-length($Idayini)" />
 	</xsl:variable>
         <xsl:if test="2 != $len2">
         	<xsl:text>0</xsl:text>
         </xsl:if>
-	<xsl:value-of select="$Idiaini"/>
+	<xsl:value-of select="$Idayini"/>
 </xsl:template>
 
 
 
-<xsl:template name="Fecha2Sql">
-	<xsl:param name="dia"/>
-	<xsl:param name="mes"/>
-	<xsl:param name="ano"/>
+<xsl:template name="Date2Sql">
+	<xsl:param name="day"/>
+	<xsl:param name="month"/>
+	<xsl:param name="year"/>
 
-	<xsl:value-of select="$ano"/><xsl:text>-</xsl:text>
+	<xsl:value-of select="$year"/><xsl:text>-</xsl:text>
 	<xsl:variable name="len1">
-		<xsl:value-of select="string-length($mes)" />
+		<xsl:value-of select="string-length($month)" />
 	</xsl:variable>
         <xsl:if test="2 != $len1">
         	<xsl:text>0</xsl:text>
         </xsl:if>
-	<xsl:value-of select="$mes"/><xsl:text>-</xsl:text>
+	<xsl:value-of select="$month"/><xsl:text>-</xsl:text>
 	<xsl:variable name="len2">
-		<xsl:value-of select="string-length($dia)" />
+		<xsl:value-of select="string-length($day)" />
 	</xsl:variable>
         <xsl:if test="2 != $len2">
         	<xsl:text>0</xsl:text>
         </xsl:if>
-	<xsl:value-of select="$dia"/>
+	<xsl:value-of select="$day"/>
 </xsl:template>
 
 
 
-<xsl:template name="Hora2Sql">
-	<xsl:param name="hora"/>
+<xsl:template name="Time2Sql">
+	<xsl:param name="time"/>
 
-	<xsl:variable name="m" select="$hora mod 100"/>
-	<xsl:variable name="h" select="($hora - $m) div 100"/>
+	<xsl:variable name="m" select="$time mod 100"/>
+	<xsl:variable name="h" select="($time - $m) div 100"/>
 
         <xsl:if test="10 > $h">
         	<xsl:text>0</xsl:text>
@@ -428,22 +439,22 @@
 
 
 
-<xsl:template name="Hora2Sqlm">
-	<xsl:param name="hora"/>
+<xsl:template name="Time2Sqlm">
+	<xsl:param name="time"/>
 
-	<xsl:variable name="m" select="$hora mod 100"/>
-	<xsl:variable name="h" select="($hora - $m) div 100"/>
+	<xsl:variable name="m" select="$time mod 100"/>
+	<xsl:variable name="h" select="($time - $m) div 100"/>
 
 	<xsl:value-of select="($h * 60) + $m"/>
 </xsl:template>
 
 
 
-<xsl:template name="Hora2Sql24m">
-	<xsl:param name="hora"/>
+<xsl:template name="Time2Sql24m">
+	<xsl:param name="time"/>
 
-	<xsl:variable name="m" select="$hora mod 100"/>
-	<xsl:variable name="h" select="($hora - $m) div 100"/>
+	<xsl:variable name="m" select="$time mod 100"/>
+	<xsl:variable name="h" select="($time - $m) div 100"/>
         
         
       	<xsl:choose>
@@ -458,48 +469,48 @@
 
 
 
-<xsl:template name="Mes2numero">
-	<xsl:param name="mes"/>
+<xsl:template name="Month2number">
+	<xsl:param name="month"/>
 
-	<xsl:variable name="mesminuscula">
-		<xsl:value-of select="translate($mes,'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"/>
+	<xsl:variable name="monthlowercase">
+		<xsl:value-of select="translate($month,'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"/>
 	</xsl:variable>
 
 	<xsl:choose>
-		<xsl:when test="'enero' = $mesminuscula">
+		<xsl:when test="'january' = $monthlowercase">
 			<xsl:text>1</xsl:text>
 		</xsl:when>
-		<xsl:when test="'febrero' = $mesminuscula">
+		<xsl:when test="'february' = $monthlowercase">
 			<xsl:text>2</xsl:text>
 		</xsl:when>
-		<xsl:when test="'marzo' = $mesminuscula">
+		<xsl:when test="'march' = $monthlowercase">
 			<xsl:text>3</xsl:text>
 		</xsl:when>
-		<xsl:when test="'abril' = $mesminuscula">
+		<xsl:when test="'april' = $monthlowercase">
 			<xsl:text>4</xsl:text>
 		</xsl:when>
-		<xsl:when test="'mayo' = $mesminuscula">
+		<xsl:when test="'may' = $monthlowercase">
 			<xsl:text>5</xsl:text>
 		</xsl:when>
-		<xsl:when test="'junio' = $mesminuscula">
+		<xsl:when test="'june' = $monthlowercase">
 			<xsl:text>6</xsl:text>
 		</xsl:when>
-		<xsl:when test="'julio' = $mesminuscula">
+		<xsl:when test="'july' = $monthlowercase">
 			<xsl:text>7</xsl:text>
 		</xsl:when>
-		<xsl:when test="'agosto' = $mesminuscula">
+		<xsl:when test="'august' = $monthlowercase">
 			<xsl:text>8</xsl:text>
 		</xsl:when>
-		<xsl:when test="'septiembre' = $mesminuscula">
+		<xsl:when test="'september' = $monthlowercase">
 			<xsl:text>9</xsl:text>
 		</xsl:when>
-		<xsl:when test="'octubre' = $mesminuscula">
+		<xsl:when test="'october' = $monthlowercase">
 			<xsl:text>10</xsl:text>
 		</xsl:when>
-		<xsl:when test="'noviembre' = $mesminuscula">
+		<xsl:when test="'november' = $monthlowercase">
 			<xsl:text>11</xsl:text>
 		</xsl:when>
-		<xsl:when test="'diciembre' = $mesminuscula">
+		<xsl:when test="'december' = $monthlowercase">
 			<xsl:text>12</xsl:text>
 		</xsl:when>
 		<xsl:otherwise>
@@ -510,7 +521,7 @@
 
 
 
-<xsl:template match="tarea">
+<xsl:template match="task">
 
 	<xsl:variable name="txt">
 	  	<xsl:call-template name="escape">
@@ -520,7 +531,7 @@
 
 <!--	<xsl:variable name="txtreplace">
 		<xsl:call-template name="chop">	
-			<xsl:with-param name="texto" select="$txt" />
+			<xsl:with-param name="text" select="$txt" />
 		</xsl:call-template>
 	</xsl:variable>
 -->
@@ -531,27 +542,26 @@
 
 
 <xsl:template name="chop">
-	<xsl:param name="texto"/>
+	<xsl:param name="text"/>
 
 	<xsl:variable name="len">
-		<xsl:value-of select="string-length($texto)" />
+		<xsl:value-of select="string-length($text)" />
 	</xsl:variable>
 
-	<xsl:variable name="fuera">
-		<xsl:value-of select="substring($texto, $len)" />
+	<xsl:variable name="outside">
+		<xsl:value-of select="substring($text, $len)" />
 	</xsl:variable>
 
 	<xsl:call-template name="escape-one">
-        	<xsl:with-param name="arg" select="$texto"/>
-             	<xsl:with-param name="target" select="$fuera"/>
+        	<xsl:with-param name="arg" select="$text"/>
+             	<xsl:with-param name="target" select="$outside"/>
              	<xsl:with-param name="replace" select="'&amp;divide;'"/>
         </xsl:call-template>
 
 </xsl:template>
 
 
-
-<!-- Sacado y corregido de http://www.tackline.demon.co.uk/xslt/escape/xslt/escape.xsl -->
+<!-- Gotten and corrected from http://www.tackline.demon.co.uk/xslt/escape/xslt/escape.xsl -->
 
 <xsl:template name="escape">
   <xsl:param name="arg"/>

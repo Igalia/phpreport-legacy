@@ -24,20 +24,21 @@
 
 /** subirxml.php
  *
- * Se suben y descomprimen los ficheros de $reports XML del usuario.
- * Crea un directorio temporal (en ruta_absoluta) unico y copia
- * alli los archivos subidos.
+ * $reports XML user files are uploaded and uncompressed.
+ * A unique temporal directory is created (in $absolute_path) and
+ * all uploaded files are copied there.
  *
- * Parámetros recibidos:
+ * Received parameters:
  *
- * filedir: diretorio (dentro de $absolute_path) en donde se encuentran
- * los $reports XML que van a ser validados y/o guardados.
- *
- * treat_button: Se ha pulsado el boton para tratar los $reports.
- * botonguardar: Se ha pulsado el boton para subir el informe.
- * botonnombrar: Se ha pulsado el boton para renombrar un archivo
- *	nuevo_nombre: nombre nuevo del fichero.
- *      nombre_renombrar: fichero a renombrar.
+ * 
+ * filedir: directory (inside $absolute_path) where XML $reports 
+ * that are going to be validated/saved are located.
+ * 
+ * process_button: The button to process the $reports has been pressed
+ * send_button: The button to upload the report has been pressed
+ * name_button: The button to rename a file has been pressed
+ * new_name: New file name
+ * name_rename: File to rename
  *
  *
  * José Riguera, <jriguera@igalia.com>
@@ -52,10 +53,10 @@ require("include/html.php");
 
 //$cmd = "rm -rf $absolute_path";
 //`$cmd`;
-echo($absolute_path);
 if (!is_dir($absolute_path)) mkdir($absolute_path, 0777);
 
-$title = _("Introducir $reports semanales XML");
+$title = _('Weekly report input');
+
 require("include/template-pre.php");
 
 ?>
@@ -70,23 +71,22 @@ require("include/template-pre.php");
 $session_logins = array();
 foreach ($session_users as $u=>$v) $session_logins[] = $u;
 
-if (!empty($send_button) && ($send_button == "Enviar"))
+if (!empty($send_button) && ($send_button == _("Send")))
 {
     if (empty($filedir))
     {
-    	if (strlen($file_name) <= 4) $error = _("Nombre de archivo no valido.");
-    	elseif (!ereg('^$reportsemanal([a-zA-Z0-9_-]+)\.xml$|([a-zA-Z0-9_-]+)\.tgz$', $file_name))
+    	if (strlen($file_name) <= 4) $error = _("Invalid filename.");
+    	elseif (!ereg('^weeklyreport([a-zA-Z0-9_-]+)\.xml$|([a-zA-Z0-9_-]+)\.tgz$', $file_name))
     	{
-            $error = _("El formato de archivo no es valido, solo se admiten $reports XML o grupos de $reports comprimidos con TGZ.");
+      $error = _("File format is invalid. Only XML reports or TGZ compressed groups of them are allowed. Examples: weeklyreport-john-2006-09-11-2006-09-17.xml, weeklyreport-john-2006-08-28-2006-10-01.tgz");
     	}
     	elseif ($file_size > $file_limit)
     	{
-            $error = _("El archivo seleccionado supera los ").$file_limit.
-            _(" bytes, no se acepta por motivos de seguridad.");
+            $error = sprintf(_('Selected file exceeds %1$s bytes. It\'s rejected due to security reasons.'),$file_limit);
     	}
     	else
     	{
-       	    // genera un nombre de directorio unico
+       	    // Generates a unique directory name
             do
             {
             	$seed = substr(md5(microtime().posix_getpid()), 0, 8);
@@ -103,7 +103,7 @@ if (!empty($send_button) && ($send_button == "Enviar"))
             if (file_exists($filename)) @unlink($filename);
             if (!@move_uploaded_file($file, $filename))
             {
-             	$error = _("Error del servidor mientras se trataba el archivo, intentelo más tarde o pongase en contacto con su administrador.");
+             	$error = _("Server error while processing the file. Try again later or get in touch with your administrador.");
             }
             else
             {
@@ -115,7 +115,7 @@ if (!empty($send_button) && ($send_button == "Enviar"))
                     	   EscapeShellCmd($absolute_path.$filedir), $ar, $retval);
 		    unset($cmd);
 		    unset($ar);
-		    if ($retval != 0) $error = _("Error descomprimiendo el archivo. Imposible continuar.");
+		    if ($retval != 0) $error = _("Error uncompressing archive. Impossible to continue.");
 		    unlink($filename);
             	}
 	    }
@@ -129,11 +129,11 @@ if (!empty($send_button) && ($send_button == "Enviar"))
 
     if (empty($error))
     {
-	if (!empty($name_button) || ($name_button == _("Nombrar")))
+	if (!empty($name_button) || ($name_button == _("Give a name")))
 	{
     	    if (!(strstr($new_name, "/") || strstr($name_rename, "/")))
     	    {
-                if (($new_name != _("vacio")) && (strlen($new_name) > 3))
+                if (($name_rename != "empty") && (strlen($new_name) > 3))
                     @rename($absolute_path.$filedir.$name_rename, $absolute_path.$filedir.EscapeShellCmd($new_name));
     	    }
             unset($name_button);
@@ -142,25 +142,25 @@ if (!empty($send_button) && ($send_button == "Enviar"))
 	$files = array();
 	while ($entry = @readdir($dh))
 	{
-		// Busca sólo los archivos del directorio
+		// Search only archives at the directory
 		if (($entry != ".") && ($entry != "..")) $files[] = $entry;
 	}
 	@closedir($dh);
 	usort($files, 'strnatcmp');
 
-      	IniGeneralTable(_("$reports XML"), _("Contenido subido al servidor. Edite los ficheros que sean incorrectos (formato de nombre incorrecto, fecha incorrectam etc.)"));
+  IniGeneralTable(_("XML Reports"), _("Content uploaded to the server. Edit only incorrect files (incorrect name format, incorrect date, etc...)."));
 ?>
 
     <form name="editor" action="processxml.php" enctype="multipart/form-data" method="post">
     <table class="dir_table" cellpadding="4" cellspacing="1">
     <tr class="dir_title">
-        <td align="center" width="70%"><?=_("Nombre del Informe Semanal")?></td>
-        <td align="center" width="20%"><?=_("Tama&ntilde")?>;o</td>
-        <td align="center" width="10%"><?=_("Filtro")?></td>
+        <td align="center" width="70%"><?=_("Weekly report name")?></td>
+        <td align="center" width="20%"><?=_("Size")?></td>
+        <td align="center" width="10%"><?=_("Filter")?></td>
     </tr>
 
 <?php
-	// pone en pantalla la informacion
+	    // Displays the information
      	$count = 0;
      	$count_valids = 0;
      	$size_cum = 0;
@@ -176,7 +176,7 @@ if (!empty($send_button) && ($send_button == "Enviar"))
             $ret = ValidName($session_logins, $entry, $fields);
             if ($ret == 1)
             {
-              	if (in_array("$reportsadm",(array)$session_groups))
+              	if (in_array($admin_group_name,(array)$session_groups))
                 {
 		    LinkEditorXML($xmldir, $entry);
                     echo "\t<td>".$size."</td>";
@@ -186,7 +186,7 @@ if (!empty($send_button) && ($send_button == "Enviar"))
              	}
              	else
              	{
-	            if ($session_uid == $fields[_("usuario")])
+	            if ($session_uid == $fields["user"])
                     {
 		    	LinkEditorXML($xmldir, $entry);
                      	echo "\t<td>".$size."</td>";
@@ -239,16 +239,17 @@ if (!empty($send_button) && ($send_button == "Enviar"))
      <table width="100%" border="0" cellpadding="5">
      <tr>
      	<td align="center">
-        	<? if ($count_valids > 0) echo "<input type=\"submit\" name=\"treat_button\" value=\"Tratar\"/>"; ?>
+      <? if ($count_valids > 0) echo "<input type=\"submit\" name=\"process_button\" value=\"".
+        _("Process")."\"/>"; ?>
         </td>
         <td align="right">
 	       	<table>
             	<tr><td>
-			<font color="red"><b>FI</b></font> : <?=_("Fecha Incorrecta, el informe no se corresponde con una semana.")?> <br>
-			<font color="red"><b>IN</b></font> : <?=_("INcorrecto, el nombre del fichero no se reconoce con el formato.")?> <br>
-			<font color="red"><b>UD</b></font> : <?=_("Usuario Desconocido. No existe el usuario en el LDAP.")?> <br>
-			<font color="red"><b>NP</b></font> : <?=_("No Propietario, vd. no es el propietario del informe semanal.")?> <br>
-			<font color="blue"><b>OK</b></font> : <?=_("Informe listo para ser validado, verificado y tratado.")?> <br>
+			<font color="red"><b>FI</b></font> : <?=_("Incorrect date. The report doesn't correspond to a week.")?> <br>
+			<font color="red"><b>IN</b></font> : <?=_("Incorrect. File format isn't recognized for that file name.")?> <br>
+			<font color="red"><b>UD</b></font> : <?=_("User unknown. The user doesn't exist.")?> <br>
+			<font color="red"><b>NP</b></font> : <?=_("You aren't the owner of the weekly report.")?> <br>
+			<font color="blue"><b>OK</b></font> : <?=_("Report ready to be validated, verified and processed.")?> <br>
                 </td></tr>
                 </table>
         </td>
@@ -271,7 +272,7 @@ if (!empty($send_button) && ($send_button == "Enviar"))
        		</select>
         </td>
      	<td align="center">
-        	<input type="submit" name="name_button" value=<?_("Renombrar")?>/>
+        	<input type="submit" name="name_button" value="<?=_("Rename")?>"/>
         </td>
         <td align="right">
         	<input type="text" name="new_name">
@@ -285,14 +286,14 @@ if (!empty($send_button) && ($send_button == "Enviar"))
 
 <?php
 
-     	EndGeneralTable($count_valids._(" de ").$count._(" nombres de archivos correctos."));
+      EndGeneralTable(sprintf(_('%1$s correct filenames and %2$s incorrect.'),$count_valids,$count));
     }
     else unset($send_button);
 }
 
-if (empty($send_button) || ($send_button != _("Enviar")))
+if (empty($send_button) || ($send_button != _("Send")))
 {
-   IniGeneralTable(_("Recoger $reports en formato XML"), _("Seleccione un informe en XML o un conjunto de $reports del mismo usuario comprimidos en formato TGZ y pulse enviar cuando este listo.<br>Recuerde utilizar siempre el fichero <a href=\"rules.dtd.php\"><b>rules.dtd</b> actualizado</a>."));
+   IniGeneralTable(_("Collect reports in XML format"), _("Select an XML report or a set of them belonging the same user and compressed in tgz format, and press Send when ready.<br>Remember to use always the <a href=\"rules.dtd.php\">updated <b>rules.dtd</b></a>."));
 ?>
 
 	<form name="upload" action="<? echo "$PHP_SELF" ?>" enctype="multipart/form-data" method="post">
@@ -300,7 +301,7 @@ if (empty($send_button) || ($send_button != _("Enviar")))
 	<table border="0" cellpadding="4" align="center">
    	<tr>
 		<td align="left" width="30%">
-		<?=_("Fichero local")?>
+		<?=_("Local file")?>
 		</td>
       		<td align="left" width="70%">
       			<input type="file" name="file" size="50"/>
@@ -308,7 +309,7 @@ if (empty($send_button) || ($send_button != _("Enviar")))
    	</tr>
    	<!-- <tr>
 		<td align="left" width="30%">
-		 <?=_("Descripcion o informacion complementaria.")?>
+		 <?=_("Description or complementary information.")?>
 		</td>
       		<td align="left" width="70%">
       		<textarea name="description" cols="50" rows="3"><? echo $description; ?></textarea>
@@ -316,7 +317,7 @@ if (empty($send_button) || ($send_button != _("Enviar")))
    	</tr> -->
    	<tr>
     		<td align="left" width="100%" colspan="2">
-        	<input type="submit" name="send_button" value=<?=_("Enviar")?> />
+        	<input type="submit" name="send_button" value=<?=_("Send")?> />
       		</td>
    	</tr>
    	</table>

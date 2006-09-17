@@ -23,18 +23,18 @@
 
 
 /**
- * PARÁMETROS HTTP QUE RECIBE ESTA PÁGINA:
+ * HTTP PARAMETERS RECEIVED BY THIS PAGE:
  *
- * login = Login del usuario (coincide con uid en LDAP)
- * password = Password del usuario
+ * login = Login of the user (it's the same as the uid in LDAP)
+ * password = Password of the user
  */
 
 require_once("include/config.php");
 require_once("include/util.php");
 
-// Si el usuario no venía previamente de ninguna página,
-// se indica a cual debe ir en caso
-// de autentificarse correctamente
+// If the user didn't come previously from any page,
+// the one she has to go to when authentication succeeds
+// is specified here
 
 if (empty($origin)) {
  $origin="report.php";
@@ -61,7 +61,7 @@ if (!empty($login)) {
   if ($authentication_mode=="ldap") {
 								
 			if (!$ds=@ldap_connect($LDAP_SERVER)) {
-				$error=_("Can't connect to server LDAP");
+				$error=_("Can't connect to LDAP server");
 				break;
 			}
 			if (!$bn=@ldap_bind($ds,"uid=$login,ou=People,$LDAP_BASE",$password)) {
@@ -73,7 +73,7 @@ if (!empty($login)) {
 					"(&(objectClass=posixGroup)(uniqueMember=uid=$login,ou=People,$LDAP_BASE))",
 					array("cn")
 				)) {
-				$error=_("Can't retrieve the LDAP's groups of this user");
+				$error=_("Can't get the LDAP's groups of this user");
 				break;
 			}
 	
@@ -82,8 +82,8 @@ if (!empty($login)) {
 			for ($i=0;$i<$info["count"];$i++) {
 				$groups[]=$info[$i]["cn"][0];
 			}
-	
-			if (!in_array("informesdedic",$groups)) {
+
+			if (!in_array($user_group_name,$groups)) {
 				$error=_("This user is not authorized to use this application");
 				break;
 			}
@@ -92,7 +92,7 @@ if (!empty($login)) {
 					"(&(objectClass=posixGroup)(cn=informesdedic))",
 					array("uniqueMember")
 				)) {
-				$error=_("Can't retrieve the user's PhpReport list");
+				$error=_("Can't retrieve PhpReport user list");
 				break;
 			}
 	
@@ -109,7 +109,7 @@ if (!empty($login)) {
 					"(objectClass=posixAccount)",
 					array("uid","cn")
 				)) {
-				$error=_("Can't retrieve the user's PhpReport list");
+				$error=_("Can't retrieve PhpReport user list");
 				break;
 			}
 	
@@ -132,8 +132,8 @@ if (!empty($login)) {
    or die($die."$query");
 
 			if ($row=pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
-				if ($row['admin']=='t') $groups=array("informesdedic","informesadm");
-				else $groups=array("informesdedic");
+				if ($row['admin']=='t') $groups=array($user_group_name,$admin_group_name);
+				else $groups=array($user_group_name);
 			} else {			
 				$error=_("Incorrect Login/password");
 				break;
@@ -146,45 +146,43 @@ if (!empty($login)) {
 
 			$users=array();
 			while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
-				// #################### ERROR: $users=$row['uid'];
 				$users[]=$row['uid'];
 			}
 			if (empty($users)) {
-				$error=_("Can't retrieve the user's PhpReport list");
+				$error=_("Can't retrieve the PhpReport user list");
 				break;
 			}
 			@pg_freeresult($result);		
 		} else {
-		 		$error=_("Not configured a authentication mecanism");
+		 		$error=_("An authentication mecanism wasn't configured");
 				break;
 		}
 				
-  // ### ATENCIÓN!!! ###
-  // ### MODO CHEAT (PUERTA TRASERA PARA MANTENIMIENTO) ###
+  // ### ATTENTION!!! ###
+  // ### CHEAT MODE (MAINTENANCE BACKDOOR) ###
   if (!empty($maintenance)) {
-   // ESTO CONVIERTE A CUALQUIERA EN ADMINISTRADOR
-   $groups=array("informesdedic","informesadm");
-   // SUPLANTAR A OTRO USUARIO
+   // THIS CONVERTS EVERYBODY INTO AN ADMINISTRATOR
+   $groups=array($user_group_name,$admin_group_name);
+   // OTHER USER IMPERSONATION
    if (!empty($fake_login)) $login=$fake_login;
   }
 
-  // Cargamos la información previa de la sesión
+  // Load the previous session info
   session_register("session_uid");
   session_register("session_groups");
   session_register("session_users");
 
-  // La cambiamos
+  // Change it
   $session_uid=$login;
   $session_groups=$groups;
   $session_users=$users;
 
-  // Y la guardamos
+  // And save it
   session_register("session_uid");
   session_register("session_groups");
   session_register("session_users");
 
-  // Entramos a la página de la cual venía anteriormente
-  // el usario sin sesión
+  // Enter into the page the user without session was coming from
   header("Location: $origin");
 
  } while(false);
@@ -220,7 +218,7 @@ if (empty($login) || !empty($error)) {
 <?
 } else {
 ?>
-<?=_("Identification successfull.")?><br>
+<?=_("Identification successful.")?><br>
 <form action="<?$origin?>">
 <input type="submit" name="enter" value="<?=_("Enter")?>">
 </form>

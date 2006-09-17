@@ -25,7 +25,7 @@ require_once("include/autenticate.php");
 require_once("include/connect_db.php");
 require_once("include/prepare_calendar.php");
 
-if (!(in_array("informesadm",(array)$session_groups) 
+if (!(in_array($admin_group_name,(array)$session_groups) 
 )) {
  header("Location: login.php");
 }
@@ -116,7 +116,7 @@ if (!empty($delete)) {
   $id=$k[0];
 
   $result=pg_fetch_array(pg_exec($cnx,$query="SELECT * FROM task WHERE name='$id'"));
-  if (!empty($result)) $error=_("The project hasn't been deleted: associate tasks");
+  if (!empty($result)) $error=_("The project hasn't been deleted: it has related tasks");
   else{
     $result=@pg_exec($cnx,$query="DELETE FROM projects WHERE id='$id'")
 	or die("$die $query");
@@ -140,8 +140,8 @@ while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
 
 require_once("include/close_db.php");
 
-$flag="edit"; //Para poner el focus en el botón de Edit
-$title=_("Projects management");
+$flag="edit"; //To put focus at Edit button
+$title=_("Project management");
 require("include/template-pre.php");
 
 if (!empty($error)) msg_fail($error);
@@ -161,7 +161,7 @@ if (!empty($confirmation)) msg_ok($confirmation);
 <td bgcolor="#000000" class="title_box"><font
  color="#FFFFFF" class="title_box">
 <!-- title box -->
-<?=_("Projects list")?>
+<?=_("Project list")?>
 <!-- end title box -->
 </font></td></tr><tr><td bgcolor="#FFFFFF" class="text_box">
 <table border="0" cellspacing="0" cellpadding="5"><tr><td>
@@ -266,7 +266,7 @@ if (!empty($edit)||!empty($id)&&empty($delete)||$creating){
  </tr>
  <tr>
   <td>
-<?=_("Init date");?>:
+<?=_("Start date");?>:
   </td>
   <td>
     <input type="text" name="init" value="<?=$project["init"]?>">

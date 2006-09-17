@@ -22,6 +22,10 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
+// NOTE: THIS IS A TEMPLATE FOR DEVELOPING NEW PAGES
+// NOTHING TO DO HERE...
+exit();
+
 require("include/util.php");
 ?>
 <html>
@@ -35,11 +39,11 @@ PhpReport
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
  <tr>
   <td align="left"><img src="images/title.gif"></td>
-  <td align="right" class="title"><?=_("Introducción de informes")?></td>
+  <td align="right" class="title"><?=_("Report input")?></td>
  </tr>
 </table>
-<? msg_fail_("No se pudo completar la operación"); ?>
-<? msg_ok_("Los cambios fueron realizados correctamente"); ?>
+<? msg_fail(_("The operation couldn't be completed")) ?>
+<? msg_ok(_("Changes were made correctly")) ?>
 
 <!-- box -->
 <table border="0" cellspacing="0" cellpadding="0">
@@ -48,15 +52,16 @@ PhpReport
 <td bgcolor="#000000" class="title_box"><font
  color="#FFFFFF" class="title_box">
 <!-- title box -->
-<?=_("Título de la caja")?>
+<?=_("Box title")?>
 <!-- end title box -->
 </font></td></tr><tr><td bgcolor="#FFFFFF" class="text_box">
 <table border="0" cellspacing="0" cellpadding="10"><tr><td>
 <font
  color="#000000" class="text_box">
 <!-- text box -->
-<?=_("Texto de la caja:<br>
-Igalia es una empresa de Ingeniería en Informática dedicada a la investigación y desarrollo de soluciones en el campo de las Tecnologías de la Información y las Comunicaciones, y está especializada en la consultoría de tecnologías basadas en Software Libre - GNU/Linux y sus aplicaciones asociadas."?>
+<?=_("Box text")?>
+<br>
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Vestibulum lobortis quam in sapien. Praesent nonummy sagittis sem. Cras sodales erat vel purus. In non sem at justo elementum consectetuer. Sed augue lacus, pretium eget, vehicula non, consectetuer congue, nulla. Curabitur pharetra sapien et sapien. Nam a lectus ac sem viverra aliquam. Maecenas pellentesque sem vel dolor. Integer tempor ante. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In imperdiet elit sed sem. Donec tristique egestas leo. Curabitur laoreet nulla vel diam. Curabitur vitae pede nec est consequat varius. Nulla in risus non tellus tristique pharetra. Cras lobortis, est sit amet luctus lacinia, augue ante hendrerit dolor, in molestie lorem nisi nec tortor.")
 <!-- end text box -->
 </font></td></tr></table></td></tr></table></td></tr></table>
 <!-- end box -->

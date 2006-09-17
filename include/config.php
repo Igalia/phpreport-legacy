@@ -68,12 +68,14 @@ switch($lang)
 
 bindtextdomain('messages', './locale');
 
-$absolut_path = "/tmp/phpreport/";
+$absolute_path = "/tmp/phpreport/";
 $file_limit = 500000;
 $authentication_mode = "sql";
 //$authentication_mode = "ldap";
 $LDAP_SERVER = "localhost";
 $LDAP_BASE = "dc=igalia,dc=com";
+$admin_group_name="informesadm";
+$user_group_name="informesdedic";
 
 // RECUPERACIÓN DE LAS TABLAS DE CÓDIGOS DE LA BD
 

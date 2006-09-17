@@ -23,14 +23,14 @@
 
 
 /**
- * PARÁMETROS HTTP QUE RECIBE ESTA PÁGINA:
+ * PARAMETERS RECEIVED BY THIS PAGE:
  *
- * dia = Día del informe. Formato DD/MM/AAAA
- * minutos_semanales = Valor precalculado con los minutos trabajados esta semana
- *                   Sirve para no tener que hacer continuamente la query. Se
- *                   recalcula si está vacío o si se guarda el informe
- * minutos_diarios = Valor precalculado con los minutos trabajados hoy
- * tarea = array con las diferentes tareas:
+ * day = Report day. DD/MM/YYYY format.
+ * weekly_minutes = Precomputed value with the minutes worked this week.
+ *                  It's useful in order to avoid making the query for every reload.
+ *                  It's recomputed if it's empty or if the report is stored.
+ * daily_minutes = Precomputed value with the minutes worked today
+ * task = Array with the different tasks:
  *  array(
  *   0=>array(
  *       "init"=>...,
@@ -40,27 +40,28 @@
  *   1=>array(...),
  *   ...
  *  );
- * borrar_tarea[i] = Se ha pulsado BORRAR TAREA para la tarea i-ésima
- * nueva_tarea = Se ha pulsado NUEVA TAREA
- * cancelar = Se ha pulsado CANCELAR
- * guardar = Se ha pulsado GUARDAR
- * editando = Parámetro hidden de formulario que indica que éste se está editando.
- *            Sirve para evitar recargar los datos cuando se han borrado todas las
- *            tareas (array tareas vacío voluntariamente)
+ * delete_task[i] = TASK DELETE button has been pressed for the i-th task
+ * new_task = NEW TASK button has been pressed
+ * cancel = CANCEL button has been pressed
+ * save = SAVE button has been pressed
+ * editing = Hidden form parameter indicating that it's being edited. It's used
+ *           to avoid data reloading when all the tasks have been deleted (task
+ *           array empty on purpose)
  */
 require_once("include/config.php");
 require_once("include/autenticate.php");
 require_once("include/connect_db.php");
 require_once("include/prepare_calendar.php");
 
-// SI NO HAY DIA, SE GENERA
+// IF THERE ISN'T DAY, LET'S GENERATE IT
 
 if (empty($day)) {
  $day=getdate(time());
  $day=$day["mday"]."/".$day["mon"]."/".$day["year"];
 }
 
-// COMPROBACIÓN DE SI EL INFORME ESTÁ BLOQUEADO
+// TEST IF THE REPORT IS LOCKED
+
 $die=_("Can't finalize the operation");
 $result=@pg_exec($cnx,$query="SELECT _date FROM block"
  ." WHERE uid='$session_uid'")
@@ -71,9 +72,9 @@ if ($row=@pg_fetch_row($result))
 @pg_freeresult($result);
 if ($blocked) $param_blocked=" READONLY ";
 
-// PRECARGA DE LOS VALORES DEL FORMULARIO
-// SE COMPRUEBA SI SE HA PULSADO ALGÚN BOTÓN COPIAR INFORME Y EN ESTE CASO
-// SE CARGAN LOS VALORES DEL DÍA CORRESPONDIENTE
+// PRECHARGE OF THE FORM VALUES
+// PRESSING OF REPORT COPY BUTTON IS CHECKED, AND IN THAT CASE,
+// CORRESPONDING DAY VALUES ARE LOADED
 
 if ((empty($editing) && empty($task)) || $blocked || !empty($change) || !empty($change2)) {
  $task=array();
@@ -99,19 +100,20 @@ if ((empty($editing) && empty($task)) || $blocked || !empty($change) || !empty($
   $row["_date"]=date_sql_to_web($row["_date"]);
   $row["init"]=hour_sql_to_web($row["init"]);
   $row["_end"]=hour_sql_to_web($row["_end"]);
+  $row["telework"]=($row["telework"]=='t')?"true":"false";
   $row["text"]=stripslashes($row["text"]);
   $task[]=$row;
  }
  @pg_freeresult($result);
 }
 
-// BORRAR TAREA
+// DELETE TASK
 
 if (!empty($delete_task)) {
  $task=del_elements_shifting($task, current(array_keys($delete_task)));
 }
 
-// NUEVA TAREA
+// NEW TASK
 if (!empty($new_task)) {
  $i=count($task);
  $task[]=array(
@@ -122,6 +124,7 @@ if (!empty($new_task)) {
   "phase"=>"",
   "ttype"=>"",
   "story"=>"",
+  "telework"=>"",
   "text"=>""
  );
  if ($i==0) {	
@@ -132,34 +135,34 @@ if (!empty($new_task)) {
  }
 }
 
-// VOLVER AL CALENDARIO
+// RETURN TO CALENDAR
 
 if (!empty($cancel)) {
  header("Location: ?day=$day");
 }
 
-//Actualiza el campo end de tarea con la hora actual
+// Updates task end field with the current hour
 if (!empty($currenthour)){
 $t=current(array_keys($currenthour));
 $task[$t]["_end"]=date("H:i",mktime());
 }
 
-// GUARDAR CAMBIOS
+// SAVE CHANGES
 
 if (!empty($save)) {
  do {
-  // CHEQUEO DE BLOQUEO DE FORMULARIO
+  // REPORT LOCK CHECKING
 
   if ($blocked) {
-   $error=_("The report is blocked and it can't be modified");
+   $error=_("The report is locked and it can't be modified");
    break;
   }
 
-  // CHEQUEO DE CAMPOS
+  // FIELD CHECKING
 
   for ($i=0;$i<sizeof($task);$i++) {
    foreach (array("init","_end") as $field) {
-    if (!validate_date_web($task[$i][$field])) {
+    if (!validate_time_web($task[$i][$field])) {
      $error=_("Errors exist that must be corrected");
      $error_task[$i][$field]=_("You must use the format HH:MM");
     } else {     
@@ -182,7 +185,7 @@ if (!empty($save)) {
 $size=sizeof($task);
 if ($size>0) usort ($task, cmp_init_dates);
 
-  // REPETIMOS LAS VUELTAS PARA QUE LOS INDICES DE ERRORES SEAN CORRECTOS
+  // REPEAT THE LOOPS TO MAKE ERROR INDEXES TO BE CORRECT
 
   for ($i=0;$i<$size;$i++) {
    if ($i>0 && $task[$i-1]["_end"]>$task[$i]["init"]) {
@@ -192,13 +195,13 @@ if ($size>0) usort ($task, cmp_init_dates);
    }
    if ($task[$i]["init"]>=$task[$i]["_end"]) {
     $error=_("Errors exist that must be corrected");
-    $error_task[$i]["init"]=_("Nonvalid interval of hours");
-    $error_task[$i]["_end"]=_("Nonvalid interval of hours");
+    $error_task[$i]["init"]=_("Invalid interval of hours");
+    $error_task[$i]["_end"]=_("Invalid interval of hours");
    }
   }
   if (!empty($error)) break;
 
-  // TRANSACCIÓN DE ALMACENAMIENTO DE INFORME Y TAREAS
+  // REPORT AND TASKS SAVING TRANSACTION
 
   if (!@pg_exec($cnx,$query=
     "SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; "
@@ -209,7 +212,7 @@ if ($size>0) usort ($task, cmp_init_dates);
 
   do {
 
-   // BORRADO DE TAREAS
+   // TASK DELETING
 
    if (!@pg_exec($cnx,$query=
      "DELETE FROM task WHERE uid='$session_uid'"
@@ -218,18 +221,17 @@ if ($size>0) usort ($task, cmp_init_dates);
     break;
    }
 
-   // GESTION DE BLOQUEOS
+  // LOCK MANAGEMENT
 
   if (!$result=@pg_exec($cnx,$query=
      "SELECT _date FROM block WHERE uid='$session_uid'")) {
     $error=_("Can't finalize the operation");
     break;
-   }
+  }
 
-   if (@pg_numrows($result)==0) {
+  if (@pg_numrows($result)==0) {
 
-    // INSERT BLOQUEO
-    // ATENCION!! LE HACE FALTA COMILLAS A LA FECHA?
+    // LOCK INSERT
     if (!$result=@pg_exec($cnx,$query=
       "INSERT INTO block (uid,_date)"
      ." VALUES ('$session_uid', '1999-12-31')")) {
@@ -238,7 +240,7 @@ if ($size>0) usort ($task, cmp_init_dates);
     }
    }
 
- // GESTION DEL INFORME
+   // REPORT MANAGEMENT
 
    if (!$result=@pg_exec($cnx,$query=
      "SELECT modification_date FROM report WHERE uid='$session_uid'"
@@ -249,7 +251,7 @@ if ($size>0) usort ($task, cmp_init_dates);
 
    if (@pg_numrows($result)>0) {
 
-    // UPDATE INFORME
+    // REPORT UPDATE
 
     if (!$result=@pg_exec($cnx,$query=
       "UPDATE report SET modification_date=now()"
@@ -261,7 +263,7 @@ if ($size>0) usort ($task, cmp_init_dates);
 
    } else {
 
-    // INSERT INFORME
+    // REPORT INSERT
 
     if (!$result=@pg_exec($cnx,$query=
       "INSERT INTO report (uid,_date,modification_date)"
@@ -272,10 +274,10 @@ if ($size>0) usort ($task, cmp_init_dates);
     }
    }
 
-   // SE LE DA UN FORMATO CORRECTO A LAS TAREAS
+   // TASKS ARE FORMATTED PROPERLY
 
    for ($i=0;$i<sizeof($task);$i++) {
-    $fields=array("uid","_date","init","_end","name","type","phase","ttype","story","text");
+    $fields=array("uid","_date","init","_end","name","type","phase","ttype","story","telework","text");
     $row=array();
     foreach ($fields as $field)
     $row[$field]=$task[$i][$field];
@@ -288,7 +290,7 @@ if ($size>0) usort ($task, cmp_init_dates);
         && $field!="name") $row[$field]="NULL";
      else $row[$field]="'$row[$field]'";
 
-    // Y FINALMENTE SE INSERTAN
+    // AND FINALLY ARE INSERTED
 
     if (!@pg_exec($cnx,$query="INSERT INTO task ("
      .implode(",",$fields).") VALUES (".implode(",",$row).")")) {
@@ -297,25 +299,25 @@ if ($size>0) usort ($task, cmp_init_dates);
     }
    }
 
-  // Y SE HACE TODO EL PROCESO
+  // AND ALL THE PROCESS IS DONE
 
    @pg_exec($cnx,$query="COMMIT TRANSACTION");
   } while(false);
 
   if (!empty($error)) {
 
-   // Depuración
+   // Debugging
    $error.="<!-- $query -->";
    @pg_exec($cnx,$query="ROLLBACK TRANSACTION");
    break;
   }
 
-  $confirmation=_("The changes have save correctly");
+  $confirmation=_("The changes have been saved correctly");
 
  } while(false);
 }
 
-// RECUENTO DE HORAS SEMANALES Y DIARIAS TRABAJADAS
+// WEEKLY AND DAILY WORKED HOURS COMPUTATION
 
 if (empty($weekly_minutes) || !empty($save)) {
  $weekly_minutes=worked_minutes_this_week($cnx,$session_uid,date_web_to_sql($day));
@@ -373,15 +375,22 @@ for ($i=0;$i<sizeof($task);$i++) {
 <table border="0" cellpadding="3" cellspacing="1">
 <?
  foreach (array(
-  "init"=>_("Init hour"),
+  "init"=>_("Start hour"),
   "_end"=>_("End hour"),
   ) as $field_key=>$field_value) {
 ?>
  <tr>
   <td width="200px"><?=$field_value?></td>
   <td>
-   <input type="text" name="<?="task[$i][$field_key]"?>" <?=$param_blocked?>
-    value="<?=$task[$i][$field_key]?>">
+    <input type="text" name="<?="task[$i][$field_key]"?>" <?=$param_blocked?>
+      value="<?=$task[$i][$field_key]?>">
+<?
+    if ($field_key=="_end") {
+?>
+    <input type="submit" name="<?="currenthour[$i]"?>" value="<?=_("Current hour")?>"> 
+<?
+    }
+?>       
   </td>
  
   <td>
@@ -393,13 +402,7 @@ for ($i=0;$i<sizeof($task);$i++) {
   </td></tr>
  <?
  }
-?>
-<tr>
-  <td width="200px"></td>
-  <td> <input type="submit" name="<?="currenthour[$i]"?>" value="<?=_("Current hour")?>"> 
- </td>
- </tr>
-<?
+  
  foreach (array(
   "type"=>_("Task type"),
   "name"=>_("Project"),
@@ -433,7 +436,7 @@ for ($i=0;$i<sizeof($task);$i++) {
  }
 ?>
  <tr>
-  <td width="200px"><?=_("Use case")?></td>
+  <td width="200px"><?=_("Story")?></td>
   <td>
    <input type="text" name="<?="task[$i][story]"?>"
     value="<?=$task[$i]['story']?>" <?=$param_blocked?>>
@@ -445,6 +448,21 @@ for ($i=0;$i<sizeof($task);$i++) {
   }
 ?>
   </td>
+ </tr>
+ <tr>
+   <td width="200px"><?=_("Telework")?></td>
+   <td>
+    <input type="checkbox" name="<?="task[$i][telework]"?>"
+      value="true"
+      <?=($task[$i][telework]=='true')?"checked":""?> <?=$param_blocked?>>
+   </td>
+   <td>
+<?
+  if (!empty($error_task[$i]['story'])) {
+   echo msg_fail($error_task[$i]['story']);
+  }
+?>
+   </td>
  </tr>
  <tr>
   <td colspan="2">

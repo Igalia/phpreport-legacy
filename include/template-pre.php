@@ -1,8 +1,8 @@
 <?
 /**
- * VARIABLES YA DEFINIDAS QUE UTILIZA ESTA PÁGINA:
+ * VARIABLES ALREADY DEFINED USED BY THIS PAGE:
  *
- * title = Título de la página
+ * title = Page title
  *
  */
 header('Content-Type:  charset=UTF-8');

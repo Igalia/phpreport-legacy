@@ -23,13 +23,13 @@
 
 
 /**
- * PARÁMETROS HTTP QUE RECIBE ESTA PÁGINA:
+ * HTTP PARAMETERS RECEIVED BY THIS PAGE:
  *
- * dia = Día del informe. Formato DD/MM/AAAA
- * cambiar = Se ha pulsado CAMBIAR
- * actual_password = Password actual (por seguridad)
- * nueva_password = Nueva password
-	* nueva_password2 = Confirmación de password
+ * day = Report day. DD/MM/YYYY format.
+ * change = Change button has been pressed
+ * current_password = Current password (for security)
+ * new password = New password
+ * new_password2 = New password confirmation 
  */
 
 require_once("include/autenticate.php");
@@ -42,8 +42,8 @@ if (!($authentication_mode=="sql")) {
 
 if (!empty($new_password) || !empty($change)) {
 	do {
-		if (empty($actual_password)) {
-		 $error=_("You must specify the actual password");
+		if (empty($current_password)) {
+		 $error=_("You must specify the current password");
 			break;
 		}
 		if (empty($new_password)) {
@@ -51,17 +51,17 @@ if (!empty($new_password) || !empty($change)) {
 			break;
 		}
 		if ($new_password!=$new_password2) {
-		 $error=_("The new password and the confirmation password does not agree");
+		 $error=_("The new password and the confirmation password don't agree");
 			break;
 		}
 		
 		$die=_("Can't finalize the operation: ");
 		$result=@pg_exec($cnx,$query="SELECT uid FROM users"
-		." WHERE uid='$session_uid' AND password=md5('$actual_password')")
+		." WHERE uid='$session_uid' AND password=md5('$current_password')")
 		or die("$die $query");
 		
 		if (!($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC))) {
-		 $error=_("The actual password is incorrect");
+		 $error=_("The current password is incorrect");
 			break;
 		}
 	 @pg_freeresult($result);
@@ -69,7 +69,7 @@ if (!empty($new_password) || !empty($change)) {
 		$result=@pg_exec($cnx,$query="UPDATE users SET password=md5('$new_password')"
 		 ." WHERE uid='$session_uid'")
 			or die("$die $query");
-		$confirmation=_("The password has changed correctly");
+		$confirmation=_("The password has been changed correctly");
 		@pg_freeresult($result);
 		
 	} while (false);
@@ -98,7 +98,7 @@ if (!empty($confirmation)) msg_ok($confirmation);
 <td bgcolor="#000000" class="title_box"><font
  color="#FFFFFF" class="title_box">
 <!-- title box -->
-<?=_("Introduce the new password")?>
+<?=_("Input the new password")?>
 <!-- end title box -->
 </font></td></tr><tr><td bgcolor="#FFFFFF" class="text_box">
 <table border="0" cellspacing="0" cellpadding="10"><tr><td>
@@ -109,8 +109,8 @@ if (!empty($confirmation)) msg_ok($confirmation);
 <form method="post">
 <table border="0" cellspacing="0" cellpadding="10">
 <tr>
- <td><?=_("Actual password")?></td>
- <td><input type="password" name="actual_password"></td>
+ <td><?=_("Current password")?></td>
+ <td><input type="password" name="current_password"></td>
 </tr>
 <tr>
  <td><?=_("New password")?></td>

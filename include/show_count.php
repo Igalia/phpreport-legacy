@@ -5,7 +5,7 @@
 	<tr><td bgcolor="#000000" class="title_minibox">
 		<font color="#FFFFFF" class="title_minibox">
    		<!-- title box -->
-   		<?=_("Count of hours")?>
+   		<?=_("Hour count")?>
    		<!-- end title box -->
    		</font>
 	</td></tr>

@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE weeklyDedication SYSTEM "rules.dtd">
+
+<weeklyDedication>
+<dedication month="January">
+<dailyDedication day="9">
+<task type="SYS" start="1000" end="1030">
+System task
+</task>
+<task type="PEX" name="test1" phase="construction"
+       start="1030" end="1500">
+
+</task>
+<task type="PEX" name="test1" phase="construction"
+       start="1530" end="2000" telework="true">
+Work on project test1
+</task>
+</dailyDedication>
+
+<dailyDedication day="10">
+<task type="PEX" name="test1" phase="construction"
+       start="1100" end="1430">
+Work on project test1
+</task>
+<task type="PEX" name="test1" phase="construction"
+       start="1530" end="2000">
+Work on project test1
+</task>
+</dailyDedication>
+
+<dailyDedication day="11">
+<task type="PEX" name="test1" phase="construction"
+       start="1100" end="1430">
+Work on project test1
+</task>
+<task type="PEX" name="test1" phase="construction"
+       start="1600" end="2100">
+Work on project test1
+</task>
+</dailyDedication>
+
+<dailyDedication day="12">
+<task type="PEX" name="test1" phase="construction"
+       start="1100" end="1430">
+Work on project test1
+</task>
+<task type="PEX" name="test1" phase="construction"
+       start="1530" end="2000">
+Work on project test1 (reunión Santiago)
+</task>
+</dailyDedication>
+
+<dailyDedication day="13">
+<task type="COR" start="1000" end="1400">
+Coordination meeting
+</task>
+<task type="COR" start="1600" end="2000">
+Coordination meeting
+</task>
+</dailyDedication>
+
+</dedication>
+</weeklyDedication>

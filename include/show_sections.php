@@ -18,8 +18,8 @@
    			<a href="report.php?day=<?=$day?>" style="font-weight: bold;">- <?=_("Report edition")?></a>
 			<br>
    			<a href="uploadxml.php" style="font-weight: bold;">- <?=_("XML import")?></a>    			
-                        <br>
-                        <a href="consult.php?day=<?=$day?>" style="font-weight: bold;">- <?=_("Results extraction")?></a>
+      <br>
+      <a href="consult.php?day=<?=$day?>" style="font-weight: bold;">- <?=_("Result extraction")?></a>
 <?
 if ($authentication_mode=="sql") {
 ?>
@@ -36,7 +36,7 @@ if ($authentication_mode=="sql") {
 		</table>
 	</td></tr>
 <?
-if (in_array("informesadm",(array)$session_groups)) {
+if (in_array($admin_group_name,(array)$session_groups)) {
 ?>
    <tr><td bgcolor="#FFFFFF" class="text_minibox">
    <table border="0" cellspacing="0" cellpadding="10"><tr><td
@@ -45,7 +45,7 @@ if (in_array("informesadm",(array)$session_groups)) {
     color="#000000" class="text_minibox">
    <!-- text box -->
     <a href="block.php?day=<?=$day?>"
-     style="font-weight: bold;">- <?=_("Block reports")?></a>
+     style="font-weight: bold;">- <?=_("Report blocking")?></a>
    <br>
     <a href="adminlabels.php?day=<?=$day?>"
      style="font-weight: bold;">- <?=_("Labels")?></a>
@@ -54,13 +54,13 @@ if (in_array("informesadm",(array)$session_groups)) {
      style="font-weight: bold;">- <?=_("Project evaluation")?></a>
    <br>
     <a href="projevaluation.php?day=<?=$day?>&amp;flag=PERSONS"
-     style="font-weight: bold;">- <?=_("Users evaluation")?></a>
+     style="font-weight: bold;">- <?=_("User evaluation")?></a>
    <br>
     <a href="projects.php?day=<?=$day?>"
      style="font-weight: bold;">- <?=_("Project management")?></a>
    <br>
     <a href="users.php?day=<?=$day?>"
-     style="font-weight: bold;">- <?=_("Users management")?></a>
+     style="font-weight: bold;">- <?=_("User management")?></a>
    <br>
     <a href="cal_manag.php?day=<?=$day?>"
      style="font-weight: bold;">- <?=_("Calendar management")?></a>

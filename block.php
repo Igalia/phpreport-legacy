@@ -22,11 +22,10 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 /**
- * PARÁMETROS HTTP QUE RECIBE ESTA PÁGINA:
+ * HTTP PARAMETERS RECEIVED BY THIS PAGE:
  *
- * dia = Día del que mostrar el calendario. Formato DD/MM/AAAA
- * igalio = Igalio sobre el cual se realizara el bloqueo.
- *
+ * day = Day to show calendar for. DD/MM/YYYY format.
+ * employee = Employee for whic the blocking is going to be performed.
  */
 
 require_once("include/autenticate.php");
@@ -34,12 +33,12 @@ require_once("include/util.php");
 require_once("include/prepare_calendar.php");
 require_once("include/connect_db.php");
 
-if (!in_array("informesadm",(array)$session_groups)) {
+if (!in_array($admin_group_name,(array)$session_groups)) {
  header("Location: login.php");
 }
 
 if (!empty($apply)) {
- if ($igalio=="all") {
+ if ($employee=="all") {
   if (!@pg_exec($cnx,$query="UPDATE block SET _date='".date_web_to_sql($block_day)."'")) {
     $error=_("It has not been possible to update the block date");
   } else {
@@ -48,7 +47,7 @@ if (!empty($apply)) {
  } else {
   if (!@pg_exec($cnx,$query="UPDATE block SET "
    ."_date='".date_web_to_sql($block_day)."'"
-   ." WHERE uid='$igalio'")) {
+   ." WHERE uid='$employee'")) {
     $error=_("It has not been possible to update the block date");
   } else {
    $confirmation=_("The block date has been updated correctly");
@@ -62,14 +61,14 @@ $months=array(
 $days=array(
  _("Monday"),_("Tuesday"),_("Wednesday"),_("Thursday"),_("Friday"),_("Saturday"),_("Sunday"));
 
-$igalios=$session_users;
-$igalios["all"]=_("--- All ---");
+$employees=$session_users;
+$employees["all"]=_("--- All ---");
 
-if (empty($igalio)) $igalio="all";
+if (empty($employee)) $employee="all";
 
 $die=_("Can't finalize the operation");
-if($igalio!="all") $result=@pg_exec($cnx,$query="SELECT _date FROM block"
-    ." WHERE uid = '$igalio' ORDER BY _date DESC")
+if($employee!="all") $result=@pg_exec($cnx,$query="SELECT _date FROM block"
+    ." WHERE uid = '$employee' ORDER BY _date DESC")
    or die($die);
 else $result=@pg_exec($cnx,$query="SELECT _date FROM block"
     ." ORDER BY _date DESC")
@@ -99,7 +98,7 @@ $day_year_previous=day_year_moved($day, -1);
 $day_year_next=day_year_moved($day, 1);
 
 require_once("include/close_db.php");
-$title=_("Block reports");
+$title=_("Report blocking");
 require("include/template-pre.php");
 
 if (!empty($error)) msg_fail($error);
@@ -117,9 +116,9 @@ if (!empty($confirmation)) msg_ok($confirmation);
     <tr>
      <td><b><?=_("Employee to block:")?></b></td>
      <td>
-      <select name="igalio"
+      <select name="employee"
        onchange="javascript:document.results.submit();">
-       <?=array_to_option(array_values($igalios),$igalio,array_keys($igalios))?>
+       <?=array_to_option(array_values($employees),$employee,array_keys($employees))?>
       </select>
      </td>
      <td>
@@ -137,7 +136,7 @@ if (!empty($confirmation)) msg_ok($confirmation);
 <td bgcolor="#000000" class="title_box"><font
  color="#FFFFFF" class="title_box">
 <!-- title box -->
-<?=_("Selection of date limit of block")?>
+<?=_("Selection of blocking limit date")?>
 <!-- end title box -->
 </font></td></tr><tr><td bgcolor="#FFFFFF" class="text_box">
 <table border="0" cellspacing="0" cellpadding="0"><tr><td>
@@ -172,11 +171,11 @@ if (!empty($confirmation)) msg_ok($confirmation);
            <table border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
              <td style="background: #FFFFFF; width: 4ex">
-             <a href="?day=<?=$day_month_previous?>&amp;igalio=<?=$igalio?>"
+             <a href="?day=<?=$day_month_previous?>&amp;employee=<?=$employee?>"
               style="color: #000000">&lt;</a>
              </td>
              <td style="background: #FFFFFF; width: 4ex">
-             <a href="?day=<?=$day_month_next?>&amp;igalio=<?=$igalio?>"
+             <a href="?day=<?=$day_month_next?>&amp;employee=<?=$employee?>"
               style="color: #000000">&gt;</a>
              </td>
              <td align="right">
@@ -195,7 +194,7 @@ if (!empty($confirmation)) msg_ok($confirmation);
          </tr>
          <tr>
         <?
-         // Cálculo de los títulos de los días
+         // Day title computing
          foreach ($days as $d) {
         ?>
           <td style="<?=$style["T"]?>">
@@ -220,7 +219,7 @@ if (!empty($confirmation)) msg_ok($confirmation);
           }
         ?>
           <td style="<?=$style[$d[1]]?>">
-           <a href="block.php?day=<?=$d[2]?>&amp;igalio=<?=$igalio?>" style="<?=$style[$d[1]]?>"
+           <a href="block.php?day=<?=$d[2]?>&amp;employee=<?=$employee?>" style="<?=$style[$d[1]]?>"
            ><?=$d[0]?></a>
           </td>
         <?
@@ -244,7 +243,7 @@ if (!empty($confirmation)) msg_ok($confirmation);
       <tr><td style="<?=$style["B"]?>"><?=_("Blocked day")?></td></tr>
       <tr><td style="<?=$style["H"]?>"><?=_("Selected day")?></td></tr>
       <tr><td style="<?=$style["N"]?>"><?=_("Unblocked day")?></td></tr>
-      <tr><td style="<?=$style["G"]?>"><?=_("Day of the previous or later month")?></td></tr>
+      <tr><td style="<?=$style["G"]?>"><?=_("Day of the previous or next month")?></td></tr>
      </table>
      </td></tr></table>
 

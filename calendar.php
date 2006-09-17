@@ -22,9 +22,9 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 /**
- * PARÁMETROS HTTP QUE RECIBE ESTA PÁGINA:
+ * HTTP PARAMETERS RECEIVED BY THIS PAGE:
  *
- * dia = Día del que mostrar el calendar. Formato DD/MM/AAAA
+ * day = Day to show calendar for. DD/MM/YYYY format.
  */
 
 require_once("include/autenticate.php");
@@ -52,7 +52,7 @@ $day_month_next=day_month_moved($day, 1);
 $day_year_previous=day_year_moved($day, -1);
 $day_year_next=day_year_moved($day, 1);
 
-$title=_("calendar of ").$months[$today["mon"]-1]
+$title=_("calendar for ").$months[$today["mon"]-1]
  ._(" of ").$today["year"];
 require("include/template-pre.php");
 
@@ -99,7 +99,7 @@ if (!empty($error)) msg_fail($error);
           "H"=>"background: #C0C0D0; color: #000000; font-weight: regular; text-align: center"
          );
 
-         // Cálculo de los titles de los días
+         // Day title computation
          foreach ($days as $d) {
         ?>
         <td style="<?=$style["T"]?>">
@@ -133,10 +133,9 @@ if (!empty($error)) msg_fail($error);
    </table>
   </td>
  <?
-  // El usuario actual es del grupo de administradores
+  // The current user belongs to administrator group
 
-  // if (in_array("informesadm", $groups)) {
-  if (true) {
+  if (in_array($admin_group_name, $groups)) {
  ?>
   <td style="width: 25ex" valign="top">
 
@@ -156,7 +155,7 @@ if (!empty($error)) msg_fail($error);
     color="#000000" class="text_minibox">
    <!-- text box -->
    <a href="block.php"
-    style="font-weight: bold;">- <?=_("Block reports")?></a>
+    style="font-weight: bold;">- <?=_("Report blocking")?></a>
    <br>
    <a href="consult.php"
     style="font-weight: bold;">- <?=_("Querys")?></a>
@@ -213,7 +212,7 @@ if (!empty($error)) msg_fail($error);
        "H"=>"background: #C0C0D0; color: #000000; font-weight: regular; text-align: center"
       );
 
-      // Cálculo de los titles de los días
+      // Day title computing
       foreach ($days as $d) {
      ?>
      <td style="<?=$style["T"]?>">
@@ -250,7 +249,7 @@ if (!empty($error)) msg_fail($error);
  <? } ?>
  </tr>
 </table>
-</center>   <form name="mini_calendar" method="get">
+</center>
 <?
 require("include/template-post.php");
 ?>

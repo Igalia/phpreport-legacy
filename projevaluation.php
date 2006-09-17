@@ -29,6 +29,7 @@
 // 4 - Project evaluation
 // 5 - Hourly personal brief
 
+// Useful arrays:
 // $holidays[city]
 // $type_consult[]
 // $users_consult[]
@@ -39,7 +40,6 @@ require_once("include/util.php");
 require_once("include/autenticate.php");
 require_once("include/connect_db.php");
 require_once("include/prepare_calendar.php");
-require_once("include/extra_hours.php");
 
 $die=_("Can't finalize the operation");
 
@@ -82,7 +82,7 @@ if ($init!=""||$end!="") {
     $error=_("Incorrect date format, should be DD/MM/YYYY");
   }
 }
-if (($sheets!=0||!empty($view))&&$init==""&&$end=="") $error="Las fechas no pueden ser vacias";
+if (($sheets!=0||!empty($view))&&$init==""&&$end=="") $error=_("Dates can't be void");
 
 if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
   $init=date_web_to_sql($init);
@@ -256,7 +256,8 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
       $add_total_extra_hours+=$row2["total_extra_hours"];
     }
     foreach($worked_hours_consult as $k=>$row2) {
-      $percent_row[$k]=100*$row2["total_extra_hours"]/$add_positive_total_extra_hours;
+      // Use @ (error quieting) to prevent division by zero. Result will be zero anyway...
+      $percent_row[$k]=@(100*$row2["total_extra_hours"]/$add_positive_total_extra_hours);
     }
     
     $add_totals=array($add_total_hours,$add_period_extra_hours,$add_total_extra_hours);
@@ -272,16 +273,17 @@ if (empty($error)&&$init!=""&&$end!="") {
 $querys1=array(
   "PERSONS"=>array(
     "---",
-    2=>_("Person template"),
-    3=>_("Person/project"),
-    5=>_("Breef sheet")),
+    2=>_("Person / task type"),
+    3=>_("Person / project"),
+    5=>_("Hourly personal brief")),
   "PROJECTS"=>array(
     "---",
-    1=>_("Project template"),
-    3=>_("Person/project"),
+    1=>_("Project / task type"),
+    3=>_("Person / project"),
     4=>_("Project evaluation")));
 
-$title=_("Project evaluation");
+if ($flag=="PERSONS") $title=_("Person evaluation");
+else $title=_("Project evaluation");
 
 
 require("include/template-pre.php");
@@ -299,13 +301,12 @@ if (!empty($error)) msg_fail($error);
 <select name="sheets" onchange="javascript: document.results.submit();">
 <?=array_to_option(array_values($querys1[$flag]),$sheets,array_keys($querys1[$flag]))?>
 </select>
-<?if ($sheets==5){?><input type="submit" name="extra_count" value="<?=_("Recuento horas")?>"><?}?>
 <br><br><br>
 
 <table>
  <tr>
   <td>
-<?=_("Init date DD/MM/YYYY");?>:
+<?=_("Start date");?>:
   </td>
   <td>
     <input type="text" name="init" value="<?=$init?>">
@@ -313,7 +314,7 @@ if (!empty($error)) msg_fail($error);
  </tr>
  <tr>
   <td>
-<?=_("End date DD/MM/YYYY");?>:
+<?=_("End date");?>:
   </td>
   <td>
     <input type="text" name="end" value="<?=$end?>">
@@ -364,8 +365,8 @@ if (empty($error)&&$sheets!=0) {
 <?
     } else {
       $titles=array(
-        _("Performed hours"),_("Estimated hours"),_("Desviation %"),
-        _("Desviation abs"),_("Invoice"),_("€/h real"),_("€/h est."));
+        _("Worked hours"),_("Estimated hours"),_("Deviation %"),
+        _("Desviation abs"),_("Invoice"),_("EUR/h real"),_("EUR/h est."));
       foreach ((array)$titles as $col) {
 ?>
   <td bgcolor="#FFFFFF" class="title_box"><?=$col?></td>
@@ -433,9 +434,11 @@ if (empty($error)&&$sheets!=0) {
   <td bgcolor="#FFFFFF" class="text_result"><b><?=sprintf("%01.2f",$total)?></b></td>
 <?
     }
+    if ($sheets!=4) {
 ?>
   <td bgcolor="#FFFFFF" class="text_data">&nbsp;</td>
 <?
+    }
   }
 ?>
 </tr>

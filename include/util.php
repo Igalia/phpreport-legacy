@@ -21,11 +21,11 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+// USEFUL FUNCTION LIBRARY
 
-// LIBRERÍA DE FUNCIONES ÚTILES
+// NOTE: Uncoment the ones you need. At the end of the project,
+// unneeded ones will be deleted
 
-// NOTA: Descomenta las que necesites. Al final del proyecto se
-// borrarán las sobrantes.
 require_once("include/config.php");
 
 function msg_ok($msg) {
@@ -36,7 +36,7 @@ function msg_fail($msg) {
  echo("<p class=\"msg_fail\"><b>$msg</b></p>");
 }
 
-// Obtiene la mayor de las claves de un array monodimensional
+// Get the greatest key of a monodimensional array
 /*
 function max_key($array) {
  $max=-1;
@@ -46,51 +46,53 @@ function max_key($array) {
 }
 */
 
-// Transforma un tipo SET de MySQL (cadena de valores separados por comas)
-// en un ARRAY de PHP que contiene cada uno de los elementos presentes en
-// el conjunto.
+// Transform a MySQL SET type (value string delimited by commas)
+// into a PHP ARRAY, containing each of the elements of the set.
 function set_to_array($set) {
  if (empty($set)) return array();
  else return explode(",",$set);
 }
 
 /*
-function chequeado($checkbox) {
+function checked($checkbox) {
  if ($checkbox==1) return "CHECKED";
  else return "";
 }
 */
 
-// Borra el elemento i de un array unidimensional.
-// i es numérico. Todos los elementos k, siendo
-// k>i serán desplazados a la posición k-1 con el fin de no dejar "huecos"
-// en la numeración i del array.
-// Ej: A[1] A[2] A[3] A[4] --> A[1] A[3] A[4] ¡¡No debe quedar el hueco A[2]!!
-// Correcto: A[1] A[2] A[3] A[4] --> A[1] A[2] A[3] (A[2] y A[3] son los antiguos
-//           A[3] y A[4].
+// Deletes i-th element of a monodimensional array.
+// i is numeric. All the k elements, being k>i, will be shifted
+// to the k-1 position for the purpose of avoid "holes" in the
+// i numbering of the array.
+// Example: A[1] A[2] A[3] A[4] --> A[1] A[3] A[4] ¡¡A[2] hole mustn't remain!!
+// Correct: A[1] A[2] A[3] A[4] --> A[1] A[2] A[3] (A[2] y A[3] are the old
+//           A[3] and A[4].
 function del_elements_shifting($array, $i) {
  array_splice($array,$i,1);
  return(array_values($array));
 }
 
-// Tests if a date is valid DD/MM/AAAA or D/M/AAAA
+// Tests if a date is valid DD/MM/YYYY or D/M/YYYY
 function validate_date_web($web_date) {
  return preg_match("/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4,4}/",$web_date);
 }
 
-// Convierte una fecha de formato "español" (DD/MM/AAAA) a un
-// array(DD,MM,AAAA)
+// Tests if a time is valid HH:MM or H:MM
+function validate_time_web($web_time) {
+ return preg_match("/[0-9]{1,2}:[0-9]{2,2}/",$web_time);
+}
+
+// Convert a date from "spanish" format (DD/MM/YYYY) to a (DD,MM,YYYY) array
 function date_web_to_arrayDMA($web_date) {
  return explode("/",$web_date);
 }
 
-// Convierte un array(DD,MM,AAAA) en una fecha de
-// formato "español" (DD/MM/AAAA)
+// Convert from a (DD,MM,YYYY) array to a "spanish" (DD/MM/YYYY) date
 function date_arrayDMA_to_web($date_arrayDMA) {
  return implode("/",$date_arrayDMA);
 }
 
-// Convierte una fecha de formato "español" (DD/MM/AAAA) a formato "PostgreSQL" (AAAA-MM-DD)
+// Convert from "spanish" (DD/MM/YYYY) date to a "PostgreSQL" (YYYY-MM-DD) date
 function date_web_to_sql($web_date) {
  $dateDMA=explode("/",$web_date);
  if (strlen($dateDMA[0])==1) $dateDMA[0]="0".$dateDMA[0];
@@ -98,13 +100,13 @@ function date_web_to_sql($web_date) {
  return($dateDMA[2]."-".$dateDMA[1]."-".$dateDMA[0]);
 }
 
-// Convierte una fecha de formato "PostreSQL" (AAAA-MM-DD) a formato "español" (DD/MM/AAAA)
+// Convert from "PostgreSQL" (YYYY-MM-DD) date to "spanish" (DD/MM/YYYY)
 function date_sql_to_web($date_sql) {
  $dateAMD=explode("-",$date_sql);
  return($dateAMD[2]."/".$dateAMD[1]."/".$dateAMD[0]);
 }
 
-// Devuelve NULL si alguna fecha es nula
+// Returns NULL if there is any null date
 function date_web_to_quoted_sql($web_date) {
   if($web_date=="") return "NULL";
   else {
@@ -115,42 +117,41 @@ function date_web_to_quoted_sql($web_date) {
   }
 }
 
-// Compara las dos fechas de inicio de dos arrays
+// Compare init date from two arrays
 function cmp_init_dates ($a, $b) {
     if ($a["init"] == $b["init"]) return 0;
     return ($a["init"] < $b["init"]) ? -1 : 1;
 }
 
-// Convierte una hora de formato "español" (HH:MM) a formato "PostgreSQL" (minutos totales)
+// Convert "spanish" time (HH:MM) to "PostgreSQL" (total minutes)
 function hour_web_to_sql($web_hour) {
  $hourHM=explode(":",$web_hour);
  return($hourHM[0]*60+$hourHM[1]);
 }
 
-// Convierte una fecha de formato "PostgreSQL" (minutos totales) a formato "español" (HH:MM)
+// Convert "PostgreSQL" time (total minutes) to "spanish" (HH:MM)
 function hour_sql_to_web($hour_sql) {
  $hourHM=array(floor($hour_sql/60),$hour_sql%60);
  return(sprintf("%02d:%02d",$hourHM[0],$hourHM[1]));
 }
 
-// Convierte una fechahora de formato "MySQL" (AAAA-MM-DD HH:MM:SS) a
-// formato "español" (DD/MM/AAAA HH:MM)
+// Convert a "MySQL" datetime (YYYY-MM-DD HH:MM:SS) to "spanish" (DD/MM/YYYY HH:MM)
 /*
-function fechahora_sql_to_web($date_sql) {
- $fechaFH=explode(" ",$date_sql);
- return(fecha_sql_to_web($fechaFH[0])." "
-  .hora_sql_to_web($fechaFH[1]));
+function datetime_sql_to_web($date_sql) {
+ $dateDT=explode(" ",$date_sql);
+ return(date_sql_to_web($dateDH[0])." "
+  .hour_sql_to_web($dateDH[1]));
 }
 */
 
-// Convierte un número a formato monetario. Ej: 123456.45
+// Convert a number to currency format
 /*
 function money_to_web($currency) {
  return(sprintf("%01.2f",$currency));
 }
 */
 
-// Genera los campos OPTION para formularios, marcando SELECTED el campo especificado
+// Generate OPTION fields for forms, checking the specified field as SELECTED 
 function array_to_option($options, $selected, $values="") {
  $result="";
  $i=0;
@@ -170,8 +171,8 @@ function array_to_option($options, $selected, $values="") {
  return $result;
 }
 
-// Une el contenido de dos arrays elemento a elemento
-// Ej: [a b c] [x y z] --> [ax by cz]
+// Join the content of two arrays element by element
+// Ex: [a b c] [x y z] --> [ax by cz]
 /*
 function array_join($a1, $a2) {
  $result=$a1;
@@ -181,11 +182,10 @@ function array_join($a1, $a2) {
 }
 */
 
-// Convierte los values de un array en un array de booleans indexado
-// por esos values.
-// Ej: [a b c] = [0->a, 1->b, 2->c] --> [a->TRUE, b->TRUE, c->TRUE]
-// De este modo ya no es necesario hacer array_search($elemento,$array),
-// ya que podemos usar esta comparación más cómoda: ¿($array[$elemento]==true)?
+// Convert array values to a boolean array indexed by those values.
+// Ex: [a b c] = [0->a, 1->b, 2->c] --> [a->TRUE, b->TRUE, c->TRUE]
+// By this way, doing array_search($element,$array) will no more bee needed,
+// because now we can use this easier comparation: ($array[$element]==true)
 /*
 function array_to_boolean_array($array) {
  $result=array();
@@ -195,8 +195,8 @@ function array_to_boolean_array($array) {
 }
 */
 
-// Extrae una porción de un array
-// Ej: sub_array([a->w, b->x, c->y, d->z], [a, c]) = [a->w, c->y]
+// Extracts a portion of an array
+// Ex: sub_array([a->w, b->x, c->y, d->z], [a, c]) = [a->w, c->y]
 /*
 function sub_array($array, $claves) {
  $result=array();
@@ -206,38 +206,38 @@ function sub_array($array, $claves) {
 }
 */
 
-// Devuelve la fecha que se le pasa con tantos meses hacia adelante o atras como se le indique
-// en los parametros. La fecha debe estar en formato DD/MM/AAAA
+// Returns passed date moved as many months forward or backward as indicated 
+// by the parameters. Date must be in DD/MM/YYYY format.
 function day_month_moved($day, $shift) {
  $arrayDMA=date_web_to_arrayDMA($day);
  $tmp=getdate(mktime(0,0,0,$arrayDMA[1]+$shift,$arrayDMA[0],$arrayDMA[2]));
  return(date_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"])));
 }
 
-// Devuelve la fecha que se le pasa con tantos años hacia adelante o atras como se le indique
-// en los parametros. La fecha debe estar en formato DD/MM/AAAA
+// Returns passed date moved as many years forward or backward as indicated 
+// by the parameters. Date must be in DD/MM/YYYY format.
 function day_year_moved($day, $shift) {
  $arrayDMA=date_web_to_arrayDMA($day);
  $tmp=getdate(mktime(0,0,0,$arrayDMA[1],$arrayDMA[0],$arrayDMA[2]+$shift));
  return(date_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"])));
 }
 
-// Devuelve la fecha que se le pasa con tantos días hacia adelante o atras como se le indique
-// en los parametros. La fecha debe estar en formato DD/MM/AAAA
-function day_day_moved($day, $shif){
+// Returns passed date moved as many days forward or backward as indicated 
+// by the parameters. Date must be in DD/MM/YYYY format.
+function day_day_moved($day, $shift){
   $arrayDMA=date_web_to_arrayDMA($day);
   $tmp=getdate(mktime(0,0,0,$arrayDMA[1],$arrayDMA[0]+$shift,$arrayDMA[2]));
   return(date_arrayDMA_to_web(array($tmp["mday"],$tmp["mon"],$tmp["year"])));
 }
 
-//Dada una fecha, devuelve la fecha correspondiente al día anterior
-//(útil para la acción copiar informe del día anterior)
+// Given a date, it returns the date corresponding to previous day
+// (useful for "copy previous day report" action)
 function day_yesterday($day){
   return day_day_moved($day,-1);
 }
 
-// Crea un array con el calendario del mes de una fecha dada.
-// Si la fecha esta vacia se coge el dia actual.
+// Create an array with next month calendar, for a given date.
+// If date is void, the current day is used.
 function make_calendar($day) {
  if (!empty($day)) {
   $arrayDMA=date_web_to_arrayDMA($day);
@@ -252,7 +252,7 @@ function make_calendar($day) {
 
  $calendar=array();
 
- // Cálculo de los días en gris del mes anterior
+ // Computing of previous month grey days
 
  $dt=getdate(mktime(0,0,0,$today["mon"],1,$today["year"]));
  $d=getdate(mktime(0,0,0,$today["mon"],
@@ -265,8 +265,8 @@ function make_calendar($day) {
   );
  }
 
-// $calendar2=$calendar2;
- // Cálculo de los días en negro (de este mes)
+ // $calendar2=$calendar2;
+ // Computing of black days (of this month)
  for ($k=0;;$k++,$i++) {
   $t=mktime(0,0,0,$today["mon"],$k+1,$today["year"]);
   $dt=getdate($t);
@@ -282,7 +282,7 @@ function make_calendar($day) {
    }
   } else break;
  }
- // Cálculo de los días en gris del mes siguiente
+ // Computing of next month grey days
  for ($j=1;($i>1)&&($i<=7);$i++) {
   $tmp=getdate(mktime(0,0,0,$arrayDMA[1]+1,$j,$arrayDMA[2]));
   $calendar[$s][$i]=array($j,"G",
@@ -293,7 +293,7 @@ function make_calendar($day) {
 }
 
 
-// Necesario para eval_html
+// Needed for eval_html
 function eval_buffer($string) {
     ob_start();
     eval("$string[2];");
@@ -302,7 +302,7 @@ function eval_buffer($string) {
     return $return;
 }
  
-// Necesario para eval_html
+// Needed for eval_html
 function eval_print_buffer($string) {
     ob_start();
     eval("print $string[2];");
@@ -311,7 +311,7 @@ function eval_print_buffer($string) {
     return $return;
 }
  
-// Evalúa un PHP y devuelve el resultado como un string
+// Evals a PHP and returns the result as a string
 function eval_html($string) {
     $string = preg_replace_callback("/(<\?=)(.*?)\?>/si",
                                     "eval_print_buffer",$string);
@@ -319,10 +319,10 @@ function eval_html($string) {
                                   "eval_buffer",$string);
 }
 
-// Actualiza el fichero reglas.dtd con la configuración de config.php
+// Update rules.dtd with config.php configuration
 function update_dtd() {
 
-   global $tabla_tipo, $tabla_nombre, $tabla_fase, $tabla_ttipo;
+   global $table_type, $table_name, $table_phase, $table_ttype;
 
    ob_start();
    require("rules.dtd.php");
@@ -333,19 +333,19 @@ function update_dtd() {
    fclose($f);
 }
  
-// Convierte un valor de un checkbox a una variable booleana para PostgreSQL
+// Convert a checkbox value to a boolean variable for PostgreSQL
 function checkbox_to_sql($i) {
  if (!empty($i)) return "t";
  else return "f";
 }
 
-// Convierte una variable booleana de PostgreSQL (t/f) en una cadena "CHECKED"
+// Convert a boolean PostgreSQL variable (t/f) to a "CHECKED" string
 function sql_to_checkbox($i) {
  if ($i=="t") return " CHECKED ";
  else return "";
 }
 
-// Calcula los minutos que un trabajador lleva trabajados la semana actual
+// Compute the minutes that a worker has worked during current week
 function worked_minutes_this_week($cnx,$uid,$day) {
  $hours="---";
  $result=@pg_exec($cnx,$query="
@@ -370,35 +370,6 @@ GROUP BY uid");
  return $minutes;
 }
 
-function workable_days ($init, $end, $holidays, $periods){
-foreach ($periods as $period) {
-  $i=date_web_to_arrayDMA($period["init"]);
-  $i=date(mktime(0,0,0,$i[1],$i[0],$i[2]));
-  $init=$i;
-  if ($period["_end"]=="NULL"){
-   $e=getdate(time());
-   $e=date(mktime(0,0,0,$e["mon"],$e["mday"],$e["year"]));
-  }
-  else {
-    $e=date_web_to_arrayDMA($period["_end"]);
-    $e=date(mktime(0,0,0,$e[1],$e[0],$e[2]));
-  }
-  $end=$e;
-  while ($init<=$e&&$e<=$end){
-    $init=getdate($init);
-    $search=array_search($init,$holidays);
-    if ($search===false) {
-      if($init["weekday"] != 'Sunday' && $init["weekday"] != 'Saturday')
-            $hours[$init["year"]][$init["mon"]]+=$period["journey"];
-    }
-    $init=getdate(mktime(0,0,0,$init["mon"],$init["mday"]+1,$init["year"]));
-    $init=date(mktime(0,0,0,$init["mon"],$init["mday"],$init["year"]));
-  }
-} //end foreach ($periods...
-return $hours;
-}
-
-
 function make_calendar2($holidays,$day) {
 $empty=false;
 
@@ -413,8 +384,7 @@ if (!empty($day)) {
 
  $calendar=array();
 
- // Cálculo de los días en gris del mes anterior
-
+ // Computing of previous month grey days
  $dt=getdate(mktime(0,0,0,$day["mon"],1,$day["year"]));
  $d=getdate(mktime(0,0,0,$day["mon"],
   1-((($dt["wday"]+6)%7)+1),$day["year"]));
@@ -426,7 +396,7 @@ if (!empty($day)) {
   );
  }
 
- // Cálculo de los días en negro (de este mes)
+ // Computing of black days (of this month)
  for ($k=0;;$k++,$i++) {
   $t=mktime(0,0,0,$day["mon"],$k+1,$day["year"]);
   $dt=getdate($t);
@@ -469,7 +439,7 @@ else {
    }
   } else break;
  } 
- // Cálculo de los días en gris del mes siguiente
+ // Computing of next month grey days
  for ($j=1;($i>1)&&($i<=7);$i++) {
   $tmp=getdate(mktime(0,0,0,$arrayDMA[1]+1,$j,$arrayDMA[2]));
   $calendar[$s][$i]=array($j,"G",

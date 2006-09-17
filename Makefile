@@ -1,4 +1,4 @@
-VERSION=1.3
+VERSION=1.4
 
 all:
 	true
@@ -28,4 +28,7 @@ install:
 	 do install -o root -g root conf.d/phpreport $(DESTDIR)/$$i/conf.d/phpreport; done		
 uninstall:
 	true
-
+i18n-dev:
+	for i in i18n/*.po ; \
+	 do xgettext -L PHP --from-code UTF-8 -j -o $$i `find -name '*.php'`; \
+	 done

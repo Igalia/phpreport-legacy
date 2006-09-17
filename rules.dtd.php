@@ -55,10 +55,10 @@ foreach(array_keys((array)$table_ttype) as $i) {
   $ttype[]=$i;
  }
 }
-$months=array(
- _("January")|_("February")|_("March")|_("April")|_("May")|_("June")|
- _("July")|_("August")|_("September")|_("October")|_("November")|_("December"));
-echo("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>");
+$months=array("January","February","March","April","May","June","July",
+  "August","September","October","November","December");
+
+echo("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 ?>
 
  <!ELEMENT weeklyDedication (dedication+)>
@@ -67,15 +67,14 @@ echo("<?xml version=\"1.0\" encoding=\"iso-8859-1\"?>");
  <!ELEMENT task (#PCDATA)>
  
  <!ATTLIST dedication 
-  mes (_("January")|_("February")|_("March")|_("April")|_("May")|_("June")|
- _("July")|_("August")|_("September")|_("October")|_("November")|_("December")|_("january")|_("february")|_("march")|_("april")|_("may")|_("june")|
- _("july")|_("august")|_("september")|_("october")|_("november")|_("december")) #REQUIRED>
+  month (<?=implode("|",$months)?>|<?=strtolower(implode("|",$months))?>)  #REQUIRED>
  <!ATTLIST dailyDedication day CDATA #REQUIRED>
  <!ATTLIST task 
   type (<?=implode("|",$type)?>) #REQUIRED
-  init CDATA #REQUIRED
+  start CDATA #REQUIRED
   end CDATA #REQUIRED
   name (<?=implode("|",$name)?>) #IMPLIED
   phase (<?=implode("|",$phase)?>) #IMPLIED
   ttype (<?=implode("|",$ttype)?>) #IMPLIED
-  story CDATA #IMPLIED>
+  story CDATA #IMPLIED
+  telework (true) #IMPLIED>
