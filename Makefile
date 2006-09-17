@@ -1,8 +1,9 @@
 VERSION=1.4
 
-all:
+all:	i18n
 	true
 clean:
+	rm -rf locale
 	true
 install:
 	for i in /usr/share/phpreport/{/,css,images,include} ; \
@@ -28,6 +29,9 @@ install:
 	 do install -o root -g root conf.d/phpreport $(DESTDIR)/$$i/conf.d/phpreport; done		
 uninstall:
 	true
+locale:
+	mkdir -p locale/es_ES/LC_MESSAGES
+	msgfmt i18n/es.po -o locale/es_ES/LC_MESSAGES/messages.mo
 i18n-dev:
 	for i in i18n/*.po ; \
 	 do xgettext -L PHP --from-code UTF-8 -j -o $$i `find -name '*.php'`; \

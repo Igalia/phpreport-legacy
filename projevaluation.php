@@ -55,7 +55,7 @@ for ($i=0;$row=@pg_fetch_array($result,$i,PGSQL_ASSOC);$i++) {
 $code=@pg_exec($cnx,$query="SELECT code FROM label WHERE type='name' ORDER BY code")
   or die($die);
 $code_consult=array();
-$code_consult[]="(empty)";
+$code_consult[]=_("(empty)");
 for ($i=0;$row=@pg_fetch_array($code,$i,PGSQL_ASSOC);$i++) {
   $code_consult[]=$row["code"];
 }
@@ -95,8 +95,10 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
       $data_consult[]=$row;
     }
     @pg_freeresult($data);
-    $row_index=_("name");
-    $col_index=_("type");
+    $row_index="name";
+    $row_index_trans=_("Name");
+    $col_index="type";
+    $col_index_trans=_("Type");
     $row_title_var="code_consult";
     $col_title_var="type_consult";
   }
@@ -108,8 +110,10 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
       $data_consult[]=$row;
     }
     @pg_freeresult($data);
-    $row_index=_("uid");
-    $col_index=_("type");
+    $row_index="uid";
+    $row_index_trans=_("User");
+    $col_index="type";
+    $col_index_trans=_("Type");
     $row_title_var="users_consult";
     $col_title_var="type_consult";
   }
@@ -122,15 +126,17 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
       $data_consult[]=$row;
     }
     @pg_freeresult($data);
-    $row_index=_("name");
-    $col_index=_("uid");
+    $row_index="name";
+    $row_index_trans=_("Name");
+    $col_index="uid";
+    $col_index_trans=_("User");
     $row_title_var="code_consult";
     $col_title_var="users_consult";
   }
 
   foreach((array)$data_consult as $row2) {
     foreach ((array)$row2 as $value) {
-      if($row2[$row_index]=="") $row2[$row_index]="(empty)";
+      if($row2[$row_index]=="") $row2[$row_index]=_("(empty)");
       $a[$row2[$row_index]][$row2[$col_index]]=$row2["add_hours"];
     }
     $add_hours_row[$row2[$row_index]]+=$row2["add_hours"];
@@ -171,17 +177,18 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
       $data_consult[]=$row;
     }
     @pg_freeresult($data);
-    $row_index=_("name");
+    $row_index="name";
+    $row_index_trans=_("Name");
     $row_title_var="code_consult";
     $project_consult=array("total_hours","est_hours","desv1","desv2","invoice","eur_real","eur_pres");
     $col_title_var="project_consult";
 
     foreach($data_consult as $row2) {
       foreach ((array)$row2 as $value) {
-        if($row2[$row_index]=="") $row2[$row_index]="(empty)";
+        if($row2[$row_index]=="") $row2[$row_index]=_("(empty)");
         $a[$row2[$row_index]][$project_consult[0]]=$row2["total_hours"];
         $a[$row2[$row_index]][$project_consult[1]]=$row2["est_hours"];
-        if ($row2[$row_index]!="(empty)") {
+        if ($row2[$row_index]!=_("(empty)")) {
           $a[$row2[$row_index]][$project_consult[2]]=(1-($row2["est_hours"]/$row2["total_hours"]))*100;
           $a[$row2[$row_index]][$project_consult[3]]=$row2["total_hours"]-$row2["est_hours"];
           $a[$row2[$row_index]][$project_consult[5]]=$row2["invoice"]/$row2["total_hours"];
@@ -242,7 +249,8 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
       $worked_hours_consult[$k]["total_extra_hours"]=$worked_hours_consult[$k]["period_extra_hours"]+$previous_hours;
     }
 
-    $row_index=_("uid");
+    $row_index="uid";
+    $row_index_trans=_("User");
     $row_title_var="users_consult";
     $project_consult=array("total_hours","period_extra_hours","total_extra_hours");
     $col_title_var="project_consult";
@@ -340,8 +348,8 @@ if (empty($error)&&$sheets!=0) {
 <table border="0" cellspacing="1" cellpadding="2" width="100%">
 <!-- title box -->
 <tr>
-  <td class="title_table"><?=$row_index?></td>
-  <td colspan="100%"  class="title_table"><?=$col_index?></td>
+  <td class="title_table"><?=$row_index_trans?></td>
+  <td colspan="100%"  class="title_table"><?=$col_index_trans?></td>
 </tr>
 
 <tr>

@@ -51,22 +51,26 @@ else  /* sino, a ver que nos dice el navegador */
 /* y esta decisión manda sobre lo que diga el navegador */
 if($_GET["lang"]!="")
   $lang=$_GET["lang"];
-switch($lang)
-{
+
+switch($lang) {
   /* por defecto hemos quedado que es castellano */
   default:
   case "es":
     $_SESSION["lang"]="es";
-    setlocale(LC_ALL, 'es_ES');
+    $locale="es_ES.UTF-8";
   break;
- 
+
   case "en":
     $_SESSION["lang"]="en";
-    setlocale(LC_ALL, 'en_EN');
+    $locale="en_EN";    
   break;
 }
 
+putenv("LANG=$locale");
+setlocale(LC_ALL, $locale);
 bindtextdomain('messages', './locale');
+bind_textdomain_codeset('messages','UTF-8');
+textdomain('messages');
 
 $absolute_path = "/tmp/phpreport/";
 $file_limit = 500000;
@@ -84,7 +88,7 @@ $table_name=array(""=>"---");
 $table_phase=array(""=>"---");
 $table_ttype=array(""=>"---");
 
-$die=_("No se ha podido completar la operación: ");
+$die=_("The operation couldn't be completed: ");
 $result=@pg_exec($cnx,$query="SELECT type,code,description FROM label"
  ." WHERE activation='t' ORDER BY description")
 or die($die."$query");
