@@ -217,7 +217,7 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
     $extra_hours=@pg_exec($cnx,$query="SELECT e.uid,e.hours,e.date
       FROM extra_hours AS e JOIN (
         SELECT uid,MAX(date) AS date FROM extra_hours
-        WHERE date<='$init'
+        WHERE date<'$init'
         GROUP BY uid) AS m ON (e.uid=m.uid AND e.date=m.date)")
       or die($die);
     $extra_hours_consult=array();
@@ -252,14 +252,15 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
     $row_index="uid";
     $row_index_trans=_("User");
     $row_title_var="users_consult";
-    $project_consult=array("total_hours","period_extra_hours","total_extra_hours");
+    $project_consult=array("total_hours","workable_hours","period_extra_hours","total_extra_hours");
     $col_title_var="project_consult";
 
     $a=$worked_hours_consult;
-    
+
     foreach($worked_hours_consult as $row2) {
       if ($row2["total_extra_hours"]>0) $add_positive_total_extra_hours+=$row2["total_extra_hours"];
       $add_total_hours+=$row2["total_hours"];
+      $add_workable_hours+=$row2["workable_hours"];
       $add_period_extra_hours+=$row2["period_extra_hours"];
       $add_total_extra_hours+=$row2["total_extra_hours"];
     }
@@ -268,7 +269,7 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
       $percent_row[$k]=@(100*$row2["total_extra_hours"]/$add_positive_total_extra_hours);
     }
     
-    $add_totals=array($add_total_hours,$add_period_extra_hours,$add_total_extra_hours);
+    $add_totals=array($add_total_hours,$add_workable_hours,$add_period_extra_hours,$add_total_extra_hours);
   }
 
 } //end if !empty(sheets)
