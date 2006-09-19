@@ -21,26 +21,20 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+// LOADING OF CODE TABLES FROM DATABASE
 
-// Connection with database and some mandatory initialization stuff
-require_once("include/config_db.php");
-require_once("include/connect_db.php");
-require_once("include/language.php");
+$table_type=array(""=>"---");
+$table_name=array(""=>"---");
+$table_phase=array(""=>"---");
+$table_ttype=array(""=>"---");
 
-// Hack this to enable errors...
-// error_reporting(); 
-
-$absolute_path = "/tmp/phpreport/";
-$file_limit = 500000;
-$authentication_mode = "sql";
-//$authentication_mode = "ldap";
-$LDAP_SERVER = "localhost";
-$LDAP_BASE = "dc=igalia,dc=com";
-$admin_group_name="informesadm";
-$user_group_name="informesdedic";
-
-// Looking for database passwords? Have a look at config_db.php ;-)
-
-// This is also mandatory, because all the pages expect it
-require_once("include/codetables.php");
+$die=_("The operation couldn't be completed: ");
+$result=@pg_exec($cnx,$query="SELECT type,code,description FROM label"
+  ." WHERE activation='t' ORDER BY description")
+  or die($die."$query");
+for ($i=0;$row=@pg_fetch_array($result,$i,PGSQL_ASSOC);$i++) {
+  $n="table_".$row['type'];
+  ${$n}[$row['code']]=$row['description'];
+}
+@pg_freeresult($result);
 ?>

@@ -1,5 +1,7 @@
 body {
-  font: normal 9pt tahoma, lucida, helvetica, sans­serif;
+  font: normal 9pt tahoma, lucida, helvetica, sansserif;
+  margin-top: 0px;
+  margin-left: 0px;
 }
 
 A {
@@ -13,14 +15,14 @@ input, select, textarea {
 }
 
 .title {
-  font: bold 12pt tahoma, lucida, helvetica, sans­serif;
+  font: bold 12pt tahoma, lucida, helvetica, sansserif;
   text-transform: uppercase;
   text-align: right;
   color: #61667c
 }
 
 .msg_fail {
-  font: bold 9pt tahoma, lucida, helvetica, sans­serif;
+  font: bold 9pt tahoma, lucida, helvetica, sansserif;
   border-width: 1px;
   color: #505050;
   background: #e2ac7c;
@@ -29,7 +31,7 @@ input, select, textarea {
 }
 
 .msg_ok {
-  font: bold 9pt tahoma, lucida, helvetica, sans­serif;
+  font: bold 9pt tahoma, lucida, helvetica, sansserif;
   border-width: 1px;
   color: #666666;
   background: #d4e0a6;
@@ -38,40 +40,40 @@ input, select, textarea {
 }
 
 .title_box {
-  font: bold 10pt tahoma, lucida, helvetica, sans­serif;
+  font: bold 10pt tahoma, lucida, helvetica, sansserif;
   text-align: center;
   background: #878eaf;
   color: #ffffff
 }
 
 .title_table {
-  font: bold 10pt tahoma, lucida, helvetica, sans­serif;
+  font: bold 10pt tahoma, lucida, helvetica, sansserif;
   text-align: center;
   background: #DCDCDC;
   color: #000000
 }
 
 .text_box {
-  font: normal 9pt tahoma, lucida, helvetica, sans­serif;
+  font: normal 9pt tahoma, lucida, helvetica, sansserif;
   background: #f0f0f9;
   color: #000000
 }
 
 .text_data {
-  font: normal 9pt tahoma, lucida, helvetica, sans­serif;
+  font: normal 9pt tahoma, lucida, helvetica, sansserif;
   text-align: right;
   background: #f0f0f9;
   color: #000000
 }
 .text_result {
-  font: normal 9pt tahoma, lucida, helvetica, sans­serif;
+  font: normal 9pt tahoma, lucida, helvetica, sansserif;
   text-align: right;
   background: #f0f0f9;
   color: #000000
 }
 
 .text_percent {
-  font: normal 9pt tahoma, lucida, helvetica, sans­serif;
+  font: normal 9pt tahoma, lucida, helvetica, sansserif;
   text-align: right;
   background: #f0f0f9;
   color: #FF0000
@@ -82,14 +84,14 @@ input, select, textarea {
 }
 
 .title_minibox {
-  font: bold 9pt tahoma, lucida, helvetica, sans­serif;
+  font: bold 9pt tahoma, lucida, helvetica, sansserif;
   text-align: center;
   background: #878eaf;
   color: #ffffff
 }
 
 .text_minibox {
-  font: normal 8pt tahoma, lucida, helvetica, sans­serif;
+  font: normal 8pt tahoma, lucida, helvetica, sansserif;
   background: #f0f0f9;
   color: #000000
 }
@@ -115,7 +117,7 @@ input, select, textarea {
 .foot { color: #FFFFFF; background-color: #878eaf; padding: 10px; padding-left: 20px; }
 
 .text_box_xml {
-  font: normal 9pt tahoma, lucida, helvetica, sans­serif;
+  font: normal 9pt tahoma, lucida, helvetica, sansserif;
   background: #f0f0f9;
   color: #000000;
   padding: 2%;

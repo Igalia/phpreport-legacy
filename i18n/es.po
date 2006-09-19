@@ -850,7 +850,7 @@ msgstr "Copiar informes"
 
 #: include/show_calendar.php:125 include/show_calendar.php:125
 msgid "To day"
-msgstr "A hoy"
+msgstr "A día"
 
 #: include/show_calendar.php:130 include/show_calendar.php:130
 msgid "From yesterday"

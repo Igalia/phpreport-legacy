@@ -22,7 +22,7 @@ header('Content-Type:  charset=UTF-8');
 <?}?>
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
  <tr>
-  <td align="left"><img src="images/title.gif" alt="PhpReport"></td>
+  <td align="left"><img src="images/title_1_4.gif" alt="Igalia PhpReport"></td>
   <td align="right" class="title"><font color="#42458C"><?=$title?></font></td>
  </tr>
 </table>

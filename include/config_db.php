@@ -22,7 +22,7 @@
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-// Conexión con la base de datos
+// Database connection
 $hostname_db="localhost";
 $port_db="5432";
 $login_db="phpreport";

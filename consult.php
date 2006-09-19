@@ -68,7 +68,7 @@ if (!empty($apply)) {
 
    if (!$result=@pg_exec($cnx,"INSERT INTO "
     ."consult(id,title,sql,parameters,description,public) "
-    ."VALUES ('$consult','$title','$sql','$parameters','$description','"
+    ."VALUES ('$consult','$consult_title','$sql','$parameters','$description','"
     .checkbox_to_sql($public)."')")) {
     $error=_("It has not been possible to insert the new query");
     break;
@@ -77,7 +77,7 @@ if (!empty($apply)) {
   } while(false);
  } else {
   if (!@pg_exec($cnx,$query="UPDATE consult SET "
-   ."title='$title',sql='$sql',parameters='$parameters',"
+   ."title='$consult_title',sql='$sql',parameters='$parameters',"
    ."description='$description',public='".checkbox_to_sql($public)."'"
    ." WHERE id='$consult'")) {
     $error=_("It has not been possible to update the query");
@@ -138,11 +138,11 @@ if (!empty($cancel)) {
 $i=0;
 if (!empty($consult)) {
  if ($consult=="new") {
-  foreach (array("title","description","sql","parameters","public") as $i) {
+  foreach (array("consult_title","description","sql","parameters","public") as $i) {
    unset($$i);
   }
  } else {
-  $result=@pg_exec($cnx,$query="SELECT title,description,sql,parameters,public"
+  $result=@pg_exec($cnx,$query="SELECT title as consult_title,description,sql,parameters,public"
    ." FROM consult WHERE id='$consult' ORDER BY title")
   or die("$die $query");
   if ($row=@pg_fetch_array($result,0,PGSQL_ASSOC)) {
@@ -150,9 +150,9 @@ if (!empty($consult)) {
   } else {
    unset($consult);
   }
-
+  
   // If no other action is performed and fields aren't void, it means that we've pressed ENTER
-  if(empty($cancel)&&empty($execute)&&empty($delete)&&empty($apply)
+  if(empty($reload)&&empty($cancel)&&empty($execute)&&empty($delete)&&empty($apply)
     &&empty($edit)&&!empty($parameters)) $execute=_("Execute");
 
   @pg_freeresult($result);
@@ -191,14 +191,16 @@ if (!empty($select) && ($consult=="new")) {
  $edit=_("Edit");
 }
 
-if (!empty($select)) {
+if (!empty($select) && empty($execute)) {
  $parameter_value=array();
  unset($edit);
 }
 require_once("include/close_db.php");
 $title=_("Results extraction");
-$flag="exec";
 require("include/template-pre.php");
+
+if (!empty($error)) msg_fail($error);
+if (!empty($confirmation)) msg_ok($confirmation);
 
 ?>
 <table border="0" cellpadding="0" cellspacing="0" width="100%"
@@ -211,7 +213,7 @@ require("include/template-pre.php");
 <tr>
  <td><b><?=_("Query:")?></b></td>
  <td>
-  <select name="consult" onchange="javascript: results.submit();">
+  <select name="consult" onchange="javascript: document.results.reload.value=1; document.results.submit();">
    <?=array_to_option(
     array_values($consults),
     $consult,
@@ -221,6 +223,7 @@ require("include/template-pre.php");
  <td>
   <input type="submit" name="select" value="<?=_("Query select")?>">
   <input type="hidden" name="day" value="<?=$day?>">
+  <input type="hidden" name="reload" value="">
  </td>
 </tr>
 </table>
@@ -430,7 +433,7 @@ foreach(set_to_array($parameters) as $parameter) {
  <tr>
   <td>
    <?=_("Title")?><br>
-   <input type="text" name="title" value="<?=$title?>" size="80">
+   <input type="text" name="consult_title" value="<?=$consult_title?>" size="80">
   </td>
  </tr>
  <tr>

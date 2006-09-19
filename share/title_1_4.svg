@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://inkscape.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.43"
+   sodipodi:docbase="/home/enrique/phpreport/PhpReport"
+   sodipodi:docname="titulo_1_4.svg">
+  <defs
+     id="defs4">
+    <linearGradient
+       id="linearGradient1330">
+      <stop
+         style="stop-color:#b7bfcf;stop-opacity:1;"
+         offset="0"
+         id="stop1332" />
+      <stop
+         style="stop-color:#ffffff;stop-opacity:0;"
+         offset="1"
+         id="stop1334" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1330"
+       id="linearGradient4012"
+       x1="435.71429"
+       y1="88.071426"
+       x2="434.29019"
+       y2="-21.218748"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.7"
+     inkscape:cx="350"
+     inkscape:cy="900.74946"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     inkscape:window-width="1016"
+     inkscape:window-height="692"
+     inkscape:window-x="0"
+     inkscape:window-y="0" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="stroke:none;fill:#ffffff;fill-opacity:1"
+       id="rect4014"
+       width="772.85718"
+       height="67.142853"
+       x="15.714285"
+       y="26.647896"
+       inkscape:export-filename="/home/enrique/phpreport/PhpReport/titulo_1_4.png"
+       inkscape:export-xdpi="59.509998"
+       inkscape:export-ydpi="59.509998" />
+    <path
+       style="fill:url(#linearGradient4012);fill-opacity:1.0;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 12.857143,26.633929 L 12.857143,57.196429 C 66.550932,86.108617 187.47734,88.071427 262.1112,88.071429 C 358.24814,88.071429 632.44551,62.210019 782.86162,26.633929 L 12.857143,26.633929 z "
+       id="path1307" />
+    <image
+       id="image2251"
+       height="45.857143"
+       width="127.84416"
+       sodipodi:absref="/tmp/igalia.png"
+       xlink:href="/tmp/igalia.png"
+       x="106.57143"
+       y="30.290764" />
+    <text
+       xml:space="preserve"
+       style="font-size:29.01815605px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Elektra Text Pro"
+       x="243.82887"
+       y="64.709442"
+       id="text2254"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan2256"
+         x="243.82887"
+         y="64.709442">PhpReport</tspan></text>
+  </g>
+</svg>
