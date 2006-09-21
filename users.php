@@ -23,26 +23,26 @@
 
 
 /**
- * PARÁMETROS HTTP QUE RECIBE ESTA PÁGINA:
+ * HTTP PARAMETERS RECEIVED BY THIS PAGE:
  *
- * dia = Día del informe. Formato DD/MM/AAAA	
-	* nueva_password[uid] = Array de passwords cambiadas
-	* administrador[uid] = Array de atributos administrador cambiados (a 1 cuando true)
-	* cambiar[uid] = Array de botones CAMBIAR. Habrá como mucho un elemento, cuyo uid indicará
- *                el usuario que se quiere cambiar.
-	* borrar[uid] = Array de botones BORRAR. Habrá como mucho un elemento, cuyo uid indicará
-	*                el usuario que se quiere borrar.
-	* nuevo_usuario_login = Login del nuevo usuario a crear.
-	* nuevo_usuario_password = Password del nuevo usuario a crear.
-	* nuevo_usuario_administrador = Flag administrador del nuevo usuario a crear.
-	* crear = Se ha pulsado CREAR
+ * day = Report day. DD/MM/YYYY format.
+ * new_password[uid] = Array of changed passwords
+ * administrator[uid] = Array of changed administrator attributes (to 1 when true)
+ * change[uid] = Array of CHANGE buttons. There'll be at most one element, whose uid
+ *               will tell the user to be changed.
+ * delete[uid] = Array of DELETE buttons. There'll be at most one element, whose uid
+ *               will tell the user to be deleted.
+ * new_user_login = Login of the new user to be created.
+ * new_user_password = Password of the new user to be created.
+ * new_user_admin = Administrator flag of the new user to be created.
+ * create = CREATE has been pressed.
  */
 
 require_once("include/autenticate.php");
 require_once("include/connect_db.php");
 require_once("include/prepare_calendar.php");
 
-if (!(in_array("informesadm",(array)$session_groups) 
+if (!(in_array($admin_group_name,(array)$session_groups) 
 )) {
  header("Location: login.php");
 }
@@ -58,7 +58,8 @@ if(!empty($edit)&&empty($periods)||(!empty($id)&&empty($del_period)&&empty($chan
    ." WHERE uid='$user' ORDER BY init ")
    or die($die);
  for ($i=0;$row=@pg_fetch_array($result,$i,PGSQL_ASSOC);$i++) {
-   $row["init"]=date_sql_to_web($row["init"]);
+   if ($row["init"]!="") $row["init"]=date_sql_to_web($row["init"]);
+   else $row["init"]="NULL";
    if ($row["_end"]!="") $row["_end"]=date_sql_to_web($row["_end"]);
    else $row["_end"]="NULL";
    $periods[]=$row;
@@ -88,7 +89,7 @@ if (!empty($change)) {
 
    do{
      
-     // BORRADO DE PERIODOS
+     // PERIOD DELETE
      if (!pg_exec($cnx,$query=
      "DELETE FROM periods WHERE uid='$uid'")) {
        $error=_("Can't finalize the operation");
@@ -122,38 +123,41 @@ for ($i=0;$i<sizeof($periods);$i++) {
     foreach ($fields as $field)
     $row[$field]=$periods[$i][$field];
     $row["uid"]=$uid;
-    $row["init"]=date_web_to_sql($periods[$i]["init"]);
-    if ($periods[$i]["_end"]=="NULL"){
-	if(!$empty) {
-	  $row["_end"]=date_web_to_sql($periods[$i+1]["init"]);
-	  $periods[$i]["_end"]=$periods[$i+1]["init"];
-	}
-        else $row["_end"]="";
+    if ($periods[$i]["init"]=="NULL") {
+      $row["init"]="";
+    } else  {
+      $row["init"]=date_web_to_sql($periods[$i]["init"]);  
     }
-    else $row["_end"]=date_web_to_sql($periods[$i]["_end"]);
+    
+    if ($periods[$i]["_end"]=="NULL"){
+      if(!$empty && $i+1<sizeof($periods)) {
+        $row["_end"]=date_web_to_sql($periods[$i+1]["init"]);
+        $periods[$i]["_end"]=$periods[$i+1]["init"];
+      } else $row["_end"]="";
+    } else $row["_end"]=date_web_to_sql($periods[$i]["_end"]);
 
     foreach ($fields as $field)
      if (empty($row[$field]) && !is_integer($row[$field])) $row[$field]="NULL";
      else $row[$field]="'$row[$field]'";
 
-    // Y FINALMENTE SE INSERTAN
+    // AND FINALLY THEY ARE INSERTED
   if (!empty($periods)) {
-    if (!pg_exec($cnx,$query="INSERT INTO periods ("
+    if (!@pg_exec($cnx,$query="INSERT INTO periods ("
      .implode(",",$fields).") VALUES (".implode(",",$row).")")) {
-     $error=_("Can't finalize the operation");
+     $error=_("Can't finalize the operation").$query;
      break;
     }
   }
 }
 
-  // Y SE HACE TODO EL PROCESO
+  // AND ALL THE PROCESS IS DONE
 
    @pg_exec($cnx,$query="COMMIT TRANSACTION");
   } while(false);
 
   if (!empty($error)) {
 
-   // Depuración
+   // Debugging
    $error.="<!-- $query -->";
    @pg_exec($cnx,$query="ROLLBACK TRANSACTION");
    break;
@@ -195,7 +199,7 @@ if (!empty($new_user_login)&&!empty($new_user_password)||!empty($create)) {
       $error=_("You must specify the user password");
       break;
     } 		
-    $city="coruña";
+    $city="corunha";
     $jour_hours="8";
     if (!@pg_exec($cnx,$query=
 	"SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; "
@@ -211,12 +215,12 @@ if (!empty($new_user_login)&&!empty($new_user_password)||!empty($create)) {
 	."CURRENT_DATE, NULL,'$city')"))) {
 	$error=_("Can't finalize the operation");
     } else {
-	$confirmation=_("The user has been created correctly");
+	$confirmation=_("The user has been created correctly. Remember to update her contract periods!");
 	$combo[]=$new_user_login;
     }
     @pg_exec($cnx,$query="COMMIT TRANSACTION");
     if (!empty($error)) {
-      // Depuración
+      // Debugging
       $error.="<!-- $query -->";
       @pg_exec($cnx,$query="ROLLBACK TRANSACTION");
       break;
@@ -226,8 +230,33 @@ if (!empty($new_user_login)&&!empty($new_user_password)||!empty($create)) {
   }while(false);
 }
 
+// If we are in LDAP mode, new users being in the ldap and not
+// in the user table, are created
 
-//Carga dos usuarios a visualizar no combo
+if ($authentication_mode=="ldap") {
+  // Load the users to do some tests
+  $result=@pg_exec($cnx,$query="SELECT uid FROM users")
+    or die("$die");  
+  $users=array();
+  while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
+    $users[$row["uid"]]=$row["uid"];
+  }
+  
+  @pg_freeresult($result);
+  $newu=array();
+  foreach (array_keys($session_users) as $u) {
+    if (empty($users[$u])) {        
+      @pg_exec($cnx,$query2="INSERT INTO users(uid,password,admin) VALUES ('".$u."',NULL,'f')");
+      $newu[]=$u;
+    }
+  }
+  if (!empty($newu)) {
+    $confirmation=_("New users have appeared in the LDAP and have been created in PhpReport. Remember to set up their contract properly!").": ".implode(", ",$newu);
+  }
+  @pg_freeresult($result);
+}
+
+// Load the users to be shown in the combo
 $result=@pg_exec($cnx,$query="SELECT uid,admin FROM users ORDER BY uid")
 or die("$die $query");	
 $users=array();
@@ -238,7 +267,7 @@ while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
 
 require_once("include/close_db.php");
 
-$flag="edit"; //Para poner el focus en el botón de Edit
+$flag="edit"; // To put focus at the Edit button
 $title=_("Users management");
 require("include/template-pre.php");
 
@@ -410,7 +439,11 @@ if ($authentication_mode=="sql") {
 <br>
 
 <?
-$journey=array(8=>_("Full time"),4=>_("Half time"),6=>_("Practice journey"));
+$journey=array(
+  8=>_("Full time"),
+  4=>_("Half time"),
+  6=>_("Practice journey"));
+
 if (!empty($periods)) {?>
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr><td bgcolor="#000000">

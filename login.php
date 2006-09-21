@@ -46,7 +46,7 @@ if (!empty($logout)) {
 	$_SESSION=array();
 }
 
-if (empty($login) && empty($password)) {
+if (empty($login) && empty($password) && empty($logout)) {
  $login=$_SERVER['PHP_AUTH_USER'];
  $password=$_SERVER['PHP_AUTH_PW'];
 }
