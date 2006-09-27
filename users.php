@@ -28,6 +28,7 @@
  * day = Report day. DD/MM/YYYY format.
  * new_password[uid] = Array of changed passwords
  * administrator[uid] = Array of changed administrator attributes (to 1 when true)
+ * staff[uid] = Array of changed belongs to staff attributes (to 1 when true)
  * change[uid] = Array of CHANGE buttons. There'll be at most one element, whose uid
  *               will tell the user to be changed.
  * delete[uid] = Array of DELETE buttons. There'll be at most one element, whose uid
@@ -35,6 +36,7 @@
  * new_user_login = Login of the new user to be created.
  * new_user_password = Password of the new user to be created.
  * new_user_admin = Administrator flag of the new user to be created.
+ * new_user_staff = User belongs to staff flag of the new user to be created. 
  * create = CREATE has been pressed.
  */
 
@@ -98,7 +100,9 @@ if (!empty($change)) {
 
      if(!(@pg_exec($cnx,$query="UPDATE users SET admin='".
 	 (($administrator[$uid]==1)?"t":"f")
-	 ."' ".$query_password." WHERE uid='$uid'")
+   ."', staff='".
+   (($staff[$uid]==1)?"t":"f")
+   ."' ".$query_password." WHERE uid='$uid'")
 	or die("$die $query"))) {
      	  $error=_("Can't finalize the operation");
      	  break;
@@ -207,10 +211,12 @@ if (!empty($new_user_login)&&!empty($new_user_password)||!empty($create)) {
       $error=_("Can't finalize the operation");
       break;
     }
-    if ((!$result=@pg_exec($cnx,$query="INSERT INTO users (uid,password,admin)"
+    if ((!$result=@pg_exec($cnx,$query="INSERT INTO users (uid,password,admin,staff)"
 	." VALUES('$new_user_login',md5('$new_user_password'),'"
 	.(($new_user_admin==1)?"t":"f")
-	."')"))||(!$result2=pg_exec($cnx,$query="INSERT INTO periods"
+  ."','"
+  .(($new_user_staff==1)?"t":"f")
+  ."')"))||(!$result2=pg_exec($cnx,$query="INSERT INTO periods"
 	." (uid,journey,init,_end,city) VALUES ('$new_user_login', '$jour_hours'," 
 	."CURRENT_DATE, NULL,'$city')"))) {
 	$error=_("Can't finalize the operation");
@@ -246,7 +252,7 @@ if ($authentication_mode=="ldap") {
   $newu=array();
   foreach (array_keys($session_users) as $u) {
     if (empty($users[$u])) {        
-      @pg_exec($cnx,$query2="INSERT INTO users(uid,password,admin) VALUES ('".$u."',NULL,'f')");
+      @pg_exec($cnx,$query2="INSERT INTO users(uid,password,admin,staff) VALUES ('".$u."',NULL,'f','f')");
       $newu[]=$u;
     }
   }
@@ -257,7 +263,7 @@ if ($authentication_mode=="ldap") {
 }
 
 // Load the users to be shown in the combo
-$result=@pg_exec($cnx,$query="SELECT uid,admin FROM users ORDER BY uid")
+$result=@pg_exec($cnx,$query="SELECT uid,admin,staff FROM users ORDER BY uid")
 or die("$die $query");	
 $users=array();
 while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
@@ -311,8 +317,7 @@ if (empty($id)||!empty($delete)) {
   $user["uid"]=$combo[0];
   $id=$user["uid"];
   unset($id);
-}
-else $user["uid"]=$id;
+} else $user["uid"]=$id;
 ?>
 
  <td>
@@ -363,11 +368,13 @@ if(!empty($new)) {?>
  <td><?=_("New user login");?></td>
  <td><?=_("New user password");?></td> 
  <td><?=_("Administrator");?></td>
+ <td><?=_("Staff member");?></td>
 </tr>
 <tr>
  <td><input type="text" name="new_user_login"></td>
  <td><input type="password" name="new_user_password"></td>
  <td><input type="checkbox" name="new_user_admin" value="1"></td>
+ <td><input type="checkbox" name="new_user_staff" value="1"></td>
 </tr>
 </table>
 <table border="0" style=" text-align: center;margin-left: auto; margin-right: auto">
@@ -402,40 +409,61 @@ if (!empty($edit)||!empty($id)&&(empty($new)&&empty($create))||!empty($del_perio
 <?
 if ($authentication_mode=="sql") {
 ?>
-
 <table border="0">
  <tr>
    <th>Login</th>
    <th></th>
    <th><?=_("New Password")?></th>
    <th><?=_("Administrator");?></th>
-   <td>&nbsp</td>
-   <td>&nbsp</td>
+   <th><?=_("Staff member");?></th>
  </tr>
  <tr>
    <td style="text-align: center; vertical-align: top;"><?=$user["uid"]?></td>
    <td></td>
    <td><input type="password" name="new_password[<?=$user["uid"]?>]" value=""></td>
-<?foreach ($users as $u) {
-  if ($user["uid"]==$u["uid"]) $user["admin"]=$u["admin"];
-}?>
+<?
+  foreach ($users as $u) {
+    if ($user["uid"]==$u["uid"]) {
+      $user["admin"]=$u["admin"];
+      $user["staff"]=$u["staff"];
+    }
+  }
+?>
    <td><input type="checkbox" name="administrator[<?=$user["uid"]?>]" 
 		 value="1" <?=($user['admin']=='t'?"checked":"")?>>
+   </td>
+   <td><input type="checkbox" name="staff[<?=$user["uid"]?>]" 
+      value="1" <?=($user['staff']=='t'?"checked":"")?>>
    </td>
  </tr>
 </table>
 
 <?
-}else {?>
+}else {
 
+  foreach ($users as $u) {
+    if ($user["uid"]==$u["uid"]) {
+      $user["staff"]=$u["staff"];
+    }
+  }
+
+?>
 <table border="0">
  <tr>
-   <th>Login: </th>
-   <td style="text-align: center; vertical-align: top;"><?=$user["uid"]?></td>
+   <th>Login</th>
+   <th></th>
+   <th><?=_("Staff member");?></th>
  </tr>
-
+ <tr>
+   <td style="text-align: center; vertical-align: top;"><?=$user["uid"]?></td>
+   <td></td>
+   <td><input type="checkbox" name="staff[<?=$user["uid"]?>]" 
+      value="1" <?=($user['staff']=='t'?"checked":"")?>>
+   </td>
+ </tr>
 <?
-}?>
+}
+?>
 <br>
 
 <?

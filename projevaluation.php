@@ -43,6 +43,11 @@ require_once("include/prepare_calendar.php");
 
 $die=_("Can't finalize the operation");
 
+// In sheet 5, init date will be the same as end date
+if ($sheets==5) {
+  $init=$end;
+}
+
 $result=@pg_exec($cnx,$query="SELECT fest,city FROM holiday ORDER BY fest")
    or die($die);
 for ($i=0;$row=@pg_fetch_array($result,$i,PGSQL_ASSOC);$i++) {
@@ -69,7 +74,10 @@ for ($i=0;$row=@pg_fetch_array($type,$i,PGSQL_ASSOC);$i++) {
 }
 @pg_freeresult($type);
 
-$users=@pg_exec($cnx,$query="SELECT uid FROM users ORDER by uid")
+if ($sheets==5) $staff_condition="WHERE staff='t'";
+else $staff_condition="";
+
+$users=@pg_exec($cnx,$query="SELECT uid FROM users ".$staff_condition." ORDER by uid")
   or die($die);
 $users_consult=array();
 for ($i=0;$row=@pg_fetch_array($users,$i,PGSQL_ASSOC);$i++) {
@@ -209,7 +217,7 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
   } 
 
   if ($sheets==5) {
-
+    
     $worked_hours_consult=net_extra_hours($cnx,$init,$end);
 
     // Select most recent overriden extra hours before 
@@ -218,14 +226,15 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
       FROM extra_hours AS e JOIN (
         SELECT uid,MAX(date) AS date FROM extra_hours
         WHERE date<'$init'
-        GROUP BY uid) AS m ON (e.uid=m.uid AND e.date=m.date)")
+        GROUP BY uid) AS m ON (e.uid=m.uid AND e.date=m.date)
+      WHERE e.uid IN (SELECT uid FROM users WHERE staff='t')")
       or die($die);
     $extra_hours_consult=array();
     for ($i=0;$row=@pg_fetch_array($extra_hours,$i,PGSQL_ASSOC);$i++) {
       $extra_hours_consult[$row["uid"]]=$row;
     }
     @pg_freeresult($extra_hours);
-
+    
     // Let's compute the accumulated extra hours before the period we're computing now
     foreach (array_keys($worked_hours_consult) as $k) {
       // $k is the uid
@@ -247,21 +256,21 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
       
       // Put them all
       $worked_hours_consult[$k]["total_extra_hours"]=$worked_hours_consult[$k]["period_extra_hours"]+$previous_hours;
+
     }
 
     $row_index="uid";
     $row_index_trans=_("User");
     $row_title_var="users_consult";
-    $project_consult=array("total_hours","workable_hours","period_extra_hours","total_extra_hours");
+    $project_consult=array(/*"total_hours","workable_hours","period_extra_hours",*/"total_extra_hours");
     $col_title_var="project_consult";
 
     $a=$worked_hours_consult;
-
     foreach($worked_hours_consult as $row2) {
       if ($row2["total_extra_hours"]>0) $add_positive_total_extra_hours+=$row2["total_extra_hours"];
-      $add_total_hours+=$row2["total_hours"];
-      $add_workable_hours+=$row2["workable_hours"];
-      $add_period_extra_hours+=$row2["period_extra_hours"];
+      //$add_total_hours+=$row2["total_hours"];
+      //$add_workable_hours+=$row2["workable_hours"];
+      //$add_period_extra_hours+=$row2["period_extra_hours"];
       $add_total_extra_hours+=$row2["total_extra_hours"];
     }
     foreach($worked_hours_consult as $k=>$row2) {
@@ -269,7 +278,7 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
       $percent_row[$k]=@(100*$row2["total_extra_hours"]/$add_positive_total_extra_hours);
     }
     
-    $add_totals=array($add_total_hours,$add_workable_hours,$add_period_extra_hours,$add_total_extra_hours);
+    $add_totals=array(/*$add_total_hours,$add_workable_hours,$add_period_extra_hours,*/$add_total_extra_hours);
   }
 
 } //end if !empty(sheets)
@@ -313,6 +322,9 @@ if (!empty($error)) msg_fail($error);
 <br><br><br>
 
 <table>
+<?
+if ($sheets!=5) {
+?>
  <tr>
   <td>
 <?=_("Start date");?>:
@@ -321,6 +333,9 @@ if (!empty($error)) msg_fail($error);
     <input type="text" name="init" value="<?=$init?>">
   </td> 
  </tr>
+<?
+}
+?>
  <tr>
   <td>
 <?=_("End date");?>:

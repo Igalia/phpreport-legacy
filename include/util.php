@@ -500,9 +500,10 @@ function net_extra_hours($cnx,$init,$end,$uid=null) {
   if (empty($uid)) $uid_condition=" true";
   else $uid_condition=" uid='$uid'";
   $worked_hours=@pg_exec($cnx,$query="SELECT uid, SUM( _end - init ) / 60.0 AS total_hours FROM task 
-        WHERE ((_date >= '$init' AND _date <= '$end' AND ".$uid_condition.")) 
+        WHERE ((_date >= '$init' AND _date <= '$end' AND ".$uid_condition
+        ." AND uid IN (SELECT uid FROM users WHERE staff='t'))) 
         GROUP BY uid ORDER BY uid ASC")
-  or die($die);
+  or die($die. $query);
 
   $worked_hours_consult=array();
   for ($i=0;$row=@pg_fetch_array($worked_hours,$i,PGSQL_ASSOC);$i++) {
@@ -513,14 +514,17 @@ function net_extra_hours($cnx,$init,$end,$uid=null) {
   // Get hired intervals, but they can start before the init date or end after end date, so they
   // have to be clipped.
   $hired_intervals=@pg_exec($cnx,$query="SELECT uid,journey,init,_end,city FROM periods 
-        WHERE _end >= '$init' AND init <= '$end' AND ".$uid_condition."
+        WHERE (_end >= '$init' OR _end IS NULL) AND (init <= '$end' OR init IS NULL)
+        AND ".$uid_condition
+        ." AND uid IN (SELECT uid FROM users WHERE staff='t')
         ORDER BY uid ASC, init ASC")
   or die($die);
   for ($i=0;$row=@pg_fetch_array($hired_intervals,$i,PGSQL_ASSOC);$i++) {
+
     // Clipping
-    if ($row["init"]===NULL || cmp_init_dates($row["init"],$init)<0) $row["init"]=$init;
-    if ($row["_end"]===NULL || cmp_init_dates($row["_end"],$end)>0) $row["_end"]=$end;
-    
+    if ($row["init"]===NULL || $row["init"]<$init) $row["init"]=$init;
+    if ($row["_end"]===NULL || $row["_end"]>$end) $row["_end"]=$end;
+
     $days=0;
     $hours=0;
     
@@ -550,11 +554,13 @@ function net_extra_hours($cnx,$init,$end,$uid=null) {
     if (!($row["_end"]===NULL)) $query.=" AND _end<='".$row["_end"]."'";
     $r=@pg_exec($cnx,$query)
     or die($die);
-    $hours-=@pg_fetch_result($r,"hours");
+    $ch=@pg_fetch_result($r,"hours");
+    if (!empty($ch)) $hours-=$ch;
     @pg_freeresult($r);
 
     // Put it all and compute net extra hours
-    $worked_hours_consult[$row["uid"]]["workable_hours"]+=($days*$row["journey"]+$hours);        
+    $worked_hours_consult[$row["uid"]]["workable_hours"]+=($days*$row["journey"]+$hours);
+
   }
   @pg_freeresult($hired_intervals);
 

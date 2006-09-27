@@ -162,7 +162,7 @@ if (!empty($login)) {
   // group in the LDAP, or execute the following code here. This code
   // would also allow him to impersonate some other user:
   //
-  // if ($login="john") {
+  // if ($login=="john") {
   //   // Use "maintenance=1" GET parameter to become administrator
   //   if (!empty($maintenance))
   //     $groups=array($user_group_name,$admin_group_name);
