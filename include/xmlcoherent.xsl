@@ -117,7 +117,7 @@
       				<xsl:otherwise>
                                 
       					<xsl:variable name="numbermonth">
-    						<xsl:call-template name="Month2number">
+    						<xsl:call-template name="Month2Number">
      							<xsl:with-param name="month" select="dedication[1]/@month"/>
      						</xsl:call-template>
       					</xsl:variable>
@@ -361,7 +361,7 @@
 </xsl:template>
 
 
-<xsl:template name="Month2number">
+<xsl:template name="Month2Number">
 	<xsl:param name="month"/>
 	
 	<xsl:variable name="monthlowercase">
