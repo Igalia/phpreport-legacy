@@ -236,7 +236,7 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
     @pg_freeresult($extra_hours);
     
     // Let's compute the accumulated extra hours before the period we're computing now
-    foreach (array_keys($worked_hours_consult) as $k) {
+    foreach ($users_consult as $k) {
       // $k is the uid
       
       // If there are forced extra hours defined before init, take them into account
