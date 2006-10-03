@@ -336,7 +336,7 @@ if (!empty($error)) msg_fail($error);
 
 <table>
 <?
-if ($sheets!=5 && $sheets!=6) {
+if ($sheets!=5) {
 ?>
  <tr>
   <td>
