@@ -57,7 +57,7 @@ for ($i=0;$row=@pg_fetch_array($result,$i,PGSQL_ASSOC);$i++) {
 }
 @pg_freeresult($result);
 
-$code=@pg_exec($cnx,$query="SELECT code FROM label WHERE type='name' ORDER BY code")
+$code=@pg_exec($cnx,$query="SELECT code FROM label WHERE type='name' AND activation='t' ORDER BY code")
   or die($die);
 $code_consult=array();
 $code_consult[]=_("(empty)");
@@ -153,14 +153,14 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
   } 
   foreach ((array)$$row_title_var as $cod) {
     if($add_hours!=0) {
-      $percent_row[$cod]+=$add_hours_row[$cod]*100/$add_hours;
-      $percent_row["tot"]+=$add_hours_row[$cod]*100/$add_hours;
+      $percent_row[$cod]+=@($add_hours_row[$cod]*100/$add_hours);
+      $percent_row["tot"]+=@($add_hours_row[$cod]*100/$add_hours);
     }
   }
   foreach ((array)$$col_title_var as $type) {
     if ($add_hours!=0) {
-      $percent_col[$type]+=$add_hours_col[$type]/$add_hours*100;
-      $percent_col["tot"]+=$add_hours_col[$type]/$add_hours*100;
+      $percent_col[$type]+=@($add_hours_col[$type]/$add_hours*100);
+      $percent_col["tot"]+=@($add_hours_col[$type]/$add_hours*100);
     }
   }
 
@@ -197,10 +197,11 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
         $a[$row2[$row_index]][$project_consult[0]]=$row2["total_hours"];
         $a[$row2[$row_index]][$project_consult[1]]=$row2["est_hours"];
         if ($row2[$row_index]!=_("(empty)")) {
-          $a[$row2[$row_index]][$project_consult[2]]=(1-($row2["est_hours"]/$row2["total_hours"]))*100;
+          $a[$row2[$row_index]][$project_consult[2]]=
+            @((1-($row2["est_hours"]/$row2["total_hours"]))*100);
           $a[$row2[$row_index]][$project_consult[3]]=$row2["total_hours"]-$row2["est_hours"];
-          $a[$row2[$row_index]][$project_consult[5]]=$row2["invoice"]/$row2["total_hours"];
-          $a[$row2[$row_index]][$project_consult[6]]=$row2["invoice"]/$row2["est_hours"];
+          $a[$row2[$row_index]][$project_consult[5]]=@($row2["invoice"]/$row2["total_hours"]);
+          $a[$row2[$row_index]][$project_consult[6]]=@($row2["invoice"]/$row2["est_hours"]);
         }
         $a[$row2[$row_index]][$project_consult[4]]=$row2["invoice"];
       }
