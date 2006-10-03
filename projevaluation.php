@@ -28,6 +28,7 @@
 // 3 - Person / project
 // 4 - Project evaluation
 // 5 - Hourly personal brief
+// 6 - Hourly personal brief (explained)
 
 // Useful arrays:
 // $holidays[city]
@@ -74,7 +75,7 @@ for ($i=0;$row=@pg_fetch_array($type,$i,PGSQL_ASSOC);$i++) {
 }
 @pg_freeresult($type);
 
-if ($sheets==5) $staff_condition="WHERE staff='t'";
+if ($sheets==5 || $sheets==6) $staff_condition="WHERE staff='t'";
 else $staff_condition="";
 
 $users=@pg_exec($cnx,$query="SELECT uid FROM users ".$staff_condition." ORDER by uid")
@@ -217,7 +218,7 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
     }
   } 
 
-  if ($sheets==5) {
+  if ($sheets==5 || $sheets==6) {
     
     $worked_hours_consult=net_extra_hours($cnx,$init,$end);
 
@@ -256,22 +257,27 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
       if (!empty($h[$k]["period_extra_hours"])) $previous_hours+=$h[$k]["period_extra_hours"];
       
       // Put them all
-      $worked_hours_consult[$k]["total_extra_hours"]=$worked_hours_consult[$k]["period_extra_hours"]+$previous_hours;
+      $worked_hours_consult[$k]["total_extra_hours"]=$worked_hours_consult[$k]["period_extra_hours"]
+        +$previous_hours;
 
     }
 
     $row_index="uid";
     $row_index_trans=_("User");
     $row_title_var="users_consult";
-    $project_consult=array(/*"total_hours","workable_hours","period_extra_hours",*/"total_extra_hours");
+    if ($sheets==5) {
+      $project_consult=array("total_extra_hours");
+    } else {
+      $project_consult=array("total_hours","workable_hours","period_extra_hours","total_extra_hours");
+    }
     $col_title_var="project_consult";
 
     $a=$worked_hours_consult;
     foreach($worked_hours_consult as $row2) {
       if ($row2["total_extra_hours"]>0) $add_positive_total_extra_hours+=$row2["total_extra_hours"];
-      //$add_total_hours+=$row2["total_hours"];
-      //$add_workable_hours+=$row2["workable_hours"];
-      //$add_period_extra_hours+=$row2["period_extra_hours"];
+      $add_total_hours+=$row2["total_hours"];
+      $add_workable_hours+=$row2["workable_hours"];
+      $add_period_extra_hours+=$row2["period_extra_hours"];
       $add_total_extra_hours+=$row2["total_extra_hours"];
     }
     foreach($worked_hours_consult as $k=>$row2) {
@@ -279,7 +285,12 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
       $percent_row[$k]=@(100*$row2["total_extra_hours"]/$add_positive_total_extra_hours);
     }
     
-    $add_totals=array(/*$add_total_hours,$add_workable_hours,$add_period_extra_hours,*/$add_total_extra_hours);
+    if ($sheets==5) {
+      $add_totals=array($add_total_extra_hours);
+    } else {
+      $add_totals=array($add_total_hours,$add_workable_hours,$add_period_extra_hours,
+        $add_total_extra_hours);
+    }
   }
 
 } //end if !empty(sheets)
@@ -294,7 +305,8 @@ $querys1=array(
     "---",
     2=>_("Person / task type"),
     3=>_("Person / project"),
-    5=>_("Hourly personal brief")),
+    5=>_("Hourly personal brief"),
+    6=>_("Hourly personal brief (explained)")),
   "PROJECTS"=>array(
     "---",
     1=>_("Project / task type"),
@@ -324,7 +336,7 @@ if (!empty($error)) msg_fail($error);
 
 <table>
 <?
-if ($sheets!=5) {
+if ($sheets!=5 && $sheets!=6) {
 ?>
  <tr>
   <td>
@@ -380,7 +392,7 @@ if (empty($error)&&$sheets!=0) {
   </td>
 <?
       }
-      if ($sheets!=5) {
+      if ($sheets!=5 && $sheets!=6) {
 ?>
   <td bgcolor="#FFFFFF" class="title_box"><?=_("Total result")?></td>
 <?
@@ -423,7 +435,7 @@ if (empty($error)&&$sheets!=0) {
     }
 
     if ($sheets!=4) {
-      if ($sheets!=5) {
+      if ($sheets!=5 && $sheets!=6) {
 ?>
   <td bgcolor="#FFFFFF" class="text_result"><b><?=sprintf("%01.2f",$add_hours_row[$row])?></b></td>
 <?
@@ -441,14 +453,14 @@ if (empty($error)&&$sheets!=0) {
   <td bgcolor="#FFFFFF" class="title_box"><?=_("Total result")?></td>
 <?
   foreach ((array)$$col_title_var as $col) {
-    if ($sheets!=4&&$sheets!=5) {
+    if ($sheets!=4 && $sheets!=5 && $sheets!=6) {
 ?>
   <td bgcolor="#FFFFFF" class="text_result"><b><?=sprintf("%01.2f",$add_hours_col[$col])?></b></td>
 <?
     } 
   }
   
-  if ($sheets!=4&&$sheets!=5) {
+  if ($sheets!=4 && $sheets!=5 && $sheets!=6) {
 ?>
   <td bgcolor="#FFFFFF" class="text_result"><b><?=sprintf("%01.2f",$add_hours)?></b></td>
   <td bgcolor="#FFFFFF" class="text_percent"><b><?=sprintf("%01.2f",$percent_row["tot"])?></b></td>
@@ -468,7 +480,7 @@ if (empty($error)&&$sheets!=0) {
 ?>
 </tr>
 <?
-  if ($sheets!=4&&$sheets!=5) {
+  if ($sheets!=4 && $sheets!=5 && $sheets!=6) {
 ?>
 <tr>
   <td bgcolor="#FFFFFF" class="title_box"><?=_("Percent")?></td>
