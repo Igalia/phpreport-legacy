@@ -37,6 +37,7 @@ $authentication_mode = "sql";
 $LDAP_SERVER = "localhost";
 $LDAP_BASE = "dc=igalia,dc=com";
 $admin_group_name="informesadm";
+$board_group_names=array("igaliamanager","igaliaprepartner","igaliapartner");
 $user_group_name="informesdedic";
 
 // Looking for database passwords? Have a look at config_db.php ;-)

@@ -18,8 +18,20 @@
    			<a href="report.php?day=<?=$day?>" style="font-weight: bold;">- <?=_("Report edition")?></a>
 			<br>
    			<a href="uploadxml.php" style="font-weight: bold;">- <?=_("XML import")?></a>    			
-      <br>
-      <a href="consult.php?day=<?=$day?>" style="font-weight: bold;">- <?=_("Result extraction")?></a>
+                        <br>
+                        <a href="consult.php?day=<?=$day?>" style="font-weight: bold;">- <?=_("Result extraction")?></a>
+                        <br>
+                        <a href="projevaluation.php?day=<?=$day?>&amp;flag=PERSONS"
+                         style="font-weight: bold;">- <?=_("User evaluation")?></a>
+<?
+if (multi_in_array($board_group_names,(array)$session_groups)) {
+?>
+                        <br>
+                        <a href="projevaluation.php?day=<?=$day?>&amp;flag=PROJECTS"
+                         style="font-weight: bold;">- <?=_("Project evaluation")?></a>
+<?
+}
+?>
 <?
 if ($authentication_mode=="sql") {
 ?>
@@ -50,12 +62,6 @@ if (in_array($admin_group_name,(array)$session_groups)) {
     <a href="adminlabels.php?day=<?=$day?>"
      style="font-weight: bold;">- <?=_("Labels")?></a>
    <br>
-    <a href="projevaluation.php?day=<?=$day?>&amp;flag=PROJECTS"
-     style="font-weight: bold;">- <?=_("Project evaluation")?></a>
-   <br>
-    <a href="projevaluation.php?day=<?=$day?>&amp;flag=PERSONS"
-     style="font-weight: bold;">- <?=_("User evaluation")?></a>
-   <br>
     <a href="projects.php?day=<?=$day?>"
      style="font-weight: bold;">- <?=_("Project management")?></a>
    <br>
@@ -64,6 +70,12 @@ if (in_array($admin_group_name,(array)$session_groups)) {
    <br>
     <a href="cal_manag.php?day=<?=$day?>"
      style="font-weight: bold;">- <?=_("Calendar management")?></a>
+                        <br>
+                        <a href="projevaluation.php?day=<?=$day?>&amp;flag=PROJECTS"
+                         style="font-weight: bold;">- <?=_("Project evaluation")?></a>
+                        <br>
+                        <a href="projevaluation.php?day=<?=$day?>&amp;flag=PERSONS"
+                         style="font-weight: bold;">- <?=_("User evaluation")?></a>
 <!-- end text box -->
    </font></td></tr></table></td></tr>
 <?

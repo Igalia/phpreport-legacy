@@ -500,10 +500,9 @@ function net_extra_hours($cnx,$init,$end,$uid=null) {
   if (empty($uid)) $uid_condition=" true";
   else $uid_condition=" uid='$uid'";
   $worked_hours=@pg_exec($cnx,$query="SELECT uid, SUM( _end - init ) / 60.0 AS total_hours FROM task 
-        WHERE ((_date >= '$init' AND _date <= '$end' AND ".$uid_condition
-        ." AND uid IN (SELECT uid FROM users WHERE staff='t'))) 
+        WHERE ((_date >= '$init' AND _date <= '$end' AND ".$uid_condition.")) 
         GROUP BY uid ORDER BY uid ASC")
-  or die($die. $query);
+  or die($die);
 
   $worked_hours_consult=array();
   for ($i=0;$row=@pg_fetch_array($worked_hours,$i,PGSQL_ASSOC);$i++) {
@@ -515,8 +514,7 @@ function net_extra_hours($cnx,$init,$end,$uid=null) {
   // have to be clipped.
   $hired_intervals=@pg_exec($cnx,$query="SELECT uid,journey,init,_end,city FROM periods 
         WHERE (_end >= '$init' OR _end IS NULL) AND (init <= '$end' OR init IS NULL)
-        AND ".$uid_condition
-        ." AND uid IN (SELECT uid FROM users WHERE staff='t')
+        AND ".$uid_condition."
         ORDER BY uid ASC, init ASC")
   or die($die);
   for ($i=0;$row=@pg_fetch_array($hired_intervals,$i,PGSQL_ASSOC);$i++) {
@@ -570,6 +568,16 @@ function net_extra_hours($cnx,$init,$end,$uid=null) {
       -$worked_hours_consult[$k]["workable_hours"];
 
   return $worked_hours_consult;
+}
+
+// Like in_array, but checks if at least one of the needles is in the array
+function multi_in_array($needles,$haystack,$strict=false) {
+    $found=false;
+    foreach ($needles as $needle) {
+       $found|=in_array($needle,$haystack,$strict);
+       if ($found) break;
+    }
+    return $found;
 }
 
 ?>

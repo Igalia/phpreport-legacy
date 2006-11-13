@@ -44,6 +44,12 @@ require_once("include/prepare_calendar.php");
 
 $die=_("Can't finalize the operation");
 
+if ($flag=="PROJECTS" && !multi_in_array($board_group_names,(array)$session_groups)) {
+  // If the user in not in a group that belongs to the board members, she can't
+  // access the PROJECTS information
+  header("Location: login.php");
+}
+
 // In sheet 5, init date will be the same as end date
 if ($sheets==5) {
   $init=$end;
