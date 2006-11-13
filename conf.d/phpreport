@@ -24,3 +24,18 @@ allow from all
 </IfModule>
 
 </DirectoryMatch>
+
+# Protect some sensible directories
+<DirectoryMatch /usr/share/phpreport/(conf.d|debian|doc|i18n|include|locale|share|sql)/>
+  order deny,allow
+  deny from all
+  allow from none
+</DirectoryMatch>
+
+# Just in case we're using the CVS version...
+<DirectoryMatch /usr/share/phpreport/.*CVS/>
+  order deny,allow
+  deny from all
+  allow from none
+</DirectoryMatch>
+
