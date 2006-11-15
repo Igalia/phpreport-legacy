@@ -6,6 +6,7 @@
 //  Andrés Gómez García <agomez@igalia.com>
 //  Enrique Ocaña González <eocanha@igalia.com>
 //  José Riguera López <jriguera@igalia.com>
+//  Jesús Pérez Díaz <jperez@igalia.com>
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License

@@ -8,11 +8,11 @@
   month (January|February|March|April|May|June|July|August|September|October|November|December|january|february|march|april|may|june|july|august|september|october|november|december)  #REQUIRED>
  <!ATTLIST dailyDedication day CDATA #REQUIRED>
  <!ATTLIST task 
-  type (BUR|COM|PEX|FORM|COR|HOL|PIN|LOW|PS|TAP|SYS|bur|com|pex|form|cor|hol|pin|low|ps|tap|sys) #REQUIRED
+  type () #REQUIRED
   start CDATA #REQUIRED
   end CDATA #REQUIRED
-  name (test1|test2) #IMPLIED
-  phase (construction|elaboration|init|operation|transition) #IMPLIED
-  ttype (analysis|community|coordination|demo|design|documentation|env|formation|implementation|maintenance|mto_systems|publiccion|requirements|tecnology|test|unfolding) #IMPLIED
+  name ()
+  phase (construccion|elaboracion|explotacion|inicio|transicion) #IMPLIED
+  ttype (analisis|comunidad|coordinacion|demo|despliegue|diseno|documentacion|entorno|formacion|implementacion|mantenimiento|mto_sistemas|prueba|publicacion|requisitos|tecnologia) #IMPLIED
   story CDATA #IMPLIED
   telework (true) #IMPLIED>
