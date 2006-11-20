@@ -6,7 +6,6 @@
 //  Andrés Gómez García <agomez@igalia.com>
 //  Enrique Ocaña González <eocanha@igalia.com>
 //  José Riguera López <jriguera@igalia.com>
-//  Jesús Pérez Díaz <jperez@igalia.com>
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -554,7 +553,8 @@ function net_extra_hours($cnx,$init,$end,$uid=null) {
     $r=@pg_exec($cnx,$query)
     or die($die);
     $ch=@pg_fetch_result($r,"hours");
-    if (!empty($ch)) $hours-=$ch;
+    // A compensation changes money adding more working time to an employee
+    if (!empty($ch)) $hours+=$ch;
     @pg_freeresult($r);
 
     // Put it all and compute net extra hours
