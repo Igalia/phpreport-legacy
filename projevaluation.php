@@ -206,7 +206,7 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
         $a[$row2[$row_index]][$project_consult[1]]=$row2["est_hours"];
         if ($row2[$row_index]!=_("(empty)")) {
           $a[$row2[$row_index]][$project_consult[2]]=
-            @((1-($row2["est_hours"]/$row2["total_hours"]))*100);
+            @(($row2["total_hours"]-$row2["est_hours"])/$row2["est_hours"]*100);
           $a[$row2[$row_index]][$project_consult[3]]=$row2["total_hours"]-$row2["est_hours"];
           $a[$row2[$row_index]][$project_consult[5]]=@($row2["invoice"]/$row2["total_hours"]);
           $a[$row2[$row_index]][$project_consult[6]]=@($row2["invoice"]/$row2["est_hours"]);
