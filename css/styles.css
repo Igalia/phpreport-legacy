@@ -46,6 +46,17 @@ input, select, textarea {
   color: #ffffff
 }
 
+.title_box a {
+  background: #878eaf;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.title_box a:hover {
+  background: #878eaf;
+  color: yellow;
+}
+
 .title_table {
   font: bold 10pt tahoma, lucida, helvetica, sansserif;
   text-align: center;
@@ -56,15 +67,24 @@ input, select, textarea {
 .text_box {
   font: normal 9pt tahoma, lucida, helvetica, sansserif;
   background: #f0f0f9;
-  color: #000000
+  color: #000000;
 }
 
 .text_data {
   font: normal 9pt tahoma, lucida, helvetica, sansserif;
   text-align: right;
   background: #f0f0f9;
-  color: #000000
+  color: #000000;
 }
+
+.odd .text_data, .odd .text_result, .odd .text_percent {
+  background: #f0f0f9;
+}
+
+.even .text_data, .even .text_result, .even .text_percent { 
+  background: #d3e3d3;
+}
+
 .text_result {
   font: normal 9pt tahoma, lucida, helvetica, sansserif;
   text-align: right;
@@ -133,3 +153,50 @@ input, select, textarea {
 .f_correct { color: #0000FF; font-family: sans-serif, courier; font-weight: bold;}
 .f_incorrect { color: #FF0000; font-family: courier, sans-serif; font-weight: bold; }
 
+
+/* Inner tables */
+.innertable { 
+  width: 100%;
+}
+
+.innertable .title_box {
+  background: #a3a8c2;
+  color: #ffffff;
+}
+
+.innertable .title_table { 
+  background: #bdc1d3;
+  color: #333333;
+}
+
+.innertable .text_data {
+  background: #e1e1ea;
+  color: #000000;
+  text-align: center;
+}
+.innertable .text_result {
+  background: #e1e1ea;
+  color: #000000;
+  text-align: center;
+}
+
+.innertable .text_percent {
+  background: #e1e1ea;
+  color: #ff0000;
+  text-align: center;
+}
+
+/* Positive and negative values */
+.pos_value {
+  color: #000000;
+}
+
+.neg_value {
+  color: #ff0000;
+}
+
+/* Link image without border */
+a img.noborder 
+{  
+  border: none;
+}

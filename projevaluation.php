@@ -7,6 +7,7 @@
 //  Enrique Ocaña González <eocanha@igalia.com>
 //  José Riguera López <jriguera@igalia.com>
 //  Jesús Pérez Díaz <jperez@igalia.com>
+//  Mario Sánchez Prada <msanchez@igalia.com>
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -45,11 +46,11 @@ require_once("include/prepare_calendar.php");
 
 $die=_("Can't finalize the operation");
 
-if ($flag=="PROJECTS" && !multi_in_array($board_group_names,(array)$session_groups)) {
-  // If the user in not in a group that belongs to the board members, she can't
-  // access the PROJECTS information
-  header("Location: login.php");
-}
+/* if ($flag=="PROJECTS" && !multi_in_array($board_group_names,(array)$session_groups)) { */
+/*   // If the user in not in a group that belongs to the board members, she can't */
+/*   // access the PROJECTS information */
+/*   header("Location: login.php"); */
+/* } */
 
 // In sheet 5, init date will be the same as end date
 if ($sheets==5) {
@@ -320,9 +321,13 @@ $querys1=array(
     3=>_("Person / project"),
     4=>_("Project evaluation")));
 
-if ($flag=="PERSONS") $title=_("Person evaluation");
-else $title=_("Project evaluation");
-
+if ($flag=="PERSONS") {
+  $title=_("Person evaluation");
+  $detailsURL="userdetails.php";
+} else {
+  $title=_("Project evaluation");
+  $detailsURL="projectdetails.php";
+}
 
 require("include/template-pre.php");
 if (!empty($error)) msg_fail($error);
@@ -395,7 +400,15 @@ if (empty($error)&&$sheets!=0) {
       foreach ((array)$$col_title_var as $col) {
 ?>
   <td bgcolor="#FFFFFF" class="title_box">
-        <?=$col?>
+<?  
+    if ($sheets==3) { 
+?>
+    <a href="userdetails.php?id=<?=$col?>"><?=$col?></a>
+<?    
+    } else {
+      $col;
+    }
+?>
   </td>
 <?
       }
@@ -420,10 +433,23 @@ if (empty($error)&&$sheets!=0) {
 ?>
 </tr>
 <?
+  $odd_even = 0; /* start with odd rows */
   foreach ((array)$$row_title_var as $row) {
 ?>
-<tr>
-  <td bgcolor="#FFFFFF" class="title_box"><?=$row?></td>
+<tr class="<?=($odd_even==0)?odd:even?>">
+  <td bgcolor="#FFFFFF" class="title_box">
+<?  
+    if ($sheets==3) { 
+?>
+    <a href="projectdetails.php?id=<?=$row?>"><?=$row?></a>
+<?    
+    } else {
+?>
+    <a href="<?=$detailsURL?>?id=<?=$row?>"><?=$row?></a>
+<?
+    }
+?>
+  </td>
 <? 
     foreach ((array)$$col_title_var as $col) {
       if ($a[$row][$col]==""){
@@ -432,11 +458,31 @@ if (empty($error)&&$sheets!=0) {
 <?    
       } else if ($a[$col]==""&&$a[""][$col]!=""){
 ?>
-  <td bgcolor="#FFFFFF" class="text_data"><?=sprintf("%01.2f",$a[$row][$col])?></td>
+  <td bgcolor="#FFFFFF" class="text_data">
+<?       if (($sheets == 4) && ($a[$row][$col] >= 0)) { ?>    
+    <span class="pos_value">
+<?       } else if ($sheets == 4) { ?>    
+    <span class="neg_value">
+<?       } else { ?>    
+    <span>    
+<?       } ?>
+      <?=sprintf("%01.2f",$a[$row][$col])?>
+    </span>
+  </td>
 <?
       } else {
 ?>
-  <td bgcolor="#FFFFFF" class="text_data"><?=sprintf("%01.2f",$a[$row][$col])?></td>
+  <td bgcolor="#FFFFFF" class="text_data">
+<?       if (($sheets == 4) && ($a[$row][$col] >= 0)) { ?>    
+    <span class="pos_value">
+<?       } else if ($sheets == 4) { ?>    
+    <span class="neg_value">
+<?       } else { ?>    
+    <span>    
+<?       } ?>
+      <?=sprintf("%01.2f",$a[$row][$col])?>
+    </span>
+  </td>
 <?
       }
     }
@@ -454,6 +500,7 @@ if (empty($error)&&$sheets!=0) {
 ?>
 </tr>
 <?
+    $odd_even = ($odd_even+1)%2; /* update odd_even counter */  
   }
 ?>
 <tr>
