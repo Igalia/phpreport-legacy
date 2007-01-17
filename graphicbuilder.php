@@ -34,11 +34,6 @@ require_once("/usr/share/phplot/phplot.php");
 
 $die=_("Can't finalize the operation");
 
-if (!(in_array($admin_group_name,(array)$session_groups) 
-)) {
- header("Location: login.php");
-}
-
 header('Content-type: image/png');
 
 /* Retrieve GET params */
