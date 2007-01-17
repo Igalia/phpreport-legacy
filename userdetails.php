@@ -29,10 +29,11 @@ require_once("include/prepare_calendar.php");
 
 $die=_("Can't finalize the operation");
 
-if (!(in_array($admin_group_name,(array)$session_groups) 
-)) {
- header("Location: login.php");
-}
+/* if (multi_in_array($board_group_names,(array)$session_groups)) { */
+/*   // If the user in not in a group that belongs to the board members, she can't */
+/*   // access the information */
+/*   header("Location: login.php"); */
+/* } */
 
 /* RETRIEVE INFORMATION FROM DATABASE */
 
