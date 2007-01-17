@@ -35,11 +35,6 @@ require_once("include/prepare_calendar.php");
 
 $die=_("Can't finalize the operation");
 
-if (!(in_array($admin_group_name,(array)$session_groups) 
-)) {
- header("Location: login.php");
-}
-
 /* RETRIEVE INFORMATION FROM DATABASE */
 
 /* Project info and estimation of cost */
