@@ -74,6 +74,12 @@ function del_elements_shifting($array, $i) {
 
 // Tests if a date is valid DD/MM/YYYY or D/M/YYYY
 function validate_date_web($web_date) {
+ /* check max length for each field (regexp sometimes doesn't work well) */
+ $arrayDMA = date_web_to_arrayDMA($web_date);
+ if ((strlen($arrayDMA[0]) > 2) || (strlen($arrayDMA[1]) > 2) || (strlen($arrayDMA[2]) > 4)) {
+   return false;
+ }
+ /* if valid length, check regular expression */
  return preg_match("/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4,4}/",$web_date);
 }
 
@@ -121,6 +127,16 @@ function date_web_to_quoted_sql($web_date) {
 function cmp_init_dates ($a, $b) {
     if ($a["init"] == $b["init"]) return 0;
     return ($a["init"] < $b["init"]) ? -1 : 1;
+}
+
+// Compare dates in web format
+function cmp_web_dates ($date_a, $date_b) {
+  $arrayDMA_a = date_web_to_arrayDMA($date_a);
+  $arrayDMA_b = date_web_to_arrayDMA($date_b);
+  $timestamp_a = mktime(0, 0, 0, $arrayDMA_a[1], $arrayDMA_a[0], $arrayDMA_a[2]);
+  $timestamp_b = mktime(0, 0, 0, $arrayDMA_b[1], $arrayDMA_b[0], $arrayDMA_b[2]);
+  if ($timestamp_a == $timestamp_b) return 0;
+  return ($timestamp_a < $timestamp_b)? -1 : 1;
 }
 
 // Convert "spanish" time (HH:MM) to "PostgreSQL" (total minutes)

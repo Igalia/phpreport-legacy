@@ -466,12 +466,12 @@ msgid "Desviation abs"
 msgstr "Desviación abs"
 
 #: projevaluation.php:369 projevaluation.php:377 projevaluation.php:378
-msgid "EUR/h real"
-msgstr "EUR/h real"
+msgid "EUR/h<br>real"
+msgstr "EUR/h<br>real"
 
 #: projevaluation.php:369 projevaluation.php:377 projevaluation.php:378
-msgid "EUR/h est."
-msgstr "EUR/h est"
+msgid "EUR/h<br>est."
+msgstr "EUR/h<br>est"
 
 #: report.php:157 report.php:157
 msgid "The report is locked and it can't be modified"

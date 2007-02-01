@@ -46,6 +46,22 @@ $row=@pg_fetch_array($result,0,PGSQL_ASSOC);
 $project=$row;
 @pg_freeresult($result);
 
+/* Initial date: date of the first task for this project */
+$project_init="";
+$result=@pg_exec($cnx, $query="SELECT MIN(_date) AS init_date FROM task WHERE name = '".$id."'")
+        or die("$die $query");
+$row=@pg_fetch_array($result,0,PGSQL_ASSOC);
+$project_init=$row["init_date"];
+@pg_freeresult($result);
+
+/* End date: date of the last task for this project */
+$project_end="";
+$result=@pg_exec($cnx, $query="SELECT (MAX(_date) + '1 day'::interval)::date AS end_date FROM task WHERE name = '".$id."'")
+        or die("$die $query");
+$row=@pg_fetch_array($result,0,PGSQL_ASSOC);
+$project_end=$row["end_date"];
+@pg_freeresult($result);
+
 /* Spent hours (all) */
 $all_hours=0;
 $result=@pg_exec($cnx, $query="SELECT COALESCE(SUM(_end - init)/60.0, 0) AS all_hours from task WHERE name = "."'$id'")
@@ -72,16 +88,21 @@ $pin_hours=$row["pin_hours"];
 
 /* CALCULATE NEEDED VALUES */
 
+/* Init and end date (web format) */
+$project_init=date_sql_to_web($project_init);
+$project_end=date_sql_to_web($project_end);
+
+/* Absolute values */
 $pex_pin_hours = $pex_hours + $pin_hours;
 $est_cost_hour = ($project["est_hours"] == 0)?0:$project["invoice"]/$project["est_hours"];
 $actual_cost_hour_all = ($all_hours == 0)?0:$project["invoice"]/$all_hours;
 $actual_cost_hour_pex = ($pex_hours == 0)?0:$project["invoice"]/$pex_hours;
 $actual_cost_hour_pex_pin = ($pex_pin_hours == 0)?0:$project["invoice"]/$pex_pin_hours;
 
+/* Desviations */
 $desv_hours_all = $all_hours - $project["est_hours"];
 $desv_hours_pex = $pex_hours - $project["est_hours"];
 $desv_hours_pex_pin = $pex_pin_hours - $project["est_hours"];
-
 $desv_cost_hour_all = $actual_cost_hour_all - $est_cost_hour;
 $desv_cost_hour_pex = $actual_cost_hour_pex - $est_cost_hour;
 $desv_cost_hour_pex_pin = $actual_cost_hour_pex_pin - $est_cost_hour;
@@ -89,15 +110,31 @@ $desv_cost_hour_pex_pin = $actual_cost_hour_pex_pin - $est_cost_hour;
 
 /* RETRIEVE DATA FOR PERSON/TASK TABLE */
 
-$result=@pg_exec($cnx,$query="SELECT fest,city FROM holiday ORDER BY fest")
-     or die($die);
-for ($i=0;$row=@pg_fetch_array($result,$i,PGSQL_ASSOC);$i++) {
-  $val=date_sql_to_web($row["fest"]);
-  $arrayDMA=date_web_to_arrayDMA($val);
-  $holidays[$row["city"]][]=getdate(mktime(0,0,0,$arrayDMA[1],$arrayDMA[0],$arrayDMA[2]));
+/* validate dates (DD/MM/YYYY) */
+if(($init!="" && !validate_date_web($init)) || ($end!="" && !validate_date_web($end))) {
+  $error=_("Incorrect date format, should be DD/MM/YYYY");
 }
-@pg_freeresult($result);
 
+/* Set default dates if they were not previously set */
+if ($init=="" || !validate_date_web($init)) {
+  $init = $project_init;
+}
+if ($end=="" || !validate_date_web($end)) {
+  $end = $project_end;
+}
+
+
+/* validate valid range (from past to future) */
+if(cmp_web_dates($init, $end) > 0) {
+  $error=_("Start date must be greater than end date");
+}
+
+/* redundant check, since dates are ALWAYS set before reaching this point */
+if ($init==""&&$end=="") {
+  $error=_("Dates can't be void");
+}
+
+/* retrieve work types */
 $type=@pg_exec($cnx,$query="SELECT code FROM label WHERE type='type'")
      or die($die);
 $type_consult=array();
@@ -106,17 +143,24 @@ for ($i=0;$row=@pg_fetch_array($type,$i,PGSQL_ASSOC);$i++) {
 }
 @pg_freeresult($type);
 
-/* Retrieve users who work/worked in this project */
-$users=@pg_exec($cnx,$query="SELECT DISTINCT uid FROM task WHERE name = '".$id."' ORDER BY uid ASC")
-     or die($die);
+/* define limits to retrieve data for the specified interval */
+$lowest_date = date_web_to_sql($init);
+$uppest_date = date_web_to_sql($end);    
+
+/* Retrieve users who work/worked in this project during the specified interval */
+$users=@pg_exec($cnx,$query="SELECT DISTINCT uid FROM task WHERE ( _date >= '"
+		.$lowest_date."'::date AND _date < '".$uppest_date."'::date ) AND name = '"
+		.$id."' ORDER BY uid ASC") or die($die);
 $users_consult=array();
 for ($i=0;$row=@pg_fetch_array($users,$i,PGSQL_ASSOC);$i++) {
   $users_consult[]=$row["uid"];
 }
 @pg_freeresult($users);
 
-$data=@pg_exec($cnx,$query="SELECT type, uid, SUM( _end - init ) / 60.0 AS add_hours FROM task WHERE name = '".$id."' GROUP BY type, uid ORDER BY uid ASC")
-     or die($die);
+/* Retrieve project dedication during the specified interval */
+$data=@pg_exec($cnx,$query="SELECT type, uid, SUM( _end - init ) / 60.0 AS add_hours FROM task WHERE ( _date >= '"
+	       .$lowest_date."'::date AND _date < '".$uppest_date."'::date ) AND name = '"
+	       .$id."' GROUP BY type, uid ORDER BY uid ASC") or die($die);
 $data_consult=array();
 for ($i=0;$row=@pg_fetch_array($data,$i,PGSQL_ASSOC);$i++) {
   $data_consult[]=$row;
@@ -142,6 +186,20 @@ foreach ((array)$type_consult as $type) {
   $percent_col[$type]+=@($add_hours_col[$type]/$add_hours*100);
   $percent_col["tot"]+=@($add_hours_col[$type]/$add_hours*100);
 }
+
+/* SET NEEDED DATA FOR DRAWING GRAPHS */
+$chart_types = array("area", "bars", "linepoints", "lines",  
+		     "pie", "points", "squared", "thinbarline");
+
+/* retrieve GET param, or set it to "linepoints" (default) if still not set, */
+/* or if the selected type is not available from previous defined list      */
+$ctype = "";
+if (isset($chart_type) && in_array($chart_type, $chart_types)) {
+  $ctype = $chart_type;
+} else {
+  $ctype = "bars"; /* default */
+}
+
 
 require_once("include/close_db.php");
 
@@ -393,11 +451,66 @@ if (!empty($confirmation)) msg_ok($confirmation);
 	  </td>
 	</tr>
 	<tr>
-	  <td height="15px"><!-- spacing cell --></td>
+	  <td height="35px"><!-- spacing cell --></td>
 	</tr>
       </table>
 
+      <!-- DATE SELECTION FORM -->
+
+      <table border="0" cellspacing="0" cellpadding="0">
+	<tr>
+	  <td bgcolor="#000000">
+	    <table border="0" cellspacing="1" cellpadding="0" width="100%">
+	      <tr>
+		<td bgcolor="#000000" class="title_box">
+		  <font color="#FFFFFF" class="title_box">
+		  <!-- title box -->
+		  <?=_("Period to check")?>
+		  <!-- end title box -->
+		  </font>
+		</td>
+	      </tr>
+	      <tr>
+		<td bgcolor="#FFFFFF" class="text_box">
+		  <form name="results" method="post" onreset="this.init.value='<?=$project_init?>'; this.end.value='<?=$project_end?>'; return false;">
+		  <table>
+		    <tr>
+		      <td>
+			<?=_("Start date");?>:
+		      </td>
+		      <td>
+			<input type="text" name="init" value="<?=$init?>">
+		      </td> 
+		    </tr>
+		    <tr>
+		      <td>
+			<?=_("End date");?>:
+		      </td>
+		      <td>
+			<input type="text" name="end" value="<?=$end?>">
+		      </td> 
+		    </tr>
+		    <tr>
+		      <td align="center" colspan="2">
+			<input type="reset" name="reset" value="<?=_("Set defaults")?>">
+			<input type="submit" name="view" value="<?=_("View")?>">
+		      </td> 
+		    </tr>
+		  </table>
+		  <!-- set data from the other form to send it when this one is submitted -->
+		  <input type="hidden" name="chart_type" value="<?=$ctype?>">
+		  </form>		  
+		</td>
+	      </tr>
+	    </table>
+	  </td>
+	</tr>
+	<tr>
+	  <td height="15px"><!-- spacing cell --></td>
+	</tr>
+      </table>
       
+
       <!-- PERSON/TASK TABLE -->
 
       <!-- box -->
@@ -491,23 +604,78 @@ if (!empty($confirmation)) msg_ok($confirmation);
 	  </td>
 	</tr>
 	<tr>
-	  <td height="15px"><!-- spacing cell --></td>
+	  <td height="35px"><!-- spacing cell --></td>
 	</tr>
       </table>
       <!-- end box -->
+
+
+      <!-- GRAPH TYPE SELECTION FORM -->
+
+      <table border="0" cellspacing="0" cellpadding="0">
+	<tr>
+	  <td bgcolor="#000000">
+	    <table border="0" cellspacing="1" cellpadding="0" width="100%">
+	      <tr>
+		<td bgcolor="#000000" class="title_box">
+		  <font color="#FFFFFF" class="title_box">
+		  <!-- title box -->
+		  <?=_("Select chart type")?>
+		  <!-- end title box -->
+		  </font>		 
+		</td>
+	      </tr>
+	      <tr>
+		<td bgcolor="#FFFFFF" class="text_box" >
+		  <form name="chart" method="post">
+		  <table>
+		    <tr>
+		      <td width="10px"></td>
+		      <td>
+			<select name="chart_type" onchange="this.form.submit()">
+			  <?
+                          foreach ($chart_types as $chart_type) {
+                          ?>
+                            <option value="<?=$chart_type?>" <?=($ctype==$chart_type)?"selected=\"selected\"":""?>>			      
+			      <?=_($chart_type)?>
+			    </option>
+			  <?
+			  }
+			  ?>
+			</select>
+			<!-- set data from the other form to send it when this one is submitted -->
+			<input type="hidden" name="init" value="<?=$init?>">
+			<input type="hidden" name="end" value="<?=$end?>">
+		      </td>
+		      <td width="1px"></td>
+		    </tr>
+		  </table>
+		  </form>		  
+		</td>
+	      </tr>
+	    </table>
+	  </td>
+	</tr>
+	<tr>
+	  <td height="15px"><!-- spacing cell --></td>
+	</tr>
+      </table>
+
+      
+      <!-- GRAPH DRAWINGS -->
+
+      <table>
+	<tr>
+	  <td>
+	    <!-- Line points chart -->
+	    <a href="graphicbuilder.php?id=<?=$id?>&type=<?=$ctype?>&flag=PROJECT&title=Project+evolution&width=1600&height=1200&startdate=<?=$init?>&enddate=<?=$end?>">
+	    <img class="noborder" src="graphicbuilder.php?id=<?=$id?>&type=<?=$ctype?>&flag=PROJECT&title=Project+evolution&width=800&height=600&startdate=<?=$init?>&enddate=<?=$end?>" />
+	    </a>
+	  </td>
+	</tr>
+	<tr><td height="20px"><!-- spacing cell --></td></tr>
+      </table>
       </center>
-
-      <!-- Line points chart -->
-      <a href="graphicbuilder.php?id=<?=$id?>&type=linepoints&flag=PROJECT&title=Project+evolution&width=1600&height=1200">
-        <img class="noborder" src="graphicbuilder.php?id=<?=$id?>&type=linepoints&flag=PROJECT&title=Project+evolution" />
-      </a>
-      <br>
-
-      <!-- Pie chart -->
-      <a href="graphicbuilder.php?id=<?=$id?>&type=pie&flag=PROJECT&title=Project+dedication&width=1600&height=1200">
-        <img class="noborder" src="graphicbuilder.php?id=<?=$id?>&type=pie&flag=PROJECT&title=Project+dedication" />
-      </a>
-
     </td>
     <td style="width: 25ex" valign="top">
       <? require("include/show_sections.php") ?>
