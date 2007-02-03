@@ -1,113 +1,122 @@
-# translation of es.po to Español
+# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-# Enrique Ocana Gonzalez <eocanha@igalia.com>, 2006.
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: es\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-21 02:37+0200\n"
-"PO-Revision-Date: 2006-09-21 02:39+0200\n"
-"Last-Translator: Enrique Ocana Gonzalez <eocanha@igalia.com>\n"
-"Language-Team: Español\n"
+"POT-Creation-Date: 2007-02-03 12:47+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.2\n"
-"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: labels.php:33 labels.php:33
+#: labels.php:33 labels.php:34 labels.php:34
 msgid "Code equivalence"
 msgstr "Equivalencia de códigos"
 
-#: labels.php:48 report.php:407 labels.php:48 report.php:407
+#: labels.php:48 report.php:407 labels.php:49 report.php:408 labels.php:49
+#: report.php:408
 msgid "Task type"
 msgstr "Tipo de tarea"
 
-#: labels.php:49 report.php:408 labels.php:49 report.php:408
+#: labels.php:49 report.php:408 labels.php:50 report.php:409
+#: userdetails.php:131 labels.php:50 report.php:409 userdetails.php:131
 msgid "Project"
 msgstr "Proyecto"
 
-#: labels.php:50 report.php:409 labels.php:50 report.php:409
+#: labels.php:50 report.php:409 labels.php:51 report.php:410 labels.php:51
+#: report.php:410
 msgid "Project phase"
 msgstr "Fase del proyecto"
 
-#: labels.php:51 report.php:410 labels.php:51 report.php:410
+#: labels.php:51 report.php:410 labels.php:52 report.php:411 labels.php:52
+#: report.php:411
 msgid "Task type into the phase"
 msgstr "Tipo de tarea dentro de la fase"
 
-#: labels.php:63 adminlabels.php:105 labels.php:63 adminlabels.php:105
+#: labels.php:63 adminlabels.php:105 adminlabels.php:106 labels.php:64
+#: adminlabels.php:106 labels.php:64
 msgid "Code"
 msgstr "Código"
 
-#: editorxml.php:51 editorxml.php:145 include/html.php:120 editorxml.php:51
-#: editorxml.php:145 include/html.php:120
+#: editorxml.php:51 editorxml.php:145 include/html.php:120 editorxml.php:52
+#: editorxml.php:146 include/html.php:121 editorxml.php:52 editorxml.php:146
+#: include/html.php:121
 msgid "XML report editor"
 msgstr "Editor de informes XML"
 
-#: editorxml.php:68 editorxml.php:68
+#: editorxml.php:68 editorxml.php:69 editorxml.php:69
 msgid "Invalid path"
 msgstr "Ruta no válida"
 
-#: editorxml.php:80 editorxml.php:80
+#: editorxml.php:80 editorxml.php:81 editorxml.php:81
 msgid "File path not found"
 msgstr "Ruta al fichero no encontrada"
 
-#: editorxml.php:84 editorxml.php:84
+#: editorxml.php:84 editorxml.php:85 editorxml.php:85
 msgid "File has an invalid name"
 msgstr "Fichero con nombre incorrecto"
 
-#: editorxml.php:86 editorxml.php:86
+#: editorxml.php:86 editorxml.php:87 editorxml.php:87
 msgid "File not recognized"
 msgstr "Fichero no reconocido"
 
-#: editorxml.php:87 editorxml.php:87
+#: editorxml.php:87 editorxml.php:88 editorxml.php:88
 msgid "File can't be opened"
 msgstr "No se puede abrir el fichero"
 
-#: editorxml.php:93 editorxml.php:180 editorxml.php:93 editorxml.php:180
+#: editorxml.php:93 editorxml.php:180 editorxml.php:94 editorxml.php:181
+#: editorxml.php:94 editorxml.php:181
 msgid "Close"
 msgstr "Cerrar"
 
-#: editorxml.php:97 editorxml.php:176 processxml.php:188 editorxml.php:97
-#: editorxml.php:176 processxml.php:188
+#: editorxml.php:97 editorxml.php:176 processxml.php:188 editorxml.php:98
+#: editorxml.php:177 processxml.php:189 editorxml.php:98 editorxml.php:177
+#: processxml.php:189
 msgid "Save"
 msgstr "Guardar"
 
-#: editorxml.php:103 editorxml.php:103
+#: editorxml.php:103 editorxml.php:104 editorxml.php:104
 msgid " bytes correctly written."
 msgstr "bytes escritos correctamente."
 
-#: editorxml.php:105 editorxml.php:105
+#: editorxml.php:105 editorxml.php:106 editorxml.php:106
 msgid "The changes couldn't be saved"
 msgstr "No se ha podido guardar los cambios"
 
-#: editorxml.php:107 editorxml.php:174 editorxml.php:107 editorxml.php:174
+#: editorxml.php:107 editorxml.php:174 editorxml.php:108 editorxml.php:175
+#: editorxml.php:108 editorxml.php:175
 msgid "Validate"
 msgstr "Validar"
 
-#: editorxml.php:109 editorxml.php:109
+#: editorxml.php:109 editorxml.php:110 editorxml.php:110
 msgid "Validating report "
 msgstr "Validando informe"
 
-#: editorxml.php:119 editorxml.php:119
+#: editorxml.php:119 editorxml.php:120 editorxml.php:120
 msgid "Report valid and coherent, prepared to be saved."
 msgstr "Informe válido y coherente, listo para guardar."
 
-#: editorxml.php:125 editorxml.php:132 editorxml.php:125 editorxml.php:132
+#: editorxml.php:125 editorxml.php:132 editorxml.php:126 editorxml.php:133
+#: editorxml.php:126 editorxml.php:133
 msgid "Error ..."
 msgstr "Error ..."
 
-#: processxml.php:54 processxml.php:54
+#: processxml.php:54 processxml.php:55 processxml.php:55
 msgid "Validate XML weekly reports"
 msgstr "Validar informes semanales XML"
 
-#: processxml.php:77 processxml.php:77
+#: processxml.php:77 processxml.php:78 processxml.php:78
 msgid "XML reports"
 msgstr "Informes XML"
 
-#: processxml.php:77 processxml.php:77
+#: processxml.php:77 processxml.php:78 processxml.php:78
 msgid ""
 "Process XML reports. You can edit and revalidate the reports as many times "
 "as needed in order to be finally inserted in the DB"
@@ -115,35 +124,37 @@ msgstr ""
 "Procesar informes XML. Puedes editar y revalidar los informes tantas veces "
 "como sea necesario para insertarlos finalmente en la BD"
 
-#: processxml.php:93 processxml.php:93
+#: processxml.php:93 processxml.php:94 processxml.php:94
 msgid "Weekly report"
 msgstr "Informe semanal"
 
-#: processxml.php:94 processxml.php:94
+#: processxml.php:94 processxml.php:95 processxml.php:95
 msgid "Valid"
 msgstr "Válido"
 
-#: processxml.php:95 processxml.php:95
+#: processxml.php:95 processxml.php:96 processxml.php:96
 msgid "Coherent"
 msgstr "Coherente"
 
-#: processxml.php:96 processxml.php:96
+#: processxml.php:96 processxml.php:97 processxml.php:97
 msgid "Saved"
 msgstr "Guardado"
 
-#: processxml.php:131 cal_manag.php:184 processxml.php:131 cal_manag.php:184
+#: processxml.php:131 cal_manag.php:184 cal_manag.php:185 processxml.php:132
+#: cal_manag.php:185 processxml.php:132
 msgid "OK"
 msgstr "OK"
 
-#: processxml.php:136 processxml.php:136
+#: processxml.php:136 processxml.php:137 processxml.php:137
 msgid "XSLT Error"
 msgstr "Error XSLT"
 
-#: processxml.php:141 processxml.php:146 processxml.php:141 processxml.php:146
+#: processxml.php:141 processxml.php:146 processxml.php:142 processxml.php:147
+#: processxml.php:142 processxml.php:147
 msgid "BD SQL Error"
 msgstr "Error SQL BD"
 
-#: processxml.php:182 processxml.php:182
+#: processxml.php:182 processxml.php:183 processxml.php:183
 msgid ""
 "Tests if the reports are well formed, valid against the DTD and coherent "
 "(overlapping tasks, incorrect days...)."
@@ -151,28 +162,34 @@ msgstr ""
 "Comprueba si los informes están bien formados, validan contra el DTD y son "
 "coherentes (tareas solapadas, días incorrectos...)"
 
-#: processxml.php:194 processxml.php:194
-msgid "Inserts into the DB the data of correct (coherent and valid) XML reports."
-msgstr "Inserta los datos de los informes correctos (coherentes y válidos) en la BD"
+#: processxml.php:194 processxml.php:195 processxml.php:195
+msgid ""
+"Inserts into the DB the data of correct (coherent and valid) XML reports."
+msgstr ""
+"Inserta los datos de los informes correctos (coherentes y válidos) en la BD"
 
-#: processxml.php:207 processxml.php:207
-msgid "It's impossible to find reports, or all the submitted ones are incorrect."
-msgstr "Imposible encontrar informes, o todos los informes enviados son incorrectos."
+#: processxml.php:207 processxml.php:208 processxml.php:208
+msgid ""
+"It's impossible to find reports, or all the submitted ones are incorrect."
+msgstr ""
+"Imposible encontrar informes, o todos los informes enviados son incorrectos."
 
-#: processxml.php:215 processxml.php:215
+#: processxml.php:215 processxml.php:216 processxml.php:216
 msgid "All valid reports have been correctly saved"
 msgstr "Todos los informes válidos han sido guardados correctamente"
 
-#: processxml.php:219 processxml.php:219
+#: processxml.php:219 processxml.php:220 processxml.php:220
 #, php-format
 msgid "WARNING, only %1$s of %2$s reports were valid and had been inserted"
-msgstr "ADVERTENCIA, sólo %1$s de %2$s informes eran válidos y han sido insertados"
+msgstr ""
+"ADVERTENCIA, sólo %1$s de %2$s informes eran válidos y han sido insertados"
 
-#: processxml.php:230 processxml.php:230
+#: processxml.php:230 processxml.php:231 processxml.php:231
 msgid "All reports are valid and coherent. They are ready to be inserted."
-msgstr "Todos los informes son válidos y coherentes. Están listos para insertar."
+msgstr ""
+"Todos los informes son válidos y coherentes. Están listos para insertar."
 
-#: processxml.php:233 processxml.php:233
+#: processxml.php:233 processxml.php:234 processxml.php:234
 #, php-format
 msgid ""
 "WARNING, only %1$s of %2$s reports were valid and had been inserted. Edit "
@@ -181,106 +198,112 @@ msgstr ""
 "ADVERTENCIA, sólo %1$s de %2$s informes eran válidos y han sido insertados. "
 "Edita los que necesites."
 
-#: profile.php:46 profile.php:46
+#: profile.php:46 profile.php:47 profile.php:47
 msgid "You must specify the current password"
 msgstr "Debes indicar la contraseña actual"
 
-#: profile.php:50 profile.php:50
+#: profile.php:50 profile.php:51 profile.php:51
 msgid "You must specify the new password"
 msgstr "Debes indicar la nueva contraseña"
 
-#: profile.php:54 profile.php:54
+#: profile.php:54 profile.php:55 profile.php:55
 msgid "The new password and the confirmation password don't agree"
 msgstr "La nueva contraseña y la de confirmación no coinciden"
 
-#: profile.php:58 login.php:128 login.php:142 users.php:81 profile.php:58
-#: login.php:128 login.php:142 users.php:82
+#: profile.php:58 login.php:128 login.php:142 users.php:81 users.php:82
+#: login.php:129 login.php:143 profile.php:59 users.php:85 login.php:129
+#: login.php:143 profile.php:59 users.php:85
 msgid "Can't finalize the operation: "
 msgstr "No se ha podido completar la operación"
 
-#: profile.php:64 profile.php:64
+#: profile.php:64 profile.php:65 profile.php:65
 msgid "The current password is incorrect"
 msgstr "La contraseña actual es incorrecta"
 
-#: profile.php:72 profile.php:72
+#: profile.php:72 profile.php:73 profile.php:73
 msgid "The password has been changed correctly"
 msgstr "La contraseña se ha cambiado correctamente"
 
-#: profile.php:81 include/show_sections.php:27 profile.php:81
-#: include/show_sections.php:27
+#: profile.php:81 include/show_sections.php:27 profile.php:82
+#: include/show_sections.php:39 profile.php:82 include/show_sections.php:39
 msgid "Password change"
 msgstr "Cambio de contraseña"
 
-#: profile.php:101 profile.php:101
+#: profile.php:101 profile.php:102 profile.php:102
 msgid "Input the new password"
 msgstr "Introduce la nueva contraseña"
 
-#: profile.php:112 profile.php:112
+#: profile.php:112 profile.php:113 profile.php:113
 msgid "Current password"
 msgstr "Contraseña actual"
 
-#: profile.php:116 profile.php:116
+#: profile.php:116 profile.php:117 profile.php:117
 msgid "New password"
 msgstr "Nueva contraseña"
 
-#: profile.php:120 profile.php:120
+#: profile.php:120 profile.php:121 profile.php:121
 msgid "Confirm password"
 msgstr "Confirmar contraseña"
 
 #: profile.php:124 projects.php:290 calendar.php:200 users.php:508
-#: profile.php:124 projects.php:290 calendar.php:200 users.php:541
+#: users.php:541 calendar.php:201 profile.php:125 projects.php:291
+#: users.php:570 calendar.php:201 profile.php:125 projects.php:291
+#: users.php:570
 msgid "Change"
 msgstr "Cambiar"
 
-#: login.php:57 login.php:57
+#: login.php:57 login.php:58 login.php:58
 msgid "Empty password"
 msgstr "Contraseña vacía"
 
-#: login.php:64 login.php:64
+#: login.php:64 login.php:65 login.php:65
 msgid "Can't connect to LDAP server"
 msgstr "No se ha podido conectar al servidor LDAP"
 
-#: login.php:68 login.php:138 login.php:68 login.php:138
+#: login.php:68 login.php:138 login.php:69 login.php:139 login.php:69
+#: login.php:139
 msgid "Incorrect Login/password"
 msgstr "Usuario/contraseña incorrectos"
 
-#: login.php:76 login.php:76
+#: login.php:76 login.php:77 login.php:77
 msgid "Can't get the LDAP's groups of this user"
 msgstr "No se han podido obtener los grupos LDAP para el usuario"
 
-#: login.php:87 login.php:87
+#: login.php:87 login.php:88 login.php:88
 msgid "This user is not authorized to use this application"
 msgstr "El usuario no está autorizado para usar esta aplicación"
 
-#: login.php:95 login.php:112 login.php:95 login.php:112
+#: login.php:95 login.php:112 login.php:96 login.php:113 login.php:96
+#: login.php:113
 msgid "Can't retrieve PhpReport user list"
 msgstr "No se ha podido obtener la lista de usuarios de PhpReport"
 
-#: login.php:152 login.php:152
+#: login.php:152 login.php:153 login.php:153
 msgid "Can't retrieve the PhpReport user list"
 msgstr "No se ha podido obtener la lista de usuarios de PhpReport"
 
-#: login.php:157 login.php:157
+#: login.php:157 login.php:158 login.php:158
 msgid "An authentication mecanism wasn't configured"
 msgstr "No se ha configurado ningún mecanismo de autenticación"
 
-#: login.php:192 login.php:196
+#: login.php:192 login.php:196 login.php:197 login.php:197
 msgid "Identification"
 msgstr "Identificación"
 
-#: login.php:206 login.php:210
+#: login.php:206 login.php:210 login.php:211 login.php:211
 msgid "Login"
 msgstr "Usuario"
 
-#: login.php:210 login.php:214
+#: login.php:210 login.php:214 login.php:215 login.php:215
 msgid "Password"
 msgstr "Contraseña"
 
-#: login.php:215 login.php:223 login.php:219 login.php:227
+#: login.php:215 login.php:223 login.php:219 login.php:227 login.php:220
+#: login.php:228 login.php:220 login.php:228
 msgid "Enter"
 msgstr "Entrar"
 
-#: login.php:221 login.php:225
+#: login.php:221 login.php:225 login.php:226 login.php:226
 msgid "Identification successful."
 msgstr "Identificación correcta"
 
@@ -291,108 +314,142 @@ msgstr "Identificación correcta"
 #: adminlabels.php:106 block.php:69 users.php:56 users.php:85 users.php:94
 #: users.php:102 users.php:143 users.php:203 users.php:212 cal_manag.php:43
 #: cal_manag.php:51 cal_manag.php:56 cal_manag.php:76 cal_manag.php:82
-#: cal_manag.php:100 consult.php:111 projects.php:38 projevaluation.php:44
-#: report.php:65 report.php:81 report.php:209 report.php:220 report.php:228
-#: report.php:238 report.php:248 report.php:260 report.php:272 report.php:297
-#: adminlabels.php:52 adminlabels.php:62 adminlabels.php:74
-#: adminlabels.php:101 adminlabels.php:106 block.php:69 users.php:56
-#: users.php:86 users.php:95 users.php:103 users.php:147 users.php:207
-#: users.php:216 cal_manag.php:43 cal_manag.php:51 cal_manag.php:56
-#: cal_manag.php:76 cal_manag.php:82 cal_manag.php:100 consult.php:111
+#: cal_manag.php:100 consult.php:111 users.php:86 users.php:95 users.php:103
+#: users.php:147 users.php:207 users.php:216 adminlabels.php:53
+#: adminlabels.php:63 adminlabels.php:75 adminlabels.php:102
+#: adminlabels.php:107 block.php:70 cal_manag.php:44 cal_manag.php:52
+#: cal_manag.php:57 cal_manag.php:77 cal_manag.php:83 cal_manag.php:101
+#: consult.php:112 projects.php:39 projevaluation.php:47 report.php:66
+#: report.php:82 report.php:210 report.php:221 report.php:229 report.php:239
+#: report.php:249 report.php:261 report.php:273 report.php:298 users.php:59
+#: users.php:89 users.php:98 users.php:108 users.php:152 users.php:223
+#: userdetails.php:30 projectdetails.php:36 graphicbuilder.php:35
+#: adminlabels.php:53 adminlabels.php:63 adminlabels.php:75
+#: adminlabels.php:102 adminlabels.php:107 block.php:70 cal_manag.php:44
+#: cal_manag.php:52 cal_manag.php:57 cal_manag.php:77 cal_manag.php:83
+#: cal_manag.php:101 consult.php:112 projects.php:39 projevaluation.php:47
+#: report.php:66 report.php:82 report.php:210 report.php:221 report.php:229
+#: report.php:239 report.php:249 report.php:261 report.php:273 report.php:298
+#: users.php:59 users.php:89 users.php:98 users.php:108 users.php:152
+#: users.php:212 users.php:223 userdetails.php:30 projectdetails.php:36
+#: graphicbuilder.php:35
 msgid "Can't finalize the operation"
 msgstr "No se ha podido completar la operación"
 
-#: projects.php:77 projects.php:77
+#: projects.php:77 projects.php:78 projects.php:78
 msgid "The project has been updated correctly"
 msgstr "El proyecto ha sido actualizado correctamente"
 
-#: projects.php:110 projects.php:110
+#: projects.php:110 projects.php:111 projects.php:111
 msgid "The project has been created correctly"
 msgstr "El proyecto ha sido creado correctamente"
 
-#: projects.php:119 projects.php:119
+#: projects.php:119 projects.php:120 projects.php:120
 msgid "The project hasn't been deleted: it has related tasks"
 msgstr "El proyecto no se ha borrado: tiene tareas asociadas"
 
-#: projects.php:123 projects.php:123
+#: projects.php:123 projects.php:124 projects.php:124
 msgid "The project has been deleted correctly"
 msgstr "El proyecto ha sido borrado correctamente"
 
-#: projects.php:144 include/show_sections.php:60 projects.php:144
-#: include/show_sections.php:60
+#: projects.php:144 include/show_sections.php:60 projects.php:145
+#: include/show_sections.php:66 projects.php:145 include/show_sections.php:66
 msgid "Project management"
 msgstr "Gestión proyectos"
 
-#: projects.php:164 projects.php:164
+#: projects.php:164 projects.php:165 projects.php:165
 msgid "Project list"
 msgstr "Lista de proyectos"
 
-#: projects.php:176 projects.php:176
+#: projects.php:176 projects.php:177 projects.php:177
 msgid "Projects"
 msgstr "Proyectos"
 
 #: projects.php:191 users.php:296 consult.php:191 consult.php:354
-#: projects.php:191 users.php:325 consult.php:191 consult.php:357
+#: users.php:325 consult.php:357 consult.php:192 consult.php:358
+#: projects.php:192 users.php:331 consult.php:192 consult.php:358
+#: projects.php:192 users.php:331
 msgid "Edit"
 msgstr "Editar"
 
-#: projects.php:195 projects.php:195
+#: projects.php:195 projects.php:196 projects.php:196
 msgid "Create new project"
 msgstr "Crear nuevo proyecto"
 
-#: projects.php:215 projects.php:215
+#: projects.php:215 projects.php:216 projects.php:216
 msgid "Project edition"
 msgstr "Edición de proyectos"
 
 #: projects.php:225 projevaluation.php:99 projevaluation.php:130
-#: projevaluation.php:181 projects.php:225 projevaluation.php:99
-#: projevaluation.php:130 projevaluation.php:181
+#: projevaluation.php:181 projects.php:226 projevaluation.php:125
+#: projevaluation.php:156 projevaluation.php:223 projectdetails.php:248
+#: projects.php:226 projevaluation.php:125 projevaluation.php:156
+#: projevaluation.php:223 projectdetails.php:248
 msgid "Name"
 msgstr "Nombre"
 
-#: projects.php:234 projects.php:234
+#: projects.php:234 projects.php:235 projectdetails.php:252 projects.php:235
+#: projectdetails.php:252
 msgid "Description: "
 msgstr "Descripción:"
 
-#: projects.php:239 adminlabels.php:105 projects.php:239 adminlabels.php:105
+#: projects.php:239 adminlabels.php:105 adminlabels.php:106 projects.php:240
+#: projectdetails.php:256 adminlabels.php:106 projects.php:240
+#: projectdetails.php:256
 msgid "Activation"
 msgstr "Activación"
 
 #: projects.php:253 projevaluation.php:368 projevaluation.php:376
-#: projects.php:253 projevaluation.php:377
+#: projevaluation.php:377 projects.php:254 projevaluation.php:468
+#: projectdetails.php:283 projects.php:254 projevaluation.php:468
+#: projectdetails.php:283
 msgid "Estimated hours"
 msgstr "Horas estimadas"
 
 #: projects.php:261 projevaluation.php:369 projevaluation.php:377
-#: projects.php:261 projevaluation.php:378
+#: projevaluation.php:378 projects.php:262 projevaluation.php:469
+#: projectdetails.php:267 projects.php:262 projevaluation.php:469
+#: projectdetails.php:267
 msgid "Invoice"
 msgstr "Facturación"
 
 #: projects.php:269 projevaluation.php:309 projevaluation.php:317
-#: projects.php:269 projevaluation.php:318
+#: projevaluation.php:318 projects.php:270 projevaluation.php:396
+#: userdetails.php:252 projectdetails.php:479 projects.php:270
+#: projevaluation.php:396 userdetails.php:252 projectdetails.php:479
 msgid "Start date"
 msgstr "Fecha de inicio"
 
 #: projects.php:277 projevaluation.php:317 users.php:443 users.php:487
-#: projevaluation.php:325 projects.php:277 projevaluation.php:326
-#: users.php:476 users.php:520
+#: projevaluation.php:325 projevaluation.php:326 users.php:476 users.php:520
+#: projects.php:278 projevaluation.php:407 users.php:505 users.php:549
+#: userdetails.php:260 projectdetails.php:487 projects.php:278
+#: projevaluation.php:407 users.php:505 users.php:549 userdetails.php:260
+#: projectdetails.php:487
 msgid "End date"
 msgstr "Fecha de fin"
 
-#: projects.php:295 users.php:347 projects.php:295 users.php:376
+#: projects.php:295 users.php:347 users.php:376 projects.php:296 users.php:384
+#: projects.php:296 users.php:384
 msgid "Create"
 msgstr "Crear"
 
 #: projects.php:300 adminlabels.php:118 users.php:512 consult.php:344
-#: projects.php:300 adminlabels.php:118 users.php:545 consult.php:347
+#: users.php:545 consult.php:347 adminlabels.php:119 consult.php:348
+#: projects.php:301 users.php:574 adminlabels.php:119 consult.php:348
+#: projects.php:301 users.php:574
 msgid "Delete"
 msgstr "Borrar"
 
-#: projevaluation.php:82 projevaluation.php:82
+#: projevaluation.php:82 projevaluation.php:108 userdetails.php:75
+#: projectdetails.php:115 projevaluation.php:108 userdetails.php:75
+#: projectdetails.php:115
 msgid "Incorrect date format, should be DD/MM/YYYY"
 msgstr "Formato de fecha incorrecto, debería ser DD/MM/AAAA"
 
-#: projevaluation.php:85 projevaluation.php:85
+#: projevaluation.php:85 projevaluation.php:111 userdetails.php:93
+#: projectdetails.php:134 projevaluation.php:111 userdetails.php:93
+#: projectdetails.php:134
 msgid "Dates can't be void"
 msgstr "Las fechas no pueden ser vacías"
 
@@ -409,51 +466,75 @@ msgid "uid"
 msgstr "uid"
 
 #: projevaluation.php:276 projevaluation.php:284 projevaluation.php:285
+#: projevaluation.php:355 projevaluation.php:355
 msgid "Person / task type"
 msgstr "Persona / tipo de tarea"
 
 #: projevaluation.php:277 projevaluation.php:282 projevaluation.php:285
 #: projevaluation.php:290 projevaluation.php:286 projevaluation.php:291
+#: projevaluation.php:356 projevaluation.php:362 projevaluation.php:356
+#: projevaluation.php:362
 msgid "Person / project"
 msgstr "Persona / proyecto"
 
 #: projevaluation.php:278 projevaluation.php:286 projevaluation.php:287
+#: projevaluation.php:357 projevaluation.php:357
 msgid "Hourly personal brief"
 msgstr "Resumen de horas por persona"
 
 #: projevaluation.php:281 projevaluation.php:289 projevaluation.php:290
+#: projevaluation.php:361 projevaluation.php:361
 msgid "Project / task type"
 msgstr "Proyecto / tipo de tarea"
 
 #: projevaluation.php:283 projevaluation.php:286 include/show_sections.php:54
 #: projevaluation.php:291 projevaluation.php:294 projevaluation.php:292
-#: projevaluation.php:295 include/show_sections.php:54
+#: projevaluation.php:295 projevaluation.php:363 projevaluation.php:369
+#: include/show_sections.php:31 include/show_sections.php:75
+#: projevaluation.php:363 projevaluation.php:369 include/show_sections.php:31
+#: include/show_sections.php:75
 msgid "Project evaluation"
 msgstr "Evaluación proyectos"
 
 #: projevaluation.php:285 projevaluation.php:293 projevaluation.php:294
+#: projevaluation.php:366 projevaluation.php:366
 msgid "Person evaluation"
 msgstr "Evaluación personas"
 
 #: projevaluation.php:300 projevaluation.php:308 projevaluation.php:309
+#: projevaluation.php:384 projevaluation.php:384
 msgid "Sheets"
 msgstr "Hojas"
 
 #: projevaluation.php:326 projevaluation.php:334 projevaluation.php:335
+#: projevaluation.php:416 userdetails.php:269 projectdetails.php:496
+#: projevaluation.php:416 userdetails.php:269 projectdetails.php:496
 msgid "View"
 msgstr "Ver"
 
 #: projevaluation.php:360 projevaluation.php:416 projevaluation.php:368
 #: projevaluation.php:424 projevaluation.php:369 projevaluation.php:425
+#: projevaluation.php:460 projevaluation.php:551 userdetails.php:311
+#: userdetails.php:357 projectdetails.php:538 projectdetails.php:576
+#: projevaluation.php:460 projevaluation.php:551 userdetails.php:311
+#: userdetails.php:357 projectdetails.php:538 projectdetails.php:576
 msgid "Total result"
 msgstr "Resultado total"
 
 #: projevaluation.php:364 projevaluation.php:449 projevaluation.php:372
 #: projevaluation.php:457 projevaluation.php:373 projevaluation.php:458
+#: projevaluation.php:464 projevaluation.php:584 userdetails.php:312
+#: userdetails.php:369 projectdetails.php:323 projectdetails.php:399
+#: projectdetails.php:539 projectdetails.php:588 projevaluation.php:464
+#: projevaluation.php:584 userdetails.php:312 userdetails.php:369
+#: projectdetails.php:323 projectdetails.php:399 projectdetails.php:539
+#: projectdetails.php:588
 msgid "Percent"
 msgstr "Porcentaje"
 
 #: projevaluation.php:368 projevaluation.php:376 projevaluation.php:377
+#: projevaluation.php:468 projectdetails.php:312 projevaluation.php:468
+#: projectdetails.php:312
 msgid "Worked hours"
 msgstr "Horas trabajadas"
 
@@ -462,120 +543,126 @@ msgid "Deviation %"
 msgstr "Desviación %"
 
 #: projevaluation.php:369 projevaluation.php:377 projevaluation.php:378
+#: projevaluation.php:469 projevaluation.php:469
 msgid "Desviation abs"
 msgstr "Desviación abs"
 
 #: projevaluation.php:369 projevaluation.php:377 projevaluation.php:378
-msgid "EUR/h<br>real"
-msgstr "EUR/h<br>real"
+#: projevaluation.php:469 projevaluation.php:469
+msgid "EUR/h real"
+msgstr "EUR/h real"
 
 #: projevaluation.php:369 projevaluation.php:377 projevaluation.php:378
-msgid "EUR/h<br>est."
-msgstr "EUR/h<br>est"
+#: projevaluation.php:469 projevaluation.php:469
+msgid "EUR/h est."
+msgstr "EUR/h est"
 
-#: report.php:157 report.php:157
+#: report.php:157 report.php:158 report.php:158
 msgid "The report is locked and it can't be modified"
 msgstr "El informe está bloqueado y no puede ser modificado"
 
 #: report.php:166 report.php:171 report.php:178 report.php:194 report.php:197
-#: report.php:166 report.php:171 report.php:178 report.php:194 report.php:197
+#: report.php:167 report.php:172 report.php:179 report.php:195 report.php:198
+#: report.php:167 report.php:172 report.php:179 report.php:195 report.php:198
 msgid "Errors exist that must be corrected"
 msgstr "Existen errores que deben ser corregidos"
 
-#: report.php:167 report.php:167
+#: report.php:167 report.php:168 report.php:168
 msgid "You must use the format HH:MM"
 msgstr "Debes usar el formato HH:MM"
 
-#: report.php:172 report.php:172
+#: report.php:172 report.php:173 report.php:173
 msgid "The hour must be between 00:00 and 24:00"
 msgstr "La hora debe estar entre las 00:00 y las 24:00"
 
-#: report.php:179 report.php:179
+#: report.php:179 report.php:180 report.php:180
 msgid "You must specify this field"
 msgstr "Debes indicar este campo"
 
-#: report.php:192 report.php:193 report.php:192 report.php:193
+#: report.php:192 report.php:193 report.php:194 report.php:193 report.php:194
 msgid "The task overlaps with another one"
 msgstr "La tarea se solapa con otra"
 
-#: report.php:198 report.php:199 report.php:198 report.php:199
+#: report.php:198 report.php:199 report.php:200 report.php:199 report.php:200
 msgid "Invalid interval of hours"
 msgstr "Intervalo de horas no válido"
 
-#: report.php:315 report.php:315
+#: report.php:315 report.php:316 report.php:316
 msgid "The changes have been saved correctly"
 msgstr "Los cambios se han guardado correctamente"
 
-#: report.php:331 include/show_sections.php:18 report.php:331
+#: report.php:331 include/show_sections.php:18 report.php:332 report.php:332
 #: include/show_sections.php:18
 msgid "Report edition"
 msgstr "Edición de informes"
 
-#: report.php:357 report.php:357
+#: report.php:357 report.php:358 report.php:358
 msgid "Tasks of the day"
 msgstr "Tareas del día"
 
-#: report.php:378 report.php:378
+#: report.php:378 report.php:379 report.php:379
 msgid "Start hour"
 msgstr "Hora de inicio"
 
-#: report.php:379 report.php:379
+#: report.php:379 report.php:380 report.php:380
 msgid "End hour"
 msgstr "Hora de fin"
 
-#: report.php:390 report.php:390
+#: report.php:390 report.php:391 report.php:391
 msgid "Current hour"
 msgstr "Hora actual"
 
-#: report.php:439 report.php:439
+#: report.php:439 report.php:440 report.php:440
 msgid "Story"
 msgstr "Caso de uso"
 
-#: report.php:453 report.php:453
+#: report.php:453 report.php:454 report.php:454
 msgid "Telework"
 msgstr "Teletrabajo"
 
-#: report.php:469 report.php:469
+#: report.php:469 report.php:470 report.php:470
 msgid "Description:"
 msgstr "Descripción:"
 
-#: report.php:490 report.php:490
+#: report.php:490 report.php:491 report.php:491
 msgid "Delete task"
 msgstr "Borrar tarea"
 
-#: report.php:510 report.php:510
+#: report.php:510 report.php:511 report.php:511
 msgid "New task"
 msgstr "Nueva tarea"
 
-#: report.php:511 report.php:511
+#: report.php:511 report.php:512 report.php:512
 msgid "Save changes"
 msgstr "Guardar cambios"
 
-#: report.php:515 consult.php:483 report.php:515 consult.php:486
+#: report.php:515 consult.php:483 consult.php:486 consult.php:487
+#: report.php:516 consult.php:487 report.php:516
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: template.php:42 template.php:42
+#: template.php:42 template.php:43 template.php:43
 msgid "Report input"
 msgstr "Introducción de informes"
 
-#: template.php:45 template.php:45
+#: template.php:45 template.php:46 template.php:46
 msgid "The operation couldn't be completed"
 msgstr "No se ha podido completar la operación"
 
-#: template.php:46 template.php:46
+#: template.php:46 template.php:47 template.php:47
 msgid "Changes were made correctly"
 msgstr "Los cambios se han guardado correctamente"
 
-#: template.php:55 template.php:55
+#: template.php:55 template.php:56 template.php:56
 msgid "Box title"
 msgstr "Título caja"
 
-#: template.php:62 template.php:62
+#: template.php:62 template.php:63 template.php:63
 msgid "Box text"
 msgstr "Texto caja"
 
-#: include/connect_db.php:23 include/connect_db.php:23
+#: include/connect_db.php:23 include/connect_db.php:24
+#: include/connect_db.php:24
 msgid ""
 "The database is not operative at this moment. Please, try the operation "
 "later."
@@ -587,15 +674,15 @@ msgstr ""
 msgid "No se ha podido completar la operación: "
 msgstr "No se ha podido completar la operación: "
 
-#: include/html.php:40 include/html.php:40
+#: include/html.php:40 include/html.php:41 include/html.php:41
 msgid "Error"
 msgstr "Error"
 
-#: include/html.php:46 include/html.php:46
+#: include/html.php:46 include/html.php:47 include/html.php:47
 msgid "Error undefined, contact with the administrator, ;-)."
 msgstr "Error indefinido, contacte con el administrador, ;-)"
 
-#: include/infxml.php:108 include/infxml.php:108
+#: include/infxml.php:108 include/infxml.php:109 include/infxml.php:109
 msgid ""
 "Filename doesn't match a weekly report, there aren't a week starting at the "
 "specified date."
@@ -603,7 +690,7 @@ msgstr ""
 "El nombre de fichero no se corresponde con un informe, no hay ninguna semana "
 "que comience en la fecha especificada."
 
-#: include/infxml.php:113 include/infxml.php:113
+#: include/infxml.php:113 include/infxml.php:114 include/infxml.php:114
 msgid ""
 "Filename doesn't match a weekly report, there aren't a week ending at the "
 "specified date."
@@ -611,240 +698,264 @@ msgstr ""
 "El nombre de fichero no se corresponde con un informe, no hay ninguna semana "
 "que termine en la fecha especificada."
 
-#: include/infxml.php:126 include/infxml.php:126
+#: include/infxml.php:126 include/infxml.php:127 include/infxml.php:127
 msgid "Unknown report owner."
 msgstr "Propietario del informe desconocido."
 
-#: include/infxml.php:132 include/infxml.php:132
+#: include/infxml.php:132 include/infxml.php:133 include/infxml.php:133
 msgid "Incorrect name format."
 msgstr "Formato de nombre incorrecto."
 
 #: include/infxml.php:153 include/infxml.php:194 include/infxml.php:233
-#: include/infxml.php:153 include/infxml.php:194 include/infxml.php:233
+#: include/infxml.php:154 include/infxml.php:195 include/infxml.php:234
+#: include/infxml.php:154 include/infxml.php:195 include/infxml.php:234
 msgid ". (More info in the 'xsltproc' manual)."
 msgstr "(Más información en el manual de 'xsltproc')."
 
-#: include/infxml.php:182 include/infxml.php:182
+#: include/infxml.php:182 include/infxml.php:183 include/infxml.php:183
 msgid "Report with wrong name format: "
 msgstr "Informe con formato de nombre incorrecto: "
 
-#: include/infxml.php:220 include/infxml.php:220
+#: include/infxml.php:220 include/infxml.php:221 include/infxml.php:221
 msgid "Report with wrong name"
 msgstr "Informe con nombre incorrecto"
 
-#: include/infxml.php:326 include/infxml.php:326
+#: include/infxml.php:326 include/infxml.php:327 include/infxml.php:327
 msgid "File access impossible"
 msgstr "Imposible acceder al fichero"
 
-#: include/infxml.php:380 include/infxml.php:380
+#: include/infxml.php:380 include/infxml.php:381 include/infxml.php:381
 msgid "Report validated"
 msgstr "Informe validado"
 
-#: include/infxml.php:385 include/infxml.php:385
+#: include/infxml.php:385 include/infxml.php:386 include/infxml.php:386
 msgid "Bad formed"
 msgstr "Mal formado"
 
-#: include/infxml.php:395 include/infxml.php:395
+#: include/infxml.php:395 include/infxml.php:396 include/infxml.php:396
 msgid "Error using rxp ..."
 msgstr "Error usando rxp..."
 
-#: include/infxml.php:411 include/infxml.php:411
+#: include/infxml.php:411 include/infxml.php:412 include/infxml.php:412
 msgid "XML document ranges some months. Is weekly!"
 msgstr "El documento XML abarca varios meses. ¡Es semanal!"
 
 #: include/infxml.php:434 include/infxml.php:442 include/infxml.php:449
-#: include/infxml.php:456 include/infxml.php:463 include/infxml.php:434
-#: include/infxml.php:442 include/infxml.php:449 include/infxml.php:456
-#: include/infxml.php:463
+#: include/infxml.php:456 include/infxml.php:463 include/infxml.php:435
+#: include/infxml.php:443 include/infxml.php:450 include/infxml.php:457
+#: include/infxml.php:464 include/infxml.php:435 include/infxml.php:443
+#: include/infxml.php:450 include/infxml.php:457 include/infxml.php:464
 msgid "day "
 msgstr "día"
 
-#: include/infxml.php:434 include/infxml.php:434
+#: include/infxml.php:434 include/infxml.php:435 include/infxml.php:435
 msgid ", task with wrong timetable "
 msgstr ", tarea con horario incorrecto"
 
-#: include/infxml.php:435 include/infxml.php:435
+#: include/infxml.php:435 include/infxml.php:436 include/infxml.php:436
 msgid "(end hour previous to start hour)"
 msgstr "(hora de fin anterior a hora de inicio)"
 
-#: include/infxml.php:443 include/infxml.php:443
+#: include/infxml.php:443 include/infxml.php:444 include/infxml.php:444
 msgid ", task with wrong start time (hour)"
 msgstr ", tarea con hora de inicio (hora) incorrecta"
 
-#: include/infxml.php:450 include/infxml.php:450
+#: include/infxml.php:450 include/infxml.php:451 include/infxml.php:451
 msgid ", task with wrong start time (minutes)"
 msgstr ", tarea con hora de inicio (minutos) incorrecta"
 
-#: include/infxml.php:457 include/infxml.php:457
+#: include/infxml.php:457 include/infxml.php:458 include/infxml.php:458
 msgid ", task with wrong end time (hour)"
 msgstr ", tarea con hora de fin (hora) incorrecta"
 
-#: include/infxml.php:464 include/infxml.php:464
+#: include/infxml.php:464 include/infxml.php:465 include/infxml.php:465
 msgid ", task with wrong end time (minutes)"
 msgstr ", tarea con hora de fin (minutos) incorrecta"
 
-#: include/infxml.php:479 include/infxml.php:479
+#: include/infxml.php:479 include/infxml.php:480 include/infxml.php:480
 msgid "task at day "
 msgstr "tarea del día"
 
-#: include/infxml.php:480 include/infxml.php:480
+#: include/infxml.php:480 include/infxml.php:481 include/infxml.php:481
 msgid "(from "
 msgstr "(desde "
 
-#: include/infxml.php:481 include/infxml.php:481
+#: include/infxml.php:481 include/infxml.php:482 include/infxml.php:482
 msgid " to "
 msgstr " hasta "
 
-#: include/infxml.php:481 include/infxml.php:481
+#: include/infxml.php:481 include/infxml.php:482 include/infxml.php:482
 msgid "), overlaps"
 msgstr "), se solapa"
 
-#: include/infxml.php:491 include/infxml.php:491
+#: include/infxml.php:491 include/infxml.php:492 include/infxml.php:492
 msgid "Report ranges more than 7 days"
 msgstr "El informe abarca más de 7 días"
 
-#: include/infxml.php:499 include/infxml.php:505 include/infxml.php:499
-#: include/infxml.php:505
+#: include/infxml.php:499 include/infxml.php:505 include/infxml.php:500
+#: include/infxml.php:506 include/infxml.php:500 include/infxml.php:506
 msgid "Incorrect report first day"
 msgstr "Primer día del informe incorrecto"
 
-#: include/infxml.php:512 include/infxml.php:512
+#: include/infxml.php:512 include/infxml.php:513 include/infxml.php:513
 msgid "Incorrect report last day"
 msgstr "Último día de informe incorrecto"
 
-#: include/infxml.php:517 include/infxml.php:517
+#: include/infxml.php:517 include/infxml.php:518 include/infxml.php:518
 msgid "Incorrect report month"
 msgstr "Mes del informe incorrecto"
 
-#: include/infxml.php:520 include/infxml.php:520
+#: include/infxml.php:520 include/infxml.php:521 include/infxml.php:521
 msgid "OK, document verified"
 msgstr "OK, documento verificado"
 
 #: include/prepare_calendar.php:35 block.php:59 calendar.php:34
-#: cal_manag.php:136 include/prepare_calendar.php:35 block.php:59
-#: calendar.php:34 cal_manag.php:136
+#: cal_manag.php:136 block.php:60 cal_manag.php:137 calendar.php:35
+#: include/prepare_calendar.php:36 block.php:60 cal_manag.php:137
+#: calendar.php:35 include/prepare_calendar.php:36
 msgid "January"
 msgstr "Enero"
 
 #: include/prepare_calendar.php:35 block.php:59 calendar.php:34
-#: cal_manag.php:136 include/prepare_calendar.php:35 block.php:59
-#: calendar.php:34 cal_manag.php:136
+#: cal_manag.php:136 block.php:60 cal_manag.php:137 calendar.php:35
+#: include/prepare_calendar.php:36 block.php:60 cal_manag.php:137
+#: calendar.php:35 include/prepare_calendar.php:36
 msgid "February"
 msgstr "Febrero"
 
 #: include/prepare_calendar.php:35 block.php:59 calendar.php:34
-#: cal_manag.php:136 include/prepare_calendar.php:35 block.php:59
-#: calendar.php:34 cal_manag.php:136
+#: cal_manag.php:136 block.php:60 cal_manag.php:137 calendar.php:35
+#: include/prepare_calendar.php:36 block.php:60 cal_manag.php:137
+#: calendar.php:35 include/prepare_calendar.php:36
 msgid "March"
 msgstr "Marzo"
 
 #: include/prepare_calendar.php:35 block.php:59 calendar.php:34
-#: cal_manag.php:136 include/prepare_calendar.php:35 block.php:59
-#: calendar.php:34 cal_manag.php:136
+#: cal_manag.php:136 block.php:60 cal_manag.php:137 calendar.php:35
+#: include/prepare_calendar.php:36 block.php:60 cal_manag.php:137
+#: calendar.php:35 include/prepare_calendar.php:36
 msgid "April"
 msgstr "Abril"
 
 #: include/prepare_calendar.php:35 block.php:59 calendar.php:34
-#: cal_manag.php:136 include/prepare_calendar.php:35 block.php:59
-#: calendar.php:34 cal_manag.php:136
+#: cal_manag.php:136 block.php:60 cal_manag.php:137 calendar.php:35
+#: include/prepare_calendar.php:36 block.php:60 cal_manag.php:137
+#: calendar.php:35 include/prepare_calendar.php:36
 msgid "May"
 msgstr "Mayo"
 
 #: include/prepare_calendar.php:35 block.php:59 calendar.php:34
-#: cal_manag.php:136 include/prepare_calendar.php:35 block.php:59
-#: calendar.php:34 cal_manag.php:136
+#: cal_manag.php:136 block.php:60 cal_manag.php:137 calendar.php:35
+#: include/prepare_calendar.php:36 block.php:60 cal_manag.php:137
+#: calendar.php:35 include/prepare_calendar.php:36
 msgid "June"
 msgstr "Junio"
 
 #: include/prepare_calendar.php:36 block.php:60 calendar.php:35
-#: cal_manag.php:137 include/prepare_calendar.php:36 block.php:60
-#: calendar.php:35 cal_manag.php:137
+#: cal_manag.php:137 block.php:61 cal_manag.php:138 calendar.php:36
+#: include/prepare_calendar.php:37 block.php:61 cal_manag.php:138
+#: calendar.php:36 include/prepare_calendar.php:37
 msgid "July"
 msgstr "Julio"
 
 #: include/prepare_calendar.php:36 block.php:60 calendar.php:35
-#: cal_manag.php:137 include/prepare_calendar.php:36 block.php:60
-#: calendar.php:35 cal_manag.php:137
+#: cal_manag.php:137 block.php:61 cal_manag.php:138 calendar.php:36
+#: include/prepare_calendar.php:37 block.php:61 cal_manag.php:138
+#: calendar.php:36 include/prepare_calendar.php:37
 msgid "August"
 msgstr "Agosto"
 
 #: include/prepare_calendar.php:36 block.php:60 calendar.php:35
-#: cal_manag.php:137 include/prepare_calendar.php:36 block.php:60
-#: calendar.php:35 cal_manag.php:137
+#: cal_manag.php:137 block.php:61 cal_manag.php:138 calendar.php:36
+#: include/prepare_calendar.php:37 block.php:61 cal_manag.php:138
+#: calendar.php:36 include/prepare_calendar.php:37
 msgid "September"
 msgstr "Septiembre"
 
 #: include/prepare_calendar.php:36 block.php:60 calendar.php:35
-#: cal_manag.php:137 include/prepare_calendar.php:36 block.php:60
-#: calendar.php:35 cal_manag.php:137
+#: cal_manag.php:137 block.php:61 cal_manag.php:138 calendar.php:36
+#: include/prepare_calendar.php:37 block.php:61 cal_manag.php:138
+#: calendar.php:36 include/prepare_calendar.php:37
 msgid "October"
 msgstr "Octubre"
 
 #: include/prepare_calendar.php:36 block.php:60 calendar.php:35
-#: cal_manag.php:137 include/prepare_calendar.php:36 block.php:60
-#: calendar.php:35 cal_manag.php:137
+#: cal_manag.php:137 block.php:61 cal_manag.php:138 calendar.php:36
+#: include/prepare_calendar.php:37 block.php:61 cal_manag.php:138
+#: calendar.php:36 include/prepare_calendar.php:37
 msgid "November"
 msgstr "Noviembre"
 
 #: include/prepare_calendar.php:36 block.php:60 calendar.php:35
-#: cal_manag.php:137 include/prepare_calendar.php:36 block.php:60
-#: calendar.php:35 cal_manag.php:137
+#: cal_manag.php:137 block.php:61 cal_manag.php:138 calendar.php:36
+#: include/prepare_calendar.php:37 block.php:61 cal_manag.php:138
+#: calendar.php:36 include/prepare_calendar.php:37
 msgid "December"
 msgstr "Diciembre"
 
-#: include/prepare_calendar.php:38 calendar.php:37
-#: include/prepare_calendar.php:38 calendar.php:37
+#: include/prepare_calendar.php:38 calendar.php:37 calendar.php:38
+#: include/prepare_calendar.php:39 calendar.php:38
+#: include/prepare_calendar.php:39
 msgid "M"
 msgstr "L"
 
-#: include/prepare_calendar.php:38 calendar.php:37
-#: include/prepare_calendar.php:38 calendar.php:37
+#: include/prepare_calendar.php:38 calendar.php:37 calendar.php:38
+#: include/prepare_calendar.php:39 calendar.php:38
+#: include/prepare_calendar.php:39
 msgid "T"
 msgstr "M"
 
-#: include/prepare_calendar.php:38 calendar.php:37
-#: include/prepare_calendar.php:38 calendar.php:37
+#: include/prepare_calendar.php:38 calendar.php:37 calendar.php:38
+#: include/prepare_calendar.php:39 calendar.php:38
+#: include/prepare_calendar.php:39
 msgid "W"
 msgstr "M"
 
-#: include/prepare_calendar.php:38 calendar.php:37
-#: include/prepare_calendar.php:38 calendar.php:37
+#: include/prepare_calendar.php:38 calendar.php:37 calendar.php:38
+#: include/prepare_calendar.php:39 calendar.php:38
+#: include/prepare_calendar.php:39
 msgid "Th"
 msgstr "J"
 
-#: include/prepare_calendar.php:38 calendar.php:37
-#: include/prepare_calendar.php:38 calendar.php:37
+#: include/prepare_calendar.php:38 calendar.php:37 calendar.php:38
+#: include/prepare_calendar.php:39 calendar.php:38
+#: include/prepare_calendar.php:39
 msgid "F"
 msgstr "V"
 
-#: include/prepare_calendar.php:38 calendar.php:37
-#: include/prepare_calendar.php:38 calendar.php:37
+#: include/prepare_calendar.php:38 calendar.php:37 calendar.php:38
+#: include/prepare_calendar.php:39 calendar.php:38
+#: include/prepare_calendar.php:39
 msgid "St"
 msgstr "S"
 
-#: include/prepare_calendar.php:38 calendar.php:37
-#: include/prepare_calendar.php:38 calendar.php:37
+#: include/prepare_calendar.php:38 calendar.php:37 calendar.php:38
+#: include/prepare_calendar.php:39 calendar.php:38
+#: include/prepare_calendar.php:39
 msgid "S"
 msgstr "D"
 
 #: include/prepare_calendar.php:51 include/show_calendar.php:80
-#: include/prepare_calendar.php:51 include/show_calendar.php:80
+#: include/prepare_calendar.php:52 include/prepare_calendar.php:52
+#: include/show_calendar.php:80
 msgid "Go"
 msgstr "Ir"
 
 #: include/prepare_calendar.php:56 include/show_calendar.php:86
-#: include/show_count.php:18 calendar.php:77 include/prepare_calendar.php:56
-#: include/show_calendar.php:86 include/show_count.php:18 calendar.php:77
+#: include/show_count.php:18 calendar.php:77 calendar.php:78
+#: include/prepare_calendar.php:57 calendar.php:78
+#: include/prepare_calendar.php:57 include/show_calendar.php:86
+#: include/show_count.php:18
 msgid "Today"
 msgstr "Hoy"
 
-#: include/show_calendar.php:13 calendar.php:181 include/show_calendar.php:13
-#: calendar.php:181
+#: include/show_calendar.php:13 calendar.php:181 calendar.php:182
+#: calendar.php:182 include/show_calendar.php:13
 msgid "Calendar"
 msgstr "Calendario"
 
-#: include/show_calendar.php:38 calendar.php:56 include/show_calendar.php:38
-#: calendar.php:56
+#: include/show_calendar.php:38 calendar.php:56 calendar.php:57
+#: calendar.php:57 include/show_calendar.php:38
 msgid " of "
 msgstr " de "
 
@@ -880,193 +991,217 @@ msgstr "Importar XML"
 msgid "Result extraction"
 msgstr "Extracc. resultados"
 
-#: include/show_sections.php:32 include/show_sections.php:32
+#: include/show_sections.php:32 include/show_sections.php:44
+#: include/show_sections.php:44
 msgid "Exit"
 msgstr "Salir"
 
-#: include/show_sections.php:48 block.php:101 calendar.php:158
-#: include/show_sections.php:48 block.php:101 calendar.php:158
+#: include/show_sections.php:48 block.php:101 calendar.php:158 block.php:102
+#: calendar.php:159 include/show_sections.php:60 block.php:102
+#: calendar.php:159 include/show_sections.php:60
 msgid "Report blocking"
 msgstr "Bloqueo informes"
 
-#: include/show_sections.php:51 include/show_sections.php:51
+#: include/show_sections.php:51 include/show_sections.php:63
+#: include/show_sections.php:63
 msgid "Labels"
 msgstr "Etiquetas"
 
-#: include/show_sections.php:57 include/show_sections.php:57
+#: include/show_sections.php:57 include/show_sections.php:25
+#: include/show_sections.php:78 include/show_sections.php:25
+#: include/show_sections.php:78
 msgid "User evaluation"
 msgstr "Evaluación usuarios"
 
-#: include/show_sections.php:63 include/show_sections.php:63
+#: include/show_sections.php:63 include/show_sections.php:69
+#: include/show_sections.php:69
 msgid "User management"
 msgstr "Gestión usuarios"
 
-#: include/show_sections.php:66 cal_manag.php:151 include/show_sections.php:66
-#: cal_manag.php:151
+#: include/show_sections.php:66 cal_manag.php:151 cal_manag.php:152
+#: include/show_sections.php:72 cal_manag.php:152 include/show_sections.php:72
 msgid "Calendar management"
 msgstr "Gestión calendario"
 
-#: adminlabels.php:54 adminlabels.php:54
+#: adminlabels.php:54 adminlabels.php:55 adminlabels.php:55
 msgid "The label has been deleted correctly"
 msgstr "La etiqueta ha sido borrada correctamente"
 
-#: adminlabels.php:64 adminlabels.php:64
+#: adminlabels.php:64 adminlabels.php:65 adminlabels.php:65
 msgid "The label has been inserted correctly"
 msgstr "La etiqueta ha sido insertada correctamente"
 
-#: adminlabels.php:99 adminlabels.php:99
+#: adminlabels.php:99 adminlabels.php:100 adminlabels.php:100
 msgid "The activations have been applied correctly"
 msgstr "Las activaciones han sido aplicadas correctamente"
 
 #: adminlabels.php:105 projevaluation.php:101 projevaluation.php:116
-#: projevaluation.php:101 projevaluation.php:116 adminlabels.php:105
+#: adminlabels.php:106 projevaluation.php:127 projevaluation.php:142
+#: userdetails.php:133 projectdetails.php:172 projectdetails.php:301
+#: projectdetails.php:377 adminlabels.php:106 projevaluation.php:127
+#: projevaluation.php:142 userdetails.php:133 projectdetails.php:172
+#: projectdetails.php:301 projectdetails.php:377
 msgid "Type"
 msgstr "Tipo"
 
-#: adminlabels.php:105 consult.php:238 consult.php:438 adminlabels.php:105
-#: consult.php:241 consult.php:441
+#: adminlabels.php:105 consult.php:238 consult.php:438 consult.php:241
+#: consult.php:441 adminlabels.php:106 consult.php:242 consult.php:442
+#: adminlabels.php:106 consult.php:242 consult.php:442
 msgid "Description"
 msgstr "Descripción"
 
-#: adminlabels.php:105 adminlabels.php:105
+#: adminlabels.php:105 adminlabels.php:106 adminlabels.php:106
 msgid "Deleted"
 msgstr "Borrado"
 
-#: adminlabels.php:126 adminlabels.php:126
+#: adminlabels.php:126 adminlabels.php:127 adminlabels.php:127
 msgid "Apply activations"
 msgstr "Aplicar activaciones"
 
-#: adminlabels.php:127 adminlabels.php:127
+#: adminlabels.php:127 adminlabels.php:128 adminlabels.php:128
 msgid "Add label"
 msgstr "Añadir etiqueta"
 
-#: adminlabels.php:139 adminlabels.php:139
+#: adminlabels.php:139 adminlabels.php:140 adminlabels.php:140
 msgid "Label administration"
 msgstr "Administración de etiquetas"
 
-#: block.php:43 block.php:51 block.php:43 block.php:51
+#: block.php:43 block.php:51 block.php:44 block.php:52 block.php:44
+#: block.php:52
 msgid "It has not been possible to update the block date"
 msgstr "No ha sido posible actualizar la fecha de bloqueo"
 
-#: block.php:45 block.php:53 block.php:45 block.php:53
+#: block.php:45 block.php:53 block.php:46 block.php:54 block.php:46
+#: block.php:54
 msgid "The block date has been updated correctly"
 msgstr "La fecha de bloqueo ha sido actualizada correctamente"
 
-#: block.php:62 cal_manag.php:139 block.php:62 cal_manag.php:139
+#: block.php:62 cal_manag.php:139 block.php:63 cal_manag.php:140 block.php:63
+#: cal_manag.php:140
 msgid "Monday"
 msgstr "Lunes"
 
-#: block.php:62 cal_manag.php:139 block.php:62 cal_manag.php:139
+#: block.php:62 cal_manag.php:139 block.php:63 cal_manag.php:140 block.php:63
+#: cal_manag.php:140
 msgid "Tuesday"
 msgstr "Martes"
 
-#: block.php:62 cal_manag.php:139 block.php:62 cal_manag.php:139
+#: block.php:62 cal_manag.php:139 block.php:63 cal_manag.php:140 block.php:63
+#: cal_manag.php:140
 msgid "Wednesday"
 msgstr "Miércoles"
 
-#: block.php:62 cal_manag.php:139 block.php:62 cal_manag.php:139
+#: block.php:62 cal_manag.php:139 block.php:63 cal_manag.php:140 block.php:63
+#: cal_manag.php:140
 msgid "Thursday"
 msgstr "Jueves"
 
-#: block.php:62 cal_manag.php:139 block.php:62 cal_manag.php:139
+#: block.php:62 cal_manag.php:139 block.php:63 cal_manag.php:140 block.php:63
+#: cal_manag.php:140
 msgid "Friday"
 msgstr "Viernes"
 
-#: block.php:62 cal_manag.php:139 block.php:62 cal_manag.php:139
+#: block.php:62 cal_manag.php:139 block.php:63 cal_manag.php:140 block.php:63
+#: cal_manag.php:140
 msgid "Saturday"
 msgstr "Sábado"
 
-#: block.php:62 cal_manag.php:139 block.php:62 cal_manag.php:139
+#: block.php:62 cal_manag.php:139 block.php:63 cal_manag.php:140 block.php:63
+#: cal_manag.php:140
 msgid "Sunday"
 msgstr "Domingo"
 
-#: block.php:65 block.php:65
+#: block.php:65 block.php:66 block.php:66
 msgid "--- All ---"
 msgstr "--- Todos ---"
 
-#: block.php:117 block.php:117
+#: block.php:117 block.php:118 block.php:118
 msgid "Employee to block:"
 msgstr "Empleado a bloquear: "
 
-#: block.php:125 consult.php:99 consult.php:136 block.php:125 consult.php:99
-#: consult.php:136
+#: block.php:125 consult.php:99 consult.php:136 block.php:126 consult.php:100
+#: consult.php:137 block.php:126 consult.php:100 consult.php:137
 msgid "Select"
 msgstr "Elegir"
 
-#: block.php:139 block.php:139
+#: block.php:139 block.php:140 block.php:140
 msgid "Selection of blocking limit date"
 msgstr "Selección de fecha límite de bloqueo"
 
-#: block.php:187 cal_manag.php:246 block.php:187 cal_manag.php:246
+#: block.php:187 cal_manag.php:246 block.php:188 cal_manag.php:247
+#: block.php:188 cal_manag.php:247
 msgid "Go to day"
 msgstr "Ir a día"
 
-#: block.php:239 cal_manag.php:300 block.php:239 cal_manag.php:300
+#: block.php:239 cal_manag.php:300 block.php:240 cal_manag.php:301
+#: block.php:240 cal_manag.php:301
 msgid "Legend"
 msgstr "Leyenda"
 
-#: block.php:243 block.php:243
+#: block.php:243 block.php:244 block.php:244
 msgid "Blocked day"
 msgstr "Día bloqueado"
 
-#: block.php:244 block.php:244
+#: block.php:244 block.php:245 block.php:245
 msgid "Selected day"
 msgstr "Día elegido"
 
-#: block.php:245 block.php:245
+#: block.php:245 block.php:246 block.php:246
 msgid "Unblocked day"
 msgstr "Día no bloqueado"
 
-#: block.php:246 cal_manag.php:306 block.php:246 cal_manag.php:306
+#: block.php:246 cal_manag.php:306 block.php:247 cal_manag.php:307
+#: block.php:247 cal_manag.php:307
 msgid "Day of the previous or next month"
 msgstr "Día del mes anterior o siguiente"
 
-#: block.php:261 block.php:261
+#: block.php:261 block.php:262 block.php:262
 msgid "Block until selected day"
 msgstr "Bloquear hasta el día elegido"
 
-#: calendar.php:55 calendar.php:55
+#: calendar.php:55 calendar.php:56 calendar.php:56
 msgid "calendar for "
 msgstr "calendario para"
 
-#: calendar.php:70 calendar.php:70
+#: calendar.php:70 calendar.php:71 calendar.php:71
 msgid "Previous year"
 msgstr "Año anterior"
 
-#: calendar.php:74 calendar.php:74
+#: calendar.php:74 calendar.php:75 calendar.php:75
 msgid "Previous month"
 msgstr "Mes anterior"
 
-#: calendar.php:81 calendar.php:81
+#: calendar.php:81 calendar.php:82 calendar.php:82
 msgid "Next month"
 msgstr "Mes siguiente"
 
-#: calendar.php:85 calendar.php:85
+#: calendar.php:85 calendar.php:86 calendar.php:86
 msgid "Next year"
 msgstr "Año siguiente"
 
-#: calendar.php:149 calendar.php:149
+#: calendar.php:149 calendar.php:150 calendar.php:150
 msgid "Administration"
 msgstr "Administración"
 
-#: calendar.php:161 calendar.php:161
+#: calendar.php:161 calendar.php:162 calendar.php:162
 msgid "Querys"
 msgstr "Consultas"
 
-#: uploadxml.php:58 uploadxml.php:58
+#: uploadxml.php:58 uploadxml.php:59 uploadxml.php:59
 msgid "Weekly report input"
 msgstr "Introducción de informes semanales"
 
-#: uploadxml.php:74 uploadxml.php:294 uploadxml.php:320 uploadxml.php:74
-#: uploadxml.php:294 uploadxml.php:320
+#: uploadxml.php:74 uploadxml.php:294 uploadxml.php:320 uploadxml.php:75
+#: uploadxml.php:295 uploadxml.php:321 uploadxml.php:75 uploadxml.php:295
+#: uploadxml.php:321
 msgid "Send"
 msgstr "Enviar"
 
-#: uploadxml.php:78 uploadxml.php:78
+#: uploadxml.php:78 uploadxml.php:79 uploadxml.php:79
 msgid "Invalid filename."
 msgstr "Nombre de fichero no válido."
 
-#: uploadxml.php:81 uploadxml.php:81
+#: uploadxml.php:81 uploadxml.php:82 uploadxml.php:82
 msgid ""
 "File format is invalid. Only XML reports or TGZ compressed groups of them "
 "are allowed. Examples: weeklyreport-john-2006-09-11-2006-09-17.xml, "
@@ -1076,14 +1211,15 @@ msgstr ""
 "conjunto de ellos comprimidos en TGZ. Ejemplos: weeklyreport-john-2006-09-11-"
 "2006-09-17.xml, weeklyreport-john-2006-08-28-2006-10-01.tgz"
 
-#: uploadxml.php:85 uploadxml.php:85
+#: uploadxml.php:85 uploadxml.php:86 uploadxml.php:86
 #, php-format
-msgid "Selected file exceeds %1$s bytes. It's rejected due to security reasons."
+msgid ""
+"Selected file exceeds %1$s bytes. It's rejected due to security reasons."
 msgstr ""
 "El fichero elegido supera los %1$s bytes. Se rechaza por motivos de "
 "seguridad."
 
-#: uploadxml.php:106 uploadxml.php:106
+#: uploadxml.php:106 uploadxml.php:107 uploadxml.php:107
 msgid ""
 "Server error while processing the file. Try again later or get in touch with "
 "your administrador."
@@ -1091,19 +1227,19 @@ msgstr ""
 "Error del servidor mientras se procesaba el fichero. Inténtalo de nuevo más "
 "tarde o contacta con tu administrador."
 
-#: uploadxml.php:118 uploadxml.php:118
+#: uploadxml.php:118 uploadxml.php:119 uploadxml.php:119
 msgid "Error uncompressing archive. Impossible to continue."
 msgstr "Error descomprimiendo el archivo. Imposible continuar."
 
-#: uploadxml.php:132 uploadxml.php:132
+#: uploadxml.php:132 uploadxml.php:133 uploadxml.php:133
 msgid "Give a name"
 msgstr "Renombrar"
 
-#: uploadxml.php:151 uploadxml.php:151
+#: uploadxml.php:151 uploadxml.php:152 uploadxml.php:152
 msgid "XML Reports"
 msgstr "Informes XML"
 
-#: uploadxml.php:151 uploadxml.php:151
+#: uploadxml.php:151 uploadxml.php:152 uploadxml.php:152
 msgid ""
 "Content uploaded to the server. Edit only incorrect files (incorrect name "
 "format, incorrect date, etc...)."
@@ -1111,56 +1247,57 @@ msgstr ""
 "Contenido subido al servidor. Edita sólo los ficheros incorrectos (formato "
 "de nombre incorrecto, fecha incorrecta, etc...)."
 
-#: uploadxml.php:157 uploadxml.php:157
+#: uploadxml.php:157 uploadxml.php:158 uploadxml.php:158
 msgid "Weekly report name"
 msgstr "Nombre del informe semanal"
 
-#: uploadxml.php:158 uploadxml.php:158
+#: uploadxml.php:158 uploadxml.php:159 uploadxml.php:159
 msgid "Size"
 msgstr "Tamaño"
 
-#: uploadxml.php:159 uploadxml.php:159
+#: uploadxml.php:159 uploadxml.php:160 uploadxml.php:160
 msgid "Filter"
 msgstr "Filtro"
 
-#: uploadxml.php:243 uploadxml.php:243
+#: uploadxml.php:243 uploadxml.php:244 uploadxml.php:244
 msgid "Process"
 msgstr "Procesar"
 
-#: uploadxml.php:248 uploadxml.php:248
+#: uploadxml.php:248 uploadxml.php:249 uploadxml.php:249
 msgid "Incorrect date. The report doesn't correspond to a week."
 msgstr "Fecha incorrecta. El informe no se corresponde con una semana."
 
-#: uploadxml.php:249 uploadxml.php:249
+#: uploadxml.php:249 uploadxml.php:250 uploadxml.php:250
 msgid "Incorrect. File format isn't recognized for that file name."
-msgstr "Incorrecto. No se reconoce el formato de fichero para ese nombre de fichero."
+msgstr ""
+"Incorrecto. No se reconoce el formato de fichero para ese nombre de fichero."
 
-#: uploadxml.php:250 uploadxml.php:250
+#: uploadxml.php:250 uploadxml.php:251 uploadxml.php:251
 msgid "User unknown. The user doesn't exist."
 msgstr "Usuario desconocido. El usuario no existe."
 
-#: uploadxml.php:251 uploadxml.php:251
+#: uploadxml.php:251 uploadxml.php:252 uploadxml.php:252
 msgid "You aren't the owner of the weekly report."
 msgstr "No eres el propietario del informe semanal."
 
-#: uploadxml.php:252 uploadxml.php:252
+#: uploadxml.php:252 uploadxml.php:253 uploadxml.php:253
 msgid "Report ready to be validated, verified and processed."
 msgstr "Informe preparado para ser validado, verificado y procesado."
 
-#: uploadxml.php:275 uploadxml.php:275
+#: uploadxml.php:275 uploadxml.php:276 uploadxml.php:276
 msgid "Rename"
 msgstr "Renombrar"
 
-#: uploadxml.php:289 uploadxml.php:289
+#: uploadxml.php:289 uploadxml.php:290 uploadxml.php:290
 #, php-format
 msgid "%1$s correct filenames and %2$s incorrect."
 msgstr "%1$s nombres de fichero correctos y %2$s incorrectos"
 
-#: uploadxml.php:296 uploadxml.php:296
+#: uploadxml.php:296 uploadxml.php:297 uploadxml.php:297
 msgid "Collect reports in XML format"
 msgstr "Importación de informes en formato XML"
 
-#: uploadxml.php:296 uploadxml.php:296
+#: uploadxml.php:296 uploadxml.php:297 uploadxml.php:297
 msgid ""
 "Select an XML report or a set of them belonging the same user and compressed "
 "in tgz format, and press Send when ready.<br>Remember to use always the <a "
@@ -1171,31 +1308,31 @@ msgstr ""
 "<br>Recuerda usar siempre el <a href=\"rules.dtd.php\"><b>rules.dtd</b> "
 "actualizado</a>."
 
-#: uploadxml.php:304 uploadxml.php:304
+#: uploadxml.php:304 uploadxml.php:305 uploadxml.php:305
 msgid "Local file"
 msgstr "Fichero local"
 
-#: uploadxml.php:312 uploadxml.php:312
+#: uploadxml.php:312 uploadxml.php:313 uploadxml.php:313
 msgid "Description or complementary information."
 msgstr "Descripción o información complementaria"
 
-#: users.php:162 users.php:166
+#: users.php:162 users.php:166 users.php:171 users.php:171
 msgid "The changes have save correctly"
 msgstr "Los cambios han sido guardados correctamente"
 
-#: users.php:175 users.php:179
+#: users.php:175 users.php:179 users.php:184 users.php:184
 msgid "An administrator cannot be erased to itself"
 msgstr "Un administrador no se puede borrar a sí mismo"
 
-#: users.php:179 users.php:183
+#: users.php:179 users.php:183 users.php:188 users.php:188
 msgid "The user has been deleted correctly"
 msgstr "El usuario ha sido borrado correctamente"
 
-#: users.php:191 users.php:195
+#: users.php:191 users.php:195 users.php:200 users.php:200
 msgid "You must specify the user login"
 msgstr "Debes indicar el usuario"
 
-#: users.php:195 users.php:199
+#: users.php:195 users.php:199 users.php:204 users.php:204
 msgid "You must specify the user password"
 msgstr "Debes indicar la contraseña"
 
@@ -1203,236 +1340,362 @@ msgstr "Debes indicar la contraseña"
 msgid "The user has been created correctly"
 msgstr "El usuario ha sido creado correctamente"
 
-#: users.php:242 users.php:271
+#: users.php:242 users.php:271 users.php:278 users.php:278
 msgid "Users management"
 msgstr "Gestión de usuarios"
 
-#: users.php:262 users.php:291
+#: users.php:262 users.php:291 users.php:298 users.php:298
 msgid "Users list"
 msgstr "Lista de usuarios"
 
-#: users.php:274 users.php:303
+#: users.php:274 users.php:303 users.php:310 users.php:310
 msgid "Users:"
 msgstr "Usuarios:"
 
-#: users.php:304 users.php:333
+#: users.php:304 users.php:333 users.php:339 users.php:339
 msgid "Create new user"
 msgstr "Crear nuevo usuario"
 
-#: users.php:325 users.php:354
+#: users.php:325 users.php:354 users.php:360 users.php:360
 msgid "User creation"
 msgstr "Creación de usuarios"
 
-#: users.php:334 users.php:363
+#: users.php:334 users.php:363 users.php:369 users.php:369
 msgid "New user login"
 msgstr "Nuevo usuario"
 
-#: users.php:335 users.php:364
+#: users.php:335 users.php:364 users.php:370 users.php:370
 msgid "New user password"
 msgstr "Contraseña del nuevo usuario"
 
-#: users.php:336 users.php:382 users.php:365 users.php:411
+#: users.php:336 users.php:382 users.php:365 users.php:411 users.php:371
+#: users.php:418 users.php:371 users.php:418
 msgid "Administrator"
 msgstr "Administrador"
 
-#: users.php:366 users.php:395
+#: users.php:366 users.php:395 users.php:403 users.php:403
 msgid "User edition"
 msgstr "Edición de usuarios"
 
-#: users.php:381 users.php:410
+#: users.php:381 users.php:410 users.php:417 users.php:417
 msgid "New Password"
 msgstr "Nueva contraseña"
 
-#: users.php:413 users.php:443
+#: users.php:413 users.php:443 users.php:472 users.php:472
 msgid "Full time"
 msgstr "Jornada completa"
 
-#: users.php:413 users.php:444
+#: users.php:413 users.php:444 users.php:473 users.php:473
 msgid "Half time"
 msgstr "Media jornada"
 
-#: users.php:413 users.php:445
+#: users.php:413 users.php:445 users.php:474 users.php:474
 msgid "Practice journey"
 msgstr "Jornada en prácticas"
 
-#: users.php:421 users.php:454
+#: users.php:421 users.php:454 users.php:483 users.php:483
 msgid "Existing periods"
 msgstr "Períodos existentes"
 
-#: users.php:434 users.php:467
+#: users.php:434 users.php:467 users.php:496 projectdetails.php:304
+#: users.php:496 projectdetails.php:304
 msgid "Hours"
 msgstr "Horas"
 
-#: users.php:439 users.php:479 users.php:472 users.php:512
+#: users.php:439 users.php:479 users.php:472 users.php:512 users.php:501
+#: users.php:541 users.php:501 users.php:541
 msgid "Init date"
 msgstr "Fecha de inicio"
 
-#: users.php:447 users.php:495 users.php:480 users.php:528
+#: users.php:447 users.php:495 users.php:480 users.php:528 users.php:509
+#: users.php:557 users.php:509 users.php:557
 msgid "City"
 msgstr "Ciudad"
 
-#: users.php:454 users.php:487
+#: users.php:454 users.php:487 users.php:516 users.php:516
 msgid "Delete period"
 msgstr "Borrar período"
 
-#: users.php:470 users.php:503
+#: users.php:470 users.php:503 users.php:532 users.php:532
 msgid "Type of journey"
 msgstr "Tipo de jornada"
 
-#: cal_manag.php:168 cal_manag.php:168
+#: cal_manag.php:168 cal_manag.php:169 cal_manag.php:169
 msgid "City:"
 msgstr "Ciudad:"
 
-#: cal_manag.php:180 cal_manag.php:180
+#: cal_manag.php:180 cal_manag.php:181 cal_manag.php:181
 msgid "New city"
 msgstr "Nueva ciudad"
 
-#: cal_manag.php:200 cal_manag.php:200
+#: cal_manag.php:200 cal_manag.php:201 cal_manag.php:201
 msgid "Selection of non workable days for "
 msgstr "Selección de días no laborables para "
 
-#: cal_manag.php:304 cal_manag.php:304
+#: cal_manag.php:304 cal_manag.php:305 cal_manag.php:305
 msgid "Non workable day"
 msgstr "Día no laborable"
 
-#: cal_manag.php:305 cal_manag.php:305
+#: cal_manag.php:305 cal_manag.php:306 cal_manag.php:306
 msgid "Workable day"
 msgstr "Día laborable"
 
-#: cal_manag.php:310 cal_manag.php:310
+#: cal_manag.php:310 cal_manag.php:311 cal_manag.php:311
 msgid "Copy from previous year"
 msgstr "Copiar del año anterior"
 
-#: cal_manag.php:317 cal_manag.php:317
+#: cal_manag.php:317 cal_manag.php:318 cal_manag.php:318
 msgid "Non workable days"
 msgstr "Días no laborables"
 
-#: consult.php:59 consult.php:64 consult.php:59 consult.php:64
+#: consult.php:59 consult.php:64 consult.php:60 consult.php:65 consult.php:60
+#: consult.php:65
 msgid "It has not been possible to get an identifier for the new query"
 msgstr "No se pudo obtener un identificador para la nueva consulta"
 
-#: consult.php:73 consult.php:73
+#: consult.php:73 consult.php:74 consult.php:74
 msgid "It has not been possible to insert the new query"
 msgstr "No se pudo insertar la nueva consulta"
 
-#: consult.php:76 consult.php:76
+#: consult.php:76 consult.php:77 consult.php:77
 msgid "The query was created correctly"
 msgstr "La consulta fue creada correctamente"
 
-#: consult.php:83 consult.php:83
+#: consult.php:83 consult.php:84 consult.php:84
 msgid "It has not been possible to update the query"
 msgstr "No fue posible actualizar la consulta"
 
-#: consult.php:85 consult.php:85
+#: consult.php:85 consult.php:86 consult.php:86
 msgid "The query was updated correctly"
 msgstr "La consulta fue actualizada correctamente"
 
-#: consult.php:95 consult.php:95
+#: consult.php:95 consult.php:96 consult.php:96
 msgid "It has not been possible to delete the query"
 msgstr "No se pudo borrar la consulta"
 
-#: consult.php:100 consult.php:100
+#: consult.php:100 consult.php:101 consult.php:101
 msgid "The query was deleted correctly"
 msgstr "La consulta fue borrada correctamente"
 
-#: consult.php:103 consult.php:103
-msgid "You must confirm the erasure in the adjacent square to the button Delete"
-msgstr "Debes confirmar el borrado en el cuadrado que hay junto al botón Borrar"
+#: consult.php:103 consult.php:104 consult.php:104
+msgid ""
+"You must confirm the erasure in the adjacent square to the button Delete"
+msgstr ""
+"Debes confirmar el borrado en el cuadrado que hay junto al botón Borrar"
 
-#: consult.php:120 consult.php:120
+#: consult.php:120 consult.php:121 consult.php:121
 msgid "New query"
 msgstr "Nueva consulta"
 
-#: consult.php:156 consult.php:350 consult.php:156 consult.php:353
+#: consult.php:156 consult.php:350 consult.php:353 consult.php:157
+#: consult.php:354 consult.php:157 consult.php:354
 msgid "Execute"
 msgstr "Ejecutar"
 
-#: consult.php:175 consult.php:175
+#: consult.php:175 consult.php:176 consult.php:176
 msgid "SQL error:"
 msgstr "Error SQL:"
 
-#: consult.php:176 consult.php:176
+#: consult.php:176 consult.php:177 consult.php:177
 msgid "Original query"
 msgstr "Consulta original"
 
-#: consult.php:199 consult.php:199
+#: consult.php:199 consult.php:200 consult.php:200
 msgid "Results extraction"
 msgstr "Extracción de resultados"
 
-#: consult.php:212 consult.php:214
+#: consult.php:212 consult.php:214 consult.php:215 consult.php:215
 msgid "Query:"
 msgstr "Consulta:"
 
-#: consult.php:222 consult.php:224
+#: consult.php:222 consult.php:224 consult.php:225 consult.php:225
 msgid "Query select"
 msgstr "Selección de consulta"
 
-#: consult.php:273 consult.php:276
+#: consult.php:273 consult.php:276 consult.php:277 consult.php:277
 msgid "Parameters"
 msgstr "Parámetros"
 
-#: consult.php:322 consult.php:325
+#: consult.php:322 consult.php:325 consult.php:326 consult.php:326
 msgid "View code equivalence"
 msgstr "Ver equivalencia de códigos"
 
-#: consult.php:325 consult.php:328
+#: consult.php:325 consult.php:328 consult.php:329 consult.php:329
 msgid "in window"
 msgstr "en ventana"
 
-#: consult.php:326 consult.php:329
+#: consult.php:326 consult.php:329 consult.php:330 consult.php:330
 msgid "in full screen"
 msgstr "a pantalla completa"
 
-#: consult.php:422 consult.php:425
+#: consult.php:422 consult.php:425 consult.php:426 consult.php:426
 msgid "Query edition"
 msgstr "Edición de consultas"
 
-#: consult.php:432 consult.php:435
+#: consult.php:432 consult.php:435 consult.php:436 consult.php:436
 msgid "Title"
 msgstr "Título"
 
-#: consult.php:450 consult.php:453
+#: consult.php:450 consult.php:453 consult.php:454 consult.php:454
 msgid "Parameter list (separated by commas)"
 msgstr "Lista de parámetros (separados por comas)"
 
-#: consult.php:459 consult.php:462
+#: consult.php:459 consult.php:462 consult.php:463 consult.php:463
 msgid "Predefined variables:"
 msgstr "Variables predefinidas:"
 
-#: consult.php:469 consult.php:472
+#: consult.php:469 consult.php:472 consult.php:473 consult.php:473
 msgid "Allow all users to use this query"
 msgstr "Permitir a todos los usuarios usar esta consulta"
 
-#: consult.php:480 consult.php:483
+#: consult.php:480 consult.php:483 consult.php:484 consult.php:484
 msgid "Apply changes"
 msgstr "Aplicar cambios"
 
-#: consult.php:481 consult.php:484
+#: consult.php:481 consult.php:484 consult.php:485 consult.php:485
 msgid "edition_mode"
 msgstr "modo_edicion"
 
 #: projevaluation.php:58 projevaluation.php:139 projevaluation.php:188
-#: projevaluation.php:191 projevaluation.php:58 projevaluation.php:139
-#: projevaluation.php:188 projevaluation.php:191
+#: projevaluation.php:191 projevaluation.php:81 projevaluation.php:165
+#: projevaluation.php:232 projevaluation.php:236 projectdetails.php:175
+#: projevaluation.php:81 projevaluation.php:165 projevaluation.php:232
+#: projevaluation.php:236 projectdetails.php:175
 msgid "(empty)"
 msgstr "(vacío)"
 
 #: projevaluation.php:114 projevaluation.php:132 projevaluation.php:253
-#: projevaluation.php:114 projevaluation.php:132 projevaluation.php:253
+#: projevaluation.php:140 projevaluation.php:158 projevaluation.php:315
+#: projectdetails.php:170 projevaluation.php:140 projevaluation.php:158
+#: projevaluation.php:315 projectdetails.php:170
 msgid "User"
 msgstr "Usuario"
 
-#: include/config.php:91 include/codetables.php:31
+#: include/config.php:91 include/codetables.php:31 include/codetables.php:32
+#: include/codetables.php:32
 msgid "The operation couldn't be completed: "
 msgstr "No se ha podido completar la operación: "
 
-#: users.php:218
-msgid "The user has been created correctly. Remember to update her contract periods!"
-msgstr "El usuario ha sido creado correctamente. Recuerda actualizar sus períodos de contratación!"
+#: users.php:218 users.php:225 users.php:225
+msgid ""
+"The user has been created correctly. Remember to update her contract periods!"
+msgstr ""
+"El usuario ha sido creado correctamente. Recuerda actualizar sus períodos de "
+"contratación!"
 
-#: users.php:254
+#: users.php:254 users.php:261 users.php:261
 msgid ""
 "New users have appeared in the LDAP and have been created in PhpReport. "
 "Remember to set up their contract properly!"
-msgstr "Han aparecido nuevos usuarios en el LDAP y han sido creados en PhpReport. Recuerda configurar correctamente su contrato!"
+msgstr ""
+"Han aparecido nuevos usuarios en el LDAP y han sido creados en PhpReport. "
+"Recuerda configurar correctamente su contrato!"
 
+#: projevaluation.php:358 projevaluation.php:358
+msgid "Hourly personal brief (explained)"
+msgstr ""
+
+#: projevaluation.php:468 projevaluation.php:468
+msgid "Desviation %"
+msgstr "Desviación %"
+
+#: projevaluation.php:470 projevaluation.php:470
+msgid "%"
+msgstr "%"
+
+#: projevaluation.php:470 projevaluation.php:470
+msgid "EUR/h real pond"
+msgstr "EUR/h real pond"
+
+#: projevaluation.php:470 projevaluation.php:470
+msgid "EUR/h estim pond"
+msgstr "EUR/h estim pond"
+
+#: users.php:372 users.php:419 users.php:456 users.php:372 users.php:419
+#: users.php:456
+msgid "Staff member"
+msgstr ""
+
+#: userdetails.php:88 projectdetails.php:129
+msgid "End date must be greater than start date"
+msgstr "La fecha de fin debe ser superior a la fecha de inicio"
+
+#: userdetails.php:167 userdetails.php:189
+msgid "User details"
+msgstr "Detalles del usuario"
+
+#: userdetails.php:201
+msgid "User Id"
+msgstr "Id usuario"
+
+#: userdetails.php:205
+msgid "Admin"
+msgstr "Admin"
+
+#: userdetails.php:207 userdetails.php:213 projectdetails.php:258
+msgid "Yes"
+msgstr "Sí"
+
+#: userdetails.php:207 userdetails.php:213 projectdetails.php:258
+msgid "No"
+msgstr "No"
+
+#: userdetails.php:211
+msgid "Staff"
+msgstr ""
+
+#: userdetails.php:241 projectdetails.php:468
+msgid "Period to check"
+msgstr "Período a comprobar"
+
+#: userdetails.php:268 projectdetails.php:495
+msgid "Set defaults"
+msgstr "Establecer predeterminados"
+
+#: userdetails.php:322 graphicbuilder.php:160 graphicbuilder.php:192
+msgid "unknown project"
+msgstr "Proyecto desconocido"
+
+#: userdetails.php:403 projectdetails.php:623
+msgid "Select chart type"
+msgstr "Selecciona un tipo de gráfica"
+
+#: projectdetails.php:206 projectdetails.php:228
+msgid "Project details"
+msgstr "Detalles del proyecto"
+
+#: projectdetails.php:241
+msgid "Data"
+msgstr "Datos"
+
+#: projectdetails.php:275
+msgid "Estimated cost per hour"
+msgstr "Coste por hora estimado"
+
+#: projectdetails.php:315 projectdetails.php:391
+msgid "Desviation"
+msgstr "Desviación"
+
+#: projectdetails.php:320 projectdetails.php:396
+msgid "Total"
+msgstr "Total"
+
+#: projectdetails.php:328 projectdetails.php:404
+msgid "all"
+msgstr "todo"
+
+#: projectdetails.php:342 projectdetails.php:418
+msgid "pex"
+msgstr "pex"
+
+#: projectdetails.php:356 projectdetails.php:432
+msgid "pex+pin"
+msgstr "pex+pin"
+
+#: projectdetails.php:380
+msgid "Invoicing (cost per hour)"
+msgstr "Facturación (coste por hora)"
+
+#: projectdetails.php:388
+msgid "Actual/current invocing"
+msgstr "Facturación real/actual"

@@ -465,9 +465,9 @@ if (empty($error)&&$sheets!=0) {
 <?
     } else {
       $titles=array(
-        _("Worked hours"),_("Estimated hours"),_("Desviation<br>%"),
-        _("Desviation<br>abs"),_("Invoice"),_("EUR/h<br>real"),_("EUR/h<br>est."), 
-	_("%"), _("EUR/h<br>real pond"), _("EUR/h<br>estim pond"));
+        _("Worked hours"),_("Estimated hours"),_("Desviation %"),
+        _("Desviation abs"),_("Invoice"),_("EUR/h real"),_("EUR/h est."), 
+	_("%"), _("EUR/h real pond"), _("EUR/h estim pond"));
       foreach ((array)$titles as $col) {
 ?>
   <td bgcolor="#FFFFFF" class="title_box"><?=$col?></td>

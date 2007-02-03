@@ -126,7 +126,7 @@ if ($end=="" || !validate_date_web($end)) {
 
 /* validate valid range (from past to future) */
 if(cmp_web_dates($init, $end) > 0) {
-  $error=_("Start date must be greater than end date");
+  $error=_("End date must be greater than start date");
 }
 
 /* redundant check, since dates are ALWAYS set before reaching this point */
