@@ -609,12 +609,6 @@ if (!empty($confirmation)) msg_ok($confirmation);
       </table>
       <!-- end box -->
 
-      <!-- Line points chart -->
-      <a href="graphicbuilder.php?id=<?=$id?>&type=bars&flag=PROJECT&title=Project+evolution&width=1600&height=1200">
-        <img class="noborder" src="graphicbuilder.php?id=<?=$id?>&type=bars&flag=PROJECT&title=Project+evolution" />
-      </a>
-      <br>
-
       <!-- GRAPH TYPE SELECTION FORM -->
 
       <table border="0" cellspacing="0" cellpadding="0">
@@ -666,7 +660,6 @@ if (!empty($confirmation)) msg_ok($confirmation);
 	</tr>
       </table>
 
-      
       <!-- GRAPH DRAWINGS -->
 
       <table>
