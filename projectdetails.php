@@ -27,11 +27,11 @@ require_once("include/autenticate.php");
 require_once("include/connect_db.php");
 require_once("include/prepare_calendar.php");
 
-/* if (!multi_in_array($board_group_names,(array)$session_groups)) { */
-/*   // If the user in not in a group that belongs to the board members, she can't */
-/*   // access the project information */
-/*   header("Location: login.php"); */
-/* } */
+if (!multi_in_array($board_group_names,(array)$session_groups)) {
+   // If the user in not in a group that belongs to the board members, she can't
+   // access the project information
+   header("Location: login.php");
+}
 
 $die=_("Can't finalize the operation");
 
@@ -609,6 +609,11 @@ if (!empty($confirmation)) msg_ok($confirmation);
       </table>
       <!-- end box -->
 
+      <!-- Line points chart -->
+      <a href="graphicbuilder.php?id=<?=$id?>&type=bars&flag=PROJECT&title=Project+evolution&width=1600&height=1200">
+        <img class="noborder" src="graphicbuilder.php?id=<?=$id?>&type=bars&flag=PROJECT&title=Project+evolution" />
+      </a>
+      <br>
 
       <!-- GRAPH TYPE SELECTION FORM -->
 

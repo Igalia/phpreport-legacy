@@ -26,11 +26,11 @@
 require_once("include/autenticate.php");
 require_once("/usr/share/phplot/phplot.php");
 
-/* if ($flag=="PROJECT" && !multi_in_array($board_group_names,(array)$session_groups)) { */
-/*   // If the user in not in a group that belongs to the board members, she can't */
-/*   // access the PROJECTS information */
-/*   header("Location: login.php"); */
-/* } */
+if ($flag=="PROJECT" && !multi_in_array($board_group_names,(array)$session_groups)) {
+   // If the user in not in a group that belongs to the board members, she can't
+   // access the PROJECTS information 
+   header("Location: login.php");
+}
 
 $die=_("Can't finalize the operation");
 
@@ -40,7 +40,7 @@ $die=_("Can't finalize the operation");
 /* Retrieve GET params */
 $g_id = isset($id)?$id:"";
 /* available types: bars, lines, linepoints, area, points, pie, thinbarline, squared */
-$g_type = isset($type)?$type:"linepoints"; /* default type "linepoints" */
+$g_type = isset($type)?$type:"bars"; /* default type "bars" */
 $g_flag = isset($flag)?$flag:"PROJECT"; /* default flag PROJECT */
 $g_width = isset($width)?$width:800; /* default width 800px */
 $g_height = isset($height)?$height:600; /* default height 600px */

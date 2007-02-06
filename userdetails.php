@@ -441,6 +441,11 @@ if (!empty($confirmation)) msg_ok($confirmation);
 	</tr>
       </table>
 
+      <!-- Line points chart -->
+      <a href="graphicbuilder.php?id=<?=$id?>&type=bars&flag=PERSON&title=User+evolution&width=1600&height=1200">
+        <img class="noborder" src="graphicbuilder.php?id=<?=$id?>&type=bars&flag=PERSON&title=User+evolution" />
+      </a>
+      <br>
       
       <!-- GRAPH DRAWINGS -->
 
