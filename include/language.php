@@ -24,7 +24,7 @@
 
 // Detection of the language used by the browser in order to show the page
 // in the corresponding language
-$sup_lang=array("es", "en"); // Supported languages by now
+$sup_lang=array("es", "gl", "en"); // Supported languages by now
  
 // Get the stored value, if there's one
 if($_SESSION["lang"]!="")
@@ -54,6 +54,11 @@ switch($lang) {
   case "es":
     $_SESSION["lang"]="es";
     $locale="es_ES.UTF-8";
+  break;
+
+  case "gl":
+    $_SESSION["lang"]="gl";
+    $locale="gl_ES.UTF-8";
   break;
 
   case "en":

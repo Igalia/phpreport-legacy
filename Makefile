@@ -31,7 +31,9 @@ uninstall:
 	true
 locale:
 	mkdir -p locale/es_ES/LC_MESSAGES
+	mkdir -p locale/gl_ES/LC_MESSAGES
 	msgfmt i18n/es.po -o locale/es_ES/LC_MESSAGES/messages.mo
+	msgfmt i18n/gl.po -o locale/gl_ES/LC_MESSAGES/messages.mo
 i18n-dev:
 	for i in i18n/*.po ; \
 	 do xgettext -L PHP --from-code UTF-8 -j -o $$i `find -name '*.php'`; \
