@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-03-23 08:43+0100\n"
+"POT-Creation-Date: 2007-05-02 17:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,13 +21,13 @@ msgid "Code equivalence"
 msgstr "Equivalencia de códigos"
 
 #: labels.php:48 report.php:407 labels.php:49 report.php:408 report.php:496
-#: report.php:498 labels.php:49 report.php:498
+#: report.php:498 labels.php:49 report.php:698
 msgid "Task type"
 msgstr "Tipo de tarefa"
 
 #: labels.php:49 report.php:408 labels.php:50 report.php:409
 #: userdetails.php:131 report.php:497 report.php:499 labels.php:50
-#: report.php:499 userdetails.php:131
+#: report.php:699 userdetails.php:131
 msgid "Project"
 msgstr "Proxecto"
 
@@ -658,48 +658,48 @@ msgstr "Os trocos foron gardados correctamente"
 msgid "Report edition"
 msgstr "Edición de informes"
 
-#: report.php:357 report.php:358 report.php:376 report.php:378 report.php:378
+#: report.php:357 report.php:358 report.php:376 report.php:378 report.php:513
 msgid "Tasks of the day"
 msgstr "Tarefas do día"
 
-#: report.php:378 report.php:379 report.php:451 report.php:453 report.php:453
+#: report.php:378 report.php:379 report.php:451 report.php:453 report.php:576
 msgid "Start hour"
 msgstr "Hora de inicio"
 
-#: report.php:379 report.php:380 report.php:452 report.php:454 report.php:454
+#: report.php:379 report.php:380 report.php:452 report.php:454 report.php:577
 msgid "End hour"
 msgstr "Hora de fin"
 
-#: report.php:390 report.php:391 report.php:463 report.php:465 report.php:465
+#: report.php:390 report.php:391 report.php:463 report.php:465 report.php:588
 msgid "Current hour"
 msgstr "Hora actual"
 
-#: report.php:439 report.php:440 report.php:523 report.php:525 report.php:525
+#: report.php:439 report.php:440 report.php:523 report.php:525 report.php:746
 msgid "Story"
 msgstr "Caso de uso"
 
-#: report.php:453 report.php:454 report.php:537 report.php:539 report.php:539
+#: report.php:453 report.php:454 report.php:537 report.php:539 report.php:760
 msgid "Telework"
 msgstr "Teletraballo"
 
-#: report.php:469 report.php:470 report.php:553 report.php:555 report.php:555
+#: report.php:469 report.php:470 report.php:553 report.php:555 report.php:776
 msgid "Description:"
 msgstr "Descrición:"
 
-#: report.php:490 report.php:491 report.php:574 report.php:576 report.php:576
+#: report.php:490 report.php:491 report.php:574 report.php:576 report.php:819
 msgid "Delete task"
 msgstr "Borrar tarefa"
 
-#: report.php:510 report.php:511 report.php:595 report.php:597 report.php:597
+#: report.php:510 report.php:511 report.php:595 report.php:597 report.php:840
 msgid "New task"
 msgstr "Nova tarefa"
 
-#: report.php:511 report.php:512 report.php:596 report.php:598 report.php:598
+#: report.php:511 report.php:512 report.php:596 report.php:598 report.php:841
 msgid "Save changes"
 msgstr "Gardar trocos"
 
 #: report.php:515 consult.php:483 consult.php:486 consult.php:487
-#: report.php:516 report.php:600 report.php:602 consult.php:487 report.php:602
+#: report.php:516 report.php:600 report.php:602 consult.php:487 report.php:845
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -1914,11 +1914,11 @@ msgstr "Horas traballadas en periodo"
 
 #: report.php:496 users.php:666 projects.php:273 projects.php:318
 #: projects.php:319 report.php:498 users.php:667 projects.php:319
-#: report.php:498 users.php:667
+#: report.php:698 users.php:667
 msgid "Customer"
 msgstr "Cliente"
 
-#: report.php:497 report.php:499 report.php:499
+#: report.php:497 report.php:499 report.php:699
 msgid "Task type for this project"
 msgstr "Tipo de tarefa para este proxecto"
 
@@ -2037,3 +2037,11 @@ msgstr "Proxectos asignados"
 #: clients.php:334 clients.php:334
 msgid "There are no assigned projects for this customer"
 msgstr "Non hai ningún proxecto asignado a este cliente"
+
+#: report.php:803
+msgid "Show all data"
+msgstr "Amosar todo"
+
+#: report.php:806
+msgid "Show only needed data"
+msgstr "Soamente datos precisos"

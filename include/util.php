@@ -338,8 +338,7 @@ function eval_html($string) {
 // Update rules.dtd with config.php configuration
 function update_dtd() {
 
-   global $table_type, $table_name, $table_phase, $table_ttype;
-
+   global $table_type, $table_name, $table_customer, $table_ttype;
    ob_start();
    require("rules.dtd.php");
    $dtd=ob_get_contents();

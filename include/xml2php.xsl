@@ -226,20 +226,20 @@
 
 		<xsl:for-each select="task">
 		                
-			<xsl:variable name="name">
+			<xsl:variable name="customer">
 				<xsl:choose>
-					<xsl:when test="@name">
-						<xsl:value-of select="@name"/>
+					<xsl:when test="@customer">
+						<xsl:value-of select="@customer"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:text></xsl:text>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
-			<xsl:variable name="phase">
+			<xsl:variable name="name">
 				<xsl:choose>
-					<xsl:when test="@phase">
-						<xsl:value-of select="@phase"/>
+					<xsl:when test="@name">
+						<xsl:value-of select="@name"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:text></xsl:text>
@@ -338,7 +338,7 @@
                                                 
                                                 $task_text =  addslashes(strtr($task_text, $trans_table));
                                         
-						$query = "INSERT INTO task (uid,_date,init,_end,name,type,phase,story,ttype,telework,text) VALUES ('$user','</xsl:text>
+						$query = "INSERT INTO task (uid,_date,init,_end,customer,name,type,story,ttype,telework,text) VALUES ('$user','</xsl:text>
 						<xsl:call-template name="Date2Sql">
 							<xsl:with-param name="day" select="$day"/>
 							<xsl:with-param name="month" select="$nummonth"/>
@@ -349,10 +349,11 @@
 						</xsl:call-template><xsl:text>', '</xsl:text>
 						<xsl:call-template name="Time2Sql24m">
 							<xsl:with-param name="time" select="@end"/>
-						</xsl:call-template><xsl:text>', '</xsl:text>
+						</xsl:call-template><xsl:text>',
+						'</xsl:text>
+						<xsl:value-of select="$customer"/><xsl:text>', '</xsl:text>
 						<xsl:value-of select="$name"/><xsl:text>', lower('</xsl:text>
 						<xsl:value-of select="@type"/><xsl:text>'), '</xsl:text>
-						<xsl:value-of select="$phase"/><xsl:text>', '</xsl:text>
 						<xsl:value-of select="@story"/><xsl:text>', '</xsl:text>
             <xsl:value-of select="$ttype"/><xsl:text>', '</xsl:text>
             <xsl:value-of select="$telework"/><xsl:text>', '$task_text')";

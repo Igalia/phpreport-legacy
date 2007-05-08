@@ -7,6 +7,7 @@
 //  Enrique Ocaña González <eocanha@igalia.com>
 //  José Riguera López <jriguera@igalia.com>
 //  Jesús Pérez Díaz <jperez@igalia.com>
+//  Mario Sánchez Prada <msanchez@igalia.com>
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -194,6 +195,21 @@ if (!empty($delete)) {
  }
 }
 
+if (!empty($add_project)) {
+  $result=@pg_exec($cnx,$query="INSERT INTO project_user (uid, name) VALUES ('$user','$added_project')")
+    or die("$die $query");
+  $confirmation=_("The user has been properly assigned to a project");
+  @pg_freeresult($result);
+}
+
+if (!empty($remove_project)) {
+  $remove_project_keys=array_keys($remove_project);
+  $result=@pg_exec($cnx,$query="DELETE FROM project_user WHERE uid='$user' AND name='".$remove_project_keys[0]."'")
+    or die("$die $query");
+  $confirmation=_("The user has been properly remove from a project");
+  @pg_freeresult($result);
+}
+
 if (!empty($new_user_login)&&!empty($new_user_password)||!empty($create)) {
   do{
     if(empty($new_user_login)){
@@ -269,6 +285,33 @@ or die("$die $query");
 $users=array();
 while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
 	$users[]=$row;
+}
+@pg_freeresult($result);
+
+// Load the available projects to be shown in the combo
+$result=@pg_exec($cnx,$query="SELECT id, description FROM projects"
+		 ." WHERE activation='t' AND id NOT IN (SELECT name FROM project_user WHERE uid='$user') "
+		 ."ORDER BY description")
+     or die($die."$query");
+
+$available_projects=array();
+while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
+  $available_projects[$row['id']]=$row['description'];
+}
+@pg_freeresult($result);
+
+
+// Load the projects assigned to the user to be shown in a list
+$result=@pg_exec($cnx,$query="SELECT id, p.description, lc.description AS customer, "
+		 ."la.description AS area, p.activation FROM projects p "
+		 ."JOIN project_user pu ON p.id=pu.name LEFT JOIN label lc "
+		 ."ON p.customer=lc.code LEFT JOIN label la ON p.area=la.code "
+		 ."WHERE pu.uid='$user' ORDER BY description")
+     or die($die."$query");
+
+$assigned_projects=array();
+while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
+  $assigned_projects[$row['id']]=$row;
 }
 @pg_freeresult($result);
 
@@ -437,6 +480,9 @@ if ($authentication_mode=="sql") {
       value="1" <?=($user['staff']=='t'?"checked":"")?>>
    </td>
  </tr>
+
+<?
+?>
 </table>
 
 <?
@@ -580,6 +626,68 @@ for ($i=0;$i<sizeof($periods);$i++) {
 
 <!-- end text box -->
 </font></td></tr></table></td></tr></table></td></tr></table>
+
+<br><br><br>
+
+<table border="0" cellspacing="0" cellpadding="0"">
+<tr><td bgcolor="#000000">
+<table border="0" cellspacing="1" cellpadding="0" width="100%"><tr>
+<td bgcolor="#000000" class="title_box"><font
+ color="#FFFFFF" class="title_box">
+<!-- title box -->
+<?=_("Project assignation")?> 
+<!-- end title box -->
+</font></td></tr>
+
+<tr><td bgcolor="#FFFFFF" class="text_box">
+<table border="0" cellspacing="0" cellpadding="5"><tr><td>
+<font
+ color="#000000" class="text_box">
+<!-- text box -->
+ <tr>
+   <td align="center" colspan="6">
+   <select name="added_project"><?=array_to_option(array_values($available_projects),1,array_keys($available_projects))?></select>
+   <input type="submit" name="<?="add_project"?>" value="<?=_("Add user to project")?>"></td>
+ </tr>
+ <tr>
+   <td colspan="6"><hr width="75%"></td>
+ </tr>
+ <?
+   if (count($assigned_projects)==0) {
+ ?>
+ <tr>
+   <td colspan="6" align="center"><b><?=_("There are no assigned projects for this user")?></b></td>
+ </tr>
+ <?
+   } else {
+  ?>
+ <tr>
+    <td align="center"><b><?=_("Id")?></b></td>
+    <td align="center"><b><?=_("Name")?></b></td>
+    <td align="center"><b><?=_("Customer")?></b></td>
+    <td align="center"><b><?=_("Area")?></b></td>
+    <td align="center"><b><?=_("Activation")?></b></td>
+    <td></td>
+ </tr>
+ <?
+     foreach($assigned_projects as $projectId => $project) {
+  ?>
+ <tr>
+   <td align="center"><?=$project["id"]?></td>
+   <td align="center"><?=$project["description"]?></td>
+   <td align="center"><?=$project["customer"]?></td>
+   <td align="center"><?=$project["area"]?></td>
+   <td align="center"><?=($project["activation"]=='t')?_("Yes"):_("No")?></td>
+   <td align="center"><input type="submit" name="<?="remove_project[$projectId]"?>" value="<?=_("Remove from project")?>"></td>
+ </tr>
+ <?
+     }
+   }
+  ?>
+</font></td></tr></table>
+<br>
+<!-- end text box -->
+</td></tr></table></td></tr></table>
 
 <?
 }

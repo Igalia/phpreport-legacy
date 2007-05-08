@@ -149,18 +149,17 @@ foreach ((array)$type_consult as $type) {
 }
 
 /* SET NEEDED DATA FOR DRAWING GRAPHS */
-$chart_types = array("area", "bars", "linepoints", "lines",  
-		     "pie", "points", "squared", "thinbarline");
+$chart_types = array("area" => _("area"),  "bars" => _("bars"),  "linepoints" => _("linepoints"), "lines" => _("lines"),  
+		     "pie" => _("pie"),  "points" => _("points"), "squared" => _("squared"), "thinbarline" => _("thinbarline"));
 
-/* retrieve GET param, or set it to "linepoints" (default) if still not set, */
+/* retrieve GET param, or set it to "bars" (default) if still not set, */
 /* or if the selected type is not available from previous defined list      */
 $ctype = "";
-if (isset($chart_type) && in_array($chart_type, $chart_types)) {
+if (isset($chart_type) && in_array($chart_type, array_keys($chart_types))) {
   $ctype = $chart_type;
 } else {
   $ctype = "bars"; /* default */
 }
-
 
 require_once("include/close_db.php");
 
@@ -303,7 +302,7 @@ if (!empty($confirmation)) msg_ok($confirmation);
 		foreach ((array)$type_consult as $col) {
 		?>
 		<td bgcolor="#FFFFFF" class="title_box">
-                  <a href="projectdetails.php?id=<?=$col?>"><?=$col?></a>
+                  <?=$col?>
 		</td>
 		<?
 		}
@@ -389,7 +388,6 @@ if (!empty($confirmation)) msg_ok($confirmation);
       </table>
       <!-- end box -->
 
-
       <!-- GRAPH TYPE SELECTION FORM -->
 
       <table border="0" cellspacing="0" cellpadding="0">
@@ -414,10 +412,10 @@ if (!empty($confirmation)) msg_ok($confirmation);
 		      <td>
 			<select name="chart_type" onchange="this.form.submit()">
 			  <?
-                          foreach ($chart_types as $chart_type) {
+                          foreach ($chart_types as $chart_type_id => $chart_type_text) {
                           ?>
-                            <option value="<?=$chart_type?>" <?=($ctype==$chart_type)?"selected=\"selected\"":""?>>			      
-			      <?=_($chart_type)?>
+                            <option value="<?=$chart_type_id?>" <?=($ctype==$chart_type_id)?"selected=\"selected\"":""?>>			      
+			      <?=_($chart_type_text)?>
 			    </option>
 			  <?
 			  }
@@ -447,8 +445,12 @@ if (!empty($confirmation)) msg_ok($confirmation);
 	<tr>
 	  <td>
 	    <!-- Line points chart -->
-	    <a href="graphicbuilder.php?id=<?=$id?>&type=<?=$ctype?>&flag=PERSON&title=User+dedication&width=1600&height=1200&startdate=<?=$init?>&enddate=<?=$end?>">
-	    <img class="noborder" src="graphicbuilder.php?id=<?=$id?>&type=<?=$ctype?>&flag=PERSON&title=User+dedication&width=800&height=600&startdate=<?=$init?>&enddate=<?=$end?>" />
+            <?
+              /* Build an URL encoded title */
+              $g_title=urlencode("User dedication");
+            ?>
+	    <a href="graphicbuilder.php?id=<?=$id?>&type=<?=$ctype?>&flag=PERSON&title=<?=$g_title?>&width=1600&height=1200&startdate=<?=$init?>&enddate=<?=$end?>">
+	    <img class="noborder" src="graphicbuilder.php?id=<?=$id?>&type=<?=$ctype?>&flag=PERSON&title=<?=$g_title?>&width=800&height=600&startdate=<?=$init?>&enddate=<?=$end?>" />
 	    </a>
 	  </td>
 	</tr>

@@ -7,6 +7,7 @@
 //  Enrique Ocaña González <eocanha@igalia.com>
 //  José Riguera López <jriguera@igalia.com>
 //  Jesús Pérez Díaz <jperez@igalia.com>
+//  Mario Sánchez Prada <msanchez@igalia.com>
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -111,13 +112,13 @@ or die($die);
 
 for ($i=0;$row=@pg_fetch_array($result,$i,PGSQL_ASSOC);$i++) {
  $row["description"]=stripslashes($row["description"]);
- if ($row["type"]=="name") $show="DISABLED";
+ if (($row["type"]=="name") || ($row["type"]=="customer")) $show="DISABLED";
  else $show="";
  $row["activation"]="<input type=\"checkbox\" name=\"activation["
   .$row["type"]."][".$row["code"]."]\" "
   .sql_to_checkbox($row["activation"])." $show >";
  $delete=_("Delete");
- if ($row["type"]!="name")
+ if (($row["type"]!="name") && ($row["type"]!="customer"))
    $row["deleted"]="<input type=\"submit\" name=\"deleted["
     .$row["type"]."][".$row["code"]."]\" value=\"$delete\">";
  else $row["deleted"]="";
@@ -128,7 +129,7 @@ $temp1=_("Apply activations");
 $temp2=_("Add label");
 $label[]=array(
  'type'=>"<select name=\"type\" size=\"1\">"
-  .array_to_option(array('type','phase','ttype'),$type)."</select>",
+  .array_to_option(array('type','phase','ttype','ctype','csector','parea'),$type)."</select>",
  'code'=>"<input type=\"text\" name=\"code\" value=\"".stripslashes($code)."\">",
  'description'=>"<input type=\"text\" name=\"description\" value=\"".stripslashes($description)."\">",
  'activation'=>"<input type=\"submit\" name=\"apply\" value=\"$temp1\">",

@@ -25,8 +25,8 @@
 // LOADING OF CODE TABLES FROM DATABASE
 
 $table_type=array(""=>"---");
+$table_customer=array(""=>"---");
 $table_name=array(""=>"---");
-$table_phase=array(""=>"---");
 $table_ttype=array(""=>"---");
 
 $die=_("The operation couldn't be completed: ");

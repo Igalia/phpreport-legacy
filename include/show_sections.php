@@ -62,6 +62,9 @@ if (in_array($admin_group_name,(array)$session_groups)) {
     <a href="adminlabels.php?day=<?=$day?>"
      style="font-weight: bold;">- <?=_("Labels")?></a>
    <br>
+    <a href="clients.php?day=<?=$day?>"
+     style="font-weight: bold;">- <?=_("Customer management")?></a>
+   <br>
     <a href="projects.php?day=<?=$day?>"
      style="font-weight: bold;">- <?=_("Project management")?></a>
    <br>

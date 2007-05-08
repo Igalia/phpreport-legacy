@@ -26,11 +26,11 @@
 require_once("include/autenticate.php");
 require_once("/usr/share/phplot/phplot.php");
 
-if ($flag=="PROJECT" && !multi_in_array($board_group_names,(array)$session_groups)) {
-   // If the user in not in a group that belongs to the board members, she can't
-   // access the PROJECTS information 
-   header("Location: login.php");
-}
+/* if ($flag=="PROJECT" && !multi_in_array($board_group_names,(array)$session_groups)) { */
+/*    // If the user in not in a group that belongs to the board members, she can't */
+/*    // access the PROJECTS information  */
+/*    header("Location: login.php"); */
+/* } */
 
 $die=_("Can't finalize the operation");
 
@@ -44,7 +44,7 @@ $g_type = isset($type)?$type:"bars"; /* default type "bars" */
 $g_flag = isset($flag)?$flag:"PROJECT"; /* default flag PROJECT */
 $g_width = isset($width)?$width:800; /* default width 800px */
 $g_height = isset($height)?$height:600; /* default height 600px */
-$g_title = isset($title)?$title:$g_type." chart"; /* default title <type> chart*/
+$g_title = isset($title)?urldecode($title):$g_type." chart"; /* default title <type> chart*/
 $g_startdate = isset($startdate)?$startdate:"NULL";
 $g_enddate = isset($enddate)?$enddate:"NULL";
 
@@ -234,7 +234,7 @@ if (($g_flag == "PROJECT") || ($g_flag == "PERSON")) {
     $graph->SetFileFormat("png");
     $graph->SetDataType("text-data");
     $graph->SetPlotType($g_type);
-    $graph->SetTitle(_($g_title));
+    $graph->SetTitle($g_title);
     $graph->SetLegend($graph_legend);
     $graph->DrawGraph();
   }

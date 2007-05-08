@@ -65,6 +65,12 @@ switch($lang) {
     $_SESSION["lang"]="en";
     $locale="en_EN";    
   break;
+
+  case "gl":
+    $_SESSION["lang"]="gl";
+    $locale="gl_ES.UTF-8";
+  break;
+
 }
 
 putenv("LANG=$locale");

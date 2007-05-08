@@ -36,17 +36,17 @@ foreach(array_keys((array)$table_type) as $i) {
  }
 }
 
+$customer=array();
+foreach(array_keys((array)$table_customer) as $i) {
+ if (!empty($i)) {
+  $customer[]=$i;
+ }
+}
+
 $name=array();
 foreach(array_keys((array)$table_name) as $i) {
  if (!empty($i)) {
   $name[]=$i;
- }
-}
-
-$phase=array();
-foreach(array_keys((array)$table_phase) as $i) {
- if (!empty($i)) {
-  $phase[]=$i;
  }
 }
 
@@ -74,8 +74,8 @@ echo("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
   type (<?=implode("|",$type)?>) #REQUIRED
   start CDATA #REQUIRED
   end CDATA #REQUIRED
+  customer (<?=implode("|",$customer)?>) #IMPLIED
   name (<?=implode("|",$name)?>) #IMPLIED
-  phase (<?=implode("|",$phase)?>) #IMPLIED
   ttype (<?=implode("|",$ttype)?>) #IMPLIED
   story CDATA #IMPLIED
   telework (true) #IMPLIED>
