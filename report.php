@@ -488,8 +488,12 @@ function setCombosStatus(type, task_number) {
   customerCombo.disabled = boolValue;
   projectCombo.disabled = boolValue;
 
-  customerCombo.selectedIndex = 0;
-  projectCombo.selectedIndex = 0;
+  /*
+  if (boolValue) {
+    customerCombo.selectedIndex = 0;
+    projectCombo.selectedIndex = 0;
+  }
+  */
 }
 </script>
 
@@ -535,7 +539,7 @@ for ($i=0;$i<sizeof($task);$i++) {
     /* Check if the project for this task doesn't belong to the user.    */
     /* In that case we must set $showingAllDataValue variable to 'true', */
     /* because it's the only way to show needed values at the combos     */
-    if (($task[$i][$name] != "") && !in_array($task[$i]['name'], $table_userProjects)) {
+    if (($task[$i]['name'] != "") && !in_array($task[$i]['name'], $table_userProjects)) {
       $showingAllDataValue = TRUE;
     }
   }

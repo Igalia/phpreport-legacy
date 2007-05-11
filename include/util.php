@@ -579,7 +579,7 @@ function net_extra_hours($cnx,$init,$end,$uid=null) {
   @pg_freeresult($hired_intervals);
 
   foreach(array_keys($worked_hours_consult) as $k)
-    $worked_hours_consult[$k]["period_extra_hours"]=
+    $worked_hours_consult[$k]["extra_hours"]=
       $worked_hours_consult[$k]["total_hours"]
       -$worked_hours_consult[$k]["workable_hours"];
 
