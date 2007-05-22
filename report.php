@@ -462,6 +462,9 @@ $result=@pg_exec($cnx,$query="SELECT code "
 /* Javascript generation for types which don't need customer to be set */
 ?>
 <script language="Javascript">
+var oldCustomerIndex = new Array();
+var oldProjectIndex = new Array();
+
 var noCustomer_types = new Array (
 <?
 $noCustomerTypes_array = array();
@@ -485,15 +488,28 @@ function setCombosStatus(type, task_number) {
   var projectCombo = document.getElementById('name_combo_' + task_number);
   var boolValue = checkNoCustomerType(type);
 
+  /* If disabled status for combos has not changed and we're disabling combos, save old status */
+  if (boolValue && 
+      (customerCombo.disabled != boolValue
+       || projectCombo.disabled != boolValue)) {
+
+    oldCustomerIndex[task_number] = customerCombo.selectedIndex;
+    customerCombo.selectedIndex = 0;
+
+    oldProjectIndex[task_number] = projectCombo.selectedIndex;
+    projectCombo.selectedIndex = 0;
+  } else if (!boolValue) {
+    /* If disabled status for combos has not changed and we're enabling combos, reload old status */
+    if (oldCustomerIndex[task_number]) {
+      customerCombo.selectedIndex = oldCustomerIndex[task_number];
+    }
+    if (oldProjectIndex[task_number]) {
+      projectCombo.selectedIndex = oldProjectIndex[task_number];
+    }
+  } /* else do nothing */
+
   customerCombo.disabled = boolValue;
   projectCombo.disabled = boolValue;
-
-  /*
-  if (boolValue) {
-    customerCombo.selectedIndex = 0;
-    projectCombo.selectedIndex = 0;
-  }
-  */
 }
 </script>
 
