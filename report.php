@@ -120,10 +120,13 @@ if (!empty($new_task)) {
  $i=count($task);
 
  /* Select data from last inserted task */
+
  $result=@pg_exec($cnx,$query="SELECT * FROM task WHERE uid='$session_uid' "
 		  ."AND init=(SELECT MAX(init) FROM task WHERE uid='$session_uid' "
-                  ."           AND _date=(SELECT MAX(_date) AS maxdate FROM task WHERE uid='$session_uid')) "
-		  ."AND _date=(SELECT MAX(_date) FROM task WHERE uid='$session_uid')")
+                  ."           AND _date=(SELECT MAX(_date) AS maxdate FROM task WHERE uid='$session_uid' "
+                  ."                      AND _date<='".date_web_to_sql($day)."')) "
+		  ."AND _date=(SELECT MAX(_date) FROM task WHERE uid='$session_uid' "
+                  ."           AND _date<='".date_web_to_sql($day)."')")
    or die($die);
 
  $last_task=array();
