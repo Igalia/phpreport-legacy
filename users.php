@@ -50,13 +50,14 @@ if (!(in_array($admin_group_name,(array)$session_groups)
 )) {
  header("Location: login.php");
 }
+ 
+if (!empty($change)) $user=reset(array_keys($change));
+elseif (!empty($edit)) $user=reset(array_keys($edit));
+else $user=$id;
 
 if(!empty($edit)&&empty($periods)||(!empty($id)&&empty($del_period)&&empty($change))) {
  $periods=array();
- if (!empty($change))$user=reset(array_keys($change));
- elseif (!empty($edit)) $user=reset(array_keys($edit));
- else $user=$id;
-
+ 
  $die=_("Can't finalize the operation");
    $result=pg_exec($cnx,$query="SELECT * FROM periods"
    ." WHERE uid='$user' ORDER BY init ")
@@ -121,10 +122,11 @@ if(($init_date!=""&&$end_date!=""&&$city!="")){
   $periods[$s]["init"]=$init_date;
   $periods[$s]["_end"]=$end_date;
   $periods[$s]["city"]=$city;
+  $periods[$s]["hour_cost"]=$hour_cost;
 }
 
 for ($i=0;$i<sizeof($periods);$i++) {
-    $fields=array("uid","journey","init","_end","city");
+    $fields=array("uid","journey","init","_end","city","hour_cost");
     $row=array();
     foreach ($fields as $field)
     $row[$field]=$periods[$i][$field];
@@ -234,8 +236,8 @@ if (!empty($new_user_login)&&!empty($new_user_password)||!empty($create)) {
   ."','"
   .(($new_user_staff==1)?"t":"f")
   ."')"))||(!$result2=pg_exec($cnx,$query="INSERT INTO periods"
-	." (uid,journey,init,_end,city) VALUES ('$new_user_login', '$jour_hours'," 
-	."CURRENT_DATE, NULL,'$city')"))) {
+	." (uid,journey,init,_end,city,hour_cost) VALUES ('$new_user_login', '$jour_hours'," 
+	."CURRENT_DATE, NULL,'$city', NULL)"))) {
 	$error=_("Can't finalize the operation");
     } else {
 	$confirmation=_("The user has been created correctly. Remember to update her contract periods!");
@@ -555,6 +557,10 @@ for ($i=0;$i<sizeof($periods);$i++) {
   <td><?=_("City");?>:</td>
   <td><input type="text" name="<?="periods[$i][city]"?>" value="<?=$periods[$i]["city"]?>"></td>
 </tr>
+<tr>
+  <td><?=_("Cost per hour");?>:</td>
+  <td><input type="text" name="<?="periods[$i][hour_cost]"?>" value="<?=$periods[$i]["hour_cost"]?>"></td>
+</tr>
 
  <tr>
   <td></td><td align="center">
@@ -604,6 +610,14 @@ for ($i=0;$i<sizeof($periods);$i++) {
   </td>
   <td><br>
     <input type="text" name="city">
+  </td> 
+ </tr>
+ <tr>
+  <td><br>
+<?=_("Cost per hour");?>
+  </td>
+  <td><br>
+    <input type="text" name="hour_cost">
   </td> 
  </tr>
 

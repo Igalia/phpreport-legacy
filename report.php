@@ -838,7 +838,7 @@ if (!$blocked) {
   </td>
   <td colspan="2" align="right">
 
-   <?=/* Hidden fields for keeping some useful data through POST requests */?>
+   <?/* Hidden fields for keeping some useful data through POST requests */?>
    <input type="hidden" id="comboSubmit_<?=$i?>" name="<?="task[$i][comboSubmit]"?>" value="f">
    <input type="hidden" name="<?="task[$i][showingAllData]"?>" value="<?=($showingAllDataValue?"t":"f")?>">
 

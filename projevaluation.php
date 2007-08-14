@@ -28,9 +28,10 @@
 // 1 - Project / task type
 // 2 - Person / task type
 // 3 - Person / project
-// 4 - Project evaluation
+// 4 - Project evaluation (global)
 // 5 - Hourly personal brief
 // 6 - Hourly personal brief (explained)
+// 7 - Project evaluation (period)
 
 // Show activation (only for project evaluation sheet):
 // 1 - All projects
@@ -313,10 +314,15 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
     /* DATA FOR GLOBAL PROJECTS EVALUATION */
 
     /* retrieve data for each row */
-    $data=@pg_exec($cnx,$query="SELECT DISTINCT tblTotal.name, total_hours, proj.invoice, proj.est_hours, proj.activation
+    $data=@pg_exec($cnx,$query="SELECT DISTINCT tblTotal.name, total_hours, proj.invoice, proj.est_hours, proj.activation, total_staff_cost
       FROM 
-      (SELECT SUM( _end - init ) / 60.0 AS total_hours, name
-      FROM task GROUP BY name
+      (SELECT SUM( task._end - task.init ) / 60.0 AS total_hours, SUM( (task._end - task.init) / 60.0 * hour_cost) AS total_staff_cost, name
+      FROM task 
+      LEFT JOIN periods ON (
+        (task.uid=periods.uid) and 
+        (periods.init is null or periods.init<=task._date) and 
+        (periods._end is null or periods._end>=task._date) )      
+      GROUP BY name
       ) AS tblTotal
       LEFT JOIN
       (SELECT * FROM projects
@@ -335,9 +341,9 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
     $row_title_var="code_consult";
 
     if ($showAllProjects) {
-      $project_consult=array("total_hours","est_hours","desv1","desv2","invoice","eur_real","eur_pres","activation");
+      $project_consult=array("total_hours","est_hours","desv1","desv2","invoice","eur_real","eur_pres","total_staff_cost","total_profit","hour_profit","activation");
     } else {
-      $project_consult=array("total_hours","est_hours","desv1","desv2","invoice","eur_real","eur_pres");
+      $project_consult=array("total_hours","est_hours","desv1","desv2","invoice","eur_real","eur_pres","total_staff_cost","total_profit","hour_profit");
     }
 
     $col_title_var="project_consult";
@@ -346,31 +352,36 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
       if($row2[$row_index]=="") {
 	$row2[$row_index]=_("(empty)");
       }
-      $a[$row2[$row_index]][$project_consult[0]]=$row2["total_hours"];
-      $a[$row2[$row_index]][$project_consult[1]]=$row2["est_hours"];
+      $a[$row2[$row_index]]["total_hours"]=$row2["total_hours"];
+      $a[$row2[$row_index]]["est_hours"]=($row2["est_hours"]!=0)?$row2["est_hours"]:"";
       if ($row2[$row_index]!=_("(empty)")) {
-	$a[$row2[$row_index]][$project_consult[2]]=
-	  @(($row2["total_hours"]-$row2["est_hours"])/$row2["est_hours"]*100);
-	$a[$row2[$row_index]][$project_consult[3]]=$row2["total_hours"]-$row2["est_hours"];
-        $a[$row2[$row_index]][$project_consult[4]]=$row2["invoice"];
-	$a[$row2[$row_index]][$project_consult[5]]=@($row2["invoice"]/$row2["total_hours"]);
-	$a[$row2[$row_index]][$project_consult[6]]=@($row2["invoice"]/$row2["est_hours"]);	
-
+	$a[$row2[$row_index]]["desv1"]=
+	  ($row2["est_hours"]!=0)?@(($row2["total_hours"]-$row2["est_hours"])/$row2["est_hours"]*100):"";
+	$a[$row2[$row_index]]["desv2"]=($row2["est_hours"]!=0)?$row2["total_hours"]-$row2["est_hours"]:"";
+  $a[$row2[$row_index]]["invoice"]=($row2["invoice"]!=0)?$row2["invoice"]:"";
+	$a[$row2[$row_index]]["eur_real"]=($row2["invoice"]!=0)?@($row2["invoice"]/$row2["total_hours"]):"";
+	$a[$row2[$row_index]]["eur_pres"]=($row2["invoice"]!=0)?@($row2["invoice"]/$row2["est_hours"]):"";	
+  $a[$row2[$row_index]]["total_staff_cost"]=@($row2["total_staff_cost"]);  
+  $a[$row2[$row_index]]["total_profit"]=($row2["invoice"]!=0)?@($row2["invoice"]-$row2["total_staff_cost"]):""; 
+  $a[$row2[$row_index]]["hour_profit"]=($row2["invoice"]!=0)?@(($row2["invoice"]-$row2["total_staff_cost"])/$row2["total_hours"]):""; 
+  
 	if ($showAllProjects) {
-	  $a[$row2[$row_index]][$project_consult[7]]=$row2["activation"];
+	  $a[$row2[$row_index]]["activation"]=$row2["activation"];
 	}
       }
 
-      $add_total_hours+=$row2["total_hours"];
-      $add_est_hours+=$row2["est_hours"];
-      $add_desv1+=$a[$row2[$row_index]][$project_consult[2]];
-      $add_desv2+=$a[$row2[$row_index]][$project_consult[3]];
-      $add_invoice+=$row2["invoice"];
-      $add_eur_real+=$a[$row2[$row_index]][$project_consult[5]];
-      $add_eur_pres+=$a[$row2[$row_index]][$project_consult[6]];
-
+      $add_total_hours+=$a[$row2[$row_index]]["total_hours"];
+      $add_est_hours+=$a[$row2[$row_index]]["est_hours"];
+      $add_desv1+=$a[$row2[$row_index]]["desv1"];
+      $add_desv2+=$a[$row2[$row_index]]["desv2"];
+      $add_invoice+=$a[$row2[$row_index]]["invoice"];
+      $add_eur_real+=$a[$row2[$row_index]]["eur_real"];
+      $add_eur_pres+=$a[$row2[$row_index]]["eur_pres"];
+      $add_total_staff_cost+=$a[$row2[$row_index]]["total_staff_cost"];
+      $add_total_profit+=$a[$row2[$row_index]]["total_profit"];
+      $add_hour_profit+=$a[$row2[$row_index]]["hour_profit"];
       $add_totals=array($add_total_hours,$add_est_hours,$add_desv1,$add_desv2,
-			$add_invoice,$add_eur_real,$add_eur_pres);
+			$add_invoice,$add_eur_real,$add_eur_pres,$add_total_staff_cost,$add_total_profit,$add_hour_profit);
     }
   } else if ($sheets==7) {
     /* DATA FOR PROJECT EVALUATION WITHIN A PERIOD OF TIME */
@@ -392,17 +403,28 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
     }
 
     /* retrieve data for each row */
-    $data=@pg_exec($cnx,$query="SELECT DISTINCT tblPeriod.name, hours AS total_hours, tblPeriod.period_hours, proj.invoice, proj.est_hours, proj.activation
+    $data=@pg_exec($cnx,$query="SELECT DISTINCT tblPeriod.name, hours AS total_hours, tblPeriod.period_hours,
+          proj.invoice, proj.est_hours, proj.activation, total_staff_cost, period_staff_cost
        FROM 
-       (SELECT SUM( _end - init ) / 60.0 AS hours, name
-       FROM task GROUP BY name
+       (SELECT SUM( task._end - task.init ) / 60.0 AS hours, SUM( (task._end - task.init) / 60.0 * hour_cost) AS total_staff_cost, name
+       FROM task
+       LEFT JOIN periods ON (
+         (task.uid=periods.uid) and 
+         (periods.init is null or periods.init<=task._date) and 
+         (periods._end is null or periods._end>=task._date) )              
+       GROUP BY name
        ) AS tblTotal
        LEFT JOIN
        (SELECT id,est_hours,invoice, activation
        FROM projects
        ) AS proj ON (proj.id=tblTotal.name),
-       (SELECT t.name, SUM( t._end - t.init ) / 60.0 AS period_hours 
-		   FROM task t JOIN projects p ON t.name = p.id 
+       (SELECT t.name, SUM( t._end - t.init ) / 60.0 AS period_hours, SUM( (t._end - t.init) / 60.0 * hour_cost) AS period_staff_cost
+       FROM task t 
+       LEFT JOIN periods ON (
+         (t.uid=periods.uid) and 
+         (periods.init is null or periods.init<=t._date) and 
+         (periods._end is null or periods._end>=t._date) )              
+       JOIN projects p ON t.name = p.id 
 		   WHERE t.name <> '' AND 
 		   t._date >= '$init' AND t._date < '$end'
                    AND  $areaCond AND $activationCond AND $minInvoiceCond AND $maxInvoiceCond
@@ -422,11 +444,11 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
     $row_title_var="code_consult";
 
     if ($showAllProjects) {
-      $project_consult=array("total_hours","period_hours","est_hours","invoice","eur_real","eur_pres", "percent", "eur_real_pond", "eur_real_est", "activation");
+      $project_consult=array("total_hours","total_staff_cost","total_profit","hour_profit","period_hours","est_hours","invoice","eur_real","eur_pres", "percent", "eur_real_pond", "eur_real_est", "period_staff_cost", "activation");
     } else if ($showNonActiveProjects) { 
-      $project_consult=array("total_hours","period_hours","est_hours","invoice","eur_real","eur_pres", "percent", "eur_real_pond", "eur_real_est");
+      $project_consult=array("total_hours","total_staff_cost","total_profit","hour_profit","period_hours","est_hours","invoice","eur_real","eur_pres", "percent", "eur_real_pond", "eur_real_est", "period_staff_cost");
     } else {
-      $project_consult=array("total_hours","period_hours","est_hours","invoice","eur_real","eur_pres");
+      $project_consult=array("total_hours","total_staff_cost","total_profit","hour_profit","period_hours","est_hours","invoice","eur_real","eur_pres", "period_staff_cost");
     }
 
     $col_title_var="project_consult";      
@@ -435,45 +457,54 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
       if($row2[$row_index]=="") {
 	$row2[$row_index]=_("(empty)");
       }
-      $a[$row2[$row_index]][$project_consult[0]]=$row2["total_hours"];
-      $a[$row2[$row_index]][$project_consult[1]]=$row2["period_hours"];
-      $a[$row2[$row_index]][$project_consult[2]]=$row2["est_hours"];
-      $a[$row2[$row_index]][$project_consult[3]]=$row2["invoice"];
+      $a[$row2[$row_index]]["total_hours"]=$row2["total_hours"];
+      $a[$row2[$row_index]]["total_staff_cost"]=$row2["total_staff_cost"];
+      $a[$row2[$row_index]]["period_hours"]=$row2["period_hours"];
+      $a[$row2[$row_index]]["est_hours"]=($row2["est_hours"]!=0)?$row2["est_hours"]:"";
+      $a[$row2[$row_index]]["invoice"]=($row2["invoice"]!=0)?$row2["invoice"]:"";
+      $a[$row2[$row_index]]["total_profit"]=($row2["invoice"]!=0)?@($row2["invoice"]-$row2["total_staff_cost"]):""; 
+      $a[$row2[$row_index]]["hour_profit"]=($row2["invoice"]!=0)?@(($row2["invoice"]-$row2["total_staff_cost"])/$row2["total_hours"]):""; 
       if ($row2[$row_index]!=_("(empty)")) {
-	$a[$row2[$row_index]][$project_consult[4]]=@($row2["invoice"]/$row2["total_hours"]);
-	$a[$row2[$row_index]][$project_consult[5]]=@($row2["invoice"]/$row2["est_hours"]);
+	$a[$row2[$row_index]]["eur_real"]=($row2["invoice"]!=0)?@($row2["invoice"]/$row2["total_hours"]):"";
+	$a[$row2[$row_index]]["eur_pres"]=($row2["invoice"]!=0)?@($row2["invoice"]/$row2["est_hours"]):"";
 
 	/* Calculate aditional information about finished projects */
 	if ($showNonActiveProjects && ($row2["activation"] == 'f') && ($row2["invoice"] > 0) 
 	    && ($row2["est_hours"] > 0) && ($period_worked_hours != 0)) {
-	  $pond_value = $a[$row2[$row_index]][$project_consult[1]] / $period_worked_hours;
-	  $a[$row2[$row_index]][$project_consult[6]]=$pond_value * 100.0;
-	  $a[$row2[$row_index]][$project_consult[7]]=$pond_value * $a[$row2[$row_index]][$project_consult[4]];
-	  $a[$row2[$row_index]][$project_consult[8]]=$pond_value * $a[$row2[$row_index]][$project_consult[5]];
+	  $pond_value = $a[$row2[$row_index]]["period_hours"] / $period_worked_hours;
+	  $a[$row2[$row_index]]["percent"]=$pond_value * 100.0;
+	  $a[$row2[$row_index]]["eur_real_pond"]=($row2["invoice"]!=0)?$pond_value * $a[$row2[$row_index]]["eur_real"]:"";
+    $a[$row2[$row_index]]["eur_real_est"]=($row2["invoice"]!=0)?$pond_value * $a[$row2[$row_index]]["eur_pres"]:"";
+    $a[$row2[$row_index]]["period_staff_cost"]=$row2["period_staff_cost"];
 	}
-	if ($showAllProjects) {
-	  $a[$row2[$row_index]][$project_consult[9]]=$row2["activation"];
+  if ($showAllProjects) {
+    $a[$row2[$row_index]]["period_staff_cost"]=$row2["period_staff_cost"];
+    $a[$row2[$row_index]]["activation"]=$row2["activation"];
 	}
       }
 
-      $add_total_hours+=$row2["total_hours"];
-      $add_period_hours+=$row2["period_hours"];
-      $add_est_hours+=$row2["est_hours"];
-      $add_invoice+=$row2["invoice"];
-      $add_eur_real+=$a[$row2[$row_index]][$project_consult[4]];
-      $add_eur_pres+=$a[$row2[$row_index]][$project_consult[5]];
-
+      $add_total_hours+=$a[$row2[$row_index]]["total_hours"];
+      $add_total_profit+=$a[$row2[$row_index]]["total_profit"];
+      $add_hour_profit+=$a[$row2[$row_index]]["hour_profit"];
+      $add_period_staff_cost+=$a[$row2[$row_index]]["period_staff_cost"];
+      $add_period_hours+=$a[$row2[$row_index]]["period_hours"];
+      $add_est_hours+=$a[$row2[$row_index]]["est_hours"];
+      $add_invoice+=$a[$row2[$row_index]]["invoice"];
+      $add_eur_real+=$a[$row2[$row_index]]["eur_real"];
+      $add_eur_pres+=$a[$row2[$row_index]]["eur_pres"];
+      $add_total_staff_cost+=$a[$row2[$row_index]]["total_staff_cost"];
+      
       if ($showNonActiveProjects) {
-	$add_percent+=$a[$row2[$row_index]][$project_consult[6]];
-	$add_eur_real_pond+=$a[$row2[$row_index]][$project_consult[7]];
-	$add_eur_pres_pond+=$a[$row2[$row_index]][$project_consult[8]];
+	$add_percent+=$a[$row2[$row_index]]["percent"];
+	$add_eur_real_pond+=$a[$row2[$row_index]]["eur_real_pond"];
+	$add_eur_real_est+=$a[$row2[$row_index]]["eur_real_est"];
       }
 
       if ($showNonActiveProjects) {
-	$add_totals=array($add_total_hours,$add_period_hours,$add_est_hours,$add_invoice,$add_eur_real,
-			  $add_eur_pres, $add_percent,$add_eur_real_pond,$add_eur_pres_pond);
+	$add_totals=array($add_total_hours,$add_total_staff_cost,$add_total_profit,$add_hour_profit,$add_period_hours,$add_est_hours,$add_invoice,$add_eur_real,
+			  $add_eur_pres, $add_percent,$add_eur_real_pond,$add_eur_real_est,$add_period_staff_cost);
       } else {
-	$add_totals=array($add_total_hours,$add_period_hours,$add_est_hours,$add_invoice,$add_eur_real,$add_eur_pres);
+	$add_totals=array($add_total_hours,$add_total_staff_cost,$add_total_profit,$add_hour_profit,$add_period_hours,$add_est_hours,$add_invoice,$add_eur_real,$add_eur_pres,$add_period_staff_cost);
       }
     }
 
@@ -723,33 +754,49 @@ if (empty($error)&&$sheets!=0) {
 <?
     } else if ($sheets==7) {
       if ($showAllProjects) {
-	$titles=array(_("Total worked hours"),_("Worked hours within period"),_("Estimated hours"), _("Invoice"),_("EUR/h real"),_("EUR/h est."), 
-		      _("%"), _("EUR/h real pond"), _("EUR/h estim pond"), _("Activation"));
+      $titles=array(_("Total worked hours"),_("Total staff cost"),_("Total profit"),_("Total profit per hour"),_("Worked hours within period"),_("Estimated hours"),
+          _("Invoice"),_("EUR/h real"),_("EUR/h est."), 
+		      _("%"), _("EUR/h real pond"), _("EUR/h estim pond"), _("Total staff cost within period"), _("Activation"));
       } else if ($showNonActiveProjects) {
-	$titles=array(_("Total worked hours"),_("Worked hours within period"),_("Estimated hours"), _("Invoice"),_("EUR/h real"),_("EUR/h est."), 
-		      _("%"), _("EUR/h real pond"), _("EUR/h estim pond"));
+      $titles=array(_("Total worked hours"),_("Total staff cost"),_("Total profit"),_("Total profit per hour"),_("Worked hours within period"),_("Estimated hours"),
+          _("Invoice"),_("EUR/h real"),_("EUR/h est."), 
+		      _("%"), _("EUR/h real pond"), _("EUR/h estim pond"), _("Total staff cost within period"));
       } else {
-	$titles=array(_("Total worked hours"),_("Worked hours within period"),_("Estimated hours"), _("Invoice"),_("EUR/h real"),_("EUR/h est."));
+      $titles=array(_("Total worked hours"), _("Total staff cost"),_("Total profit"),_("Total profit per hour"),_("Worked hours within period"),_("Estimated hours"), 
+          _("Invoice"),_("EUR/h real"),_("EUR/h est."), _("Total staff cost within period"));
       }
       foreach ((array)$titles as $col) {
 ?>
   <td bgcolor="#FFFFFF" class="title_box"><?=$col?></td>
 <?
      }
-    } else {
+    } else if ($sheets==4) {
       if ($showAllProjects) {
-	$titles=array( _("Worked hours"),_("Estimated hours"),_("Desviation %"),
-		      _("Desviation abs"),_("Invoice"),_("EUR/h real"),_("EUR/h est."),_("Activation"));
+  $titles=array( _("Worked hours"),_("Estimated hours"),_("Desviation %"),
+          _("Desviation abs"),_("Invoice"),_("EUR/h real"),_("EUR/h est."),_("Total staff cost"),_("Total profit"),_("Total profit per hour"),_("Activation"));
       } else {
-	$titles=array( _("Worked hours"),_("Estimated hours"),_("Desviation %"),
-		      _("Desviation abs"),_("Invoice"),_("EUR/h real"),_("EUR/h est."));
+  $titles=array( _("Worked hours"),_("Estimated hours"),_("Desviation %"),
+          _("Desviation abs"),_("Invoice"),_("EUR/h real"),_("EUR/h est."),_("Total staff cost"),_("Total profit"),_("Total profit per hour"));
       }
       foreach ((array)$titles as $col) {
 ?>
   <td bgcolor="#FFFFFF" class="title_box"><?=$col?></td>
 <?
+      }
+    } else {
+      if ($showAllProjects) {
+	$titles=array( _("Worked hours"),_("Estimated hours"),_("Desviation %"),
+		      _("Desviation abs"),_("Invoice"),_("EUR/h real"),_("EUR/h est."),_("Total profit"),_("Total profit per hour"),_("Activation"));
+      } else {
+	$titles=array( _("Worked hours"),_("Estimated hours"),_("Desviation %"),
+		      _("Desviation abs"),_("Invoice"),_("EUR/h real"),_("EUR/h est."),_("Total profit"),_("Total profit per hour"));
+      }
+      foreach ((array)$titles as $col) {
+?>
+  <td bgcolor="#FFFFFF" class="title_box"><?=$col?></td>
+<?
+      }
     }
-  }
 ?>
 </tr>
 <?
@@ -857,7 +904,7 @@ if (empty($error)&&$sheets!=0) {
   <td bgcolor="#FFFFFF" class="text_result"><b><?=sprintf("%01.2f",$total)?></b></td>
 <?
     }
-    if ($sheets!=4 && $sheets!=7) {
+    if ($sheets!=4 && $sheets!=7 || $showAllProjects) {
 ?>
   <td bgcolor="#FFFFFF" class="text_data">&nbsp;</td>
 <?

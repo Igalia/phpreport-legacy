@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-02 17:58+0200\n"
+"POT-Creation-Date: 2007-08-13 00:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,13 +21,13 @@ msgid "Code equivalence"
 msgstr "Equivalencia de códigos"
 
 #: labels.php:48 report.php:407 labels.php:49 report.php:408 report.php:496
-#: report.php:498 labels.php:49 report.php:698
+#: report.php:498 report.php:698 labels.php:49 report.php:724
 msgid "Task type"
 msgstr "Tipo de tarea"
 
 #: labels.php:49 report.php:408 labels.php:50 report.php:409
-#: userdetails.php:131 report.php:497 report.php:499 labels.php:50
-#: report.php:699 userdetails.php:131
+#: userdetails.php:131 report.php:497 report.php:499 report.php:699
+#: userdetails.php:131 labels.php:50 report.php:725
 msgid "Project"
 msgstr "Proyecto"
 
@@ -140,7 +140,7 @@ msgid "Saved"
 msgstr "Guardado"
 
 #: processxml.php:131 cal_manag.php:184 cal_manag.php:185 processxml.php:132
-#: cal_manag.php:185 processxml.php:132
+#: processxml.php:132 cal_manag.php:185
 msgid "OK"
 msgstr "OK"
 
@@ -211,7 +211,7 @@ msgstr "La nueva contraseña y la de confirmación no coinciden"
 
 #: profile.php:58 login.php:128 login.php:142 users.php:81 users.php:82
 #: login.php:129 login.php:143 profile.php:59 users.php:85 users.php:86
-#: login.php:129 login.php:143 profile.php:59 users.php:86
+#: profile.php:59 users.php:87 login.php:129 login.php:143
 msgid "Can't finalize the operation: "
 msgstr "No se ha podido completar la operación"
 
@@ -248,7 +248,7 @@ msgstr "Confirmar contraseña"
 #: users.php:541 calendar.php:201 profile.php:125 projects.php:291
 #: users.php:570 projects.php:342 users.php:615 clients.php:283
 #: projects.php:387 clients.php:295 projects.php:388 users.php:616
-#: calendar.php:201 profile.php:125 projects.php:388 users.php:616
+#: profile.php:125 projects.php:388 calendar.php:201 users.php:630
 #: clients.php:295
 msgid "Change"
 msgstr "Cambiar"
@@ -287,24 +287,24 @@ msgstr "No se ha podido obtener la lista de usuarios de PhpReport"
 msgid "An authentication mecanism wasn't configured"
 msgstr "No se ha configurado ningún mecanismo de autenticación"
 
-#: login.php:192 login.php:196 login.php:197 login.php:197
+#: login.php:192 login.php:196 login.php:197 login.php:206
 msgid "Identification"
 msgstr "Identificación"
 
-#: login.php:206 login.php:210 login.php:211 login.php:211
+#: login.php:206 login.php:210 login.php:211 login.php:220
 msgid "Login"
 msgstr "Usuario"
 
-#: login.php:210 login.php:214 login.php:215 login.php:215
+#: login.php:210 login.php:214 login.php:215 login.php:224
 msgid "Password"
 msgstr "Contraseña"
 
 #: login.php:215 login.php:223 login.php:219 login.php:227 login.php:220
-#: login.php:228 login.php:220 login.php:228
+#: login.php:228 login.php:229 login.php:237
 msgid "Enter"
 msgstr "Entrar"
 
-#: login.php:221 login.php:225 login.php:226 login.php:226
+#: login.php:221 login.php:225 login.php:226 login.php:235
 msgid "Identification successful."
 msgstr "Identificación correcta"
 
@@ -332,15 +332,15 @@ msgstr "Identificación correcta"
 #: report.php:83 report.php:230 report.php:241 report.php:259 report.php:269
 #: report.php:281 report.php:293 report.php:319 users.php:60 users.php:90
 #: users.php:99 users.php:109 users.php:153 users.php:228 users.php:239
-#: adminlabels.php:54 adminlabels.php:64 adminlabels.php:76
-#: adminlabels.php:103 adminlabels.php:108 block.php:70 cal_manag.php:44
+#: projectdetails.php:36 projevaluation.php:53 adminlabels.php:54
+#: adminlabels.php:64 adminlabels.php:76 adminlabels.php:103
+#: adminlabels.php:108 graphicbuilder.php:35 block.php:70 consult.php:112
+#: userdetails.php:30 projects.php:40 users.php:61 users.php:91 users.php:100
+#: users.php:110 users.php:155 users.php:230 users.php:241 cal_manag.php:44
 #: cal_manag.php:52 cal_manag.php:57 cal_manag.php:77 cal_manag.php:83
-#: cal_manag.php:101 consult.php:112 projects.php:40 projevaluation.php:52
-#: report.php:67 report.php:83 report.php:230 report.php:241 report.php:249
-#: report.php:259 report.php:269 report.php:281 report.php:293 report.php:319
-#: users.php:60 users.php:90 users.php:99 users.php:109 users.php:153
-#: users.php:228 users.php:239 userdetails.php:30 clients.php:39
-#: graphicbuilder.php:35 projectdetails.php:36
+#: cal_manag.php:101 report.php:67 report.php:83 report.php:233 report.php:244
+#: report.php:252 report.php:262 report.php:272 report.php:284 report.php:296
+#: report.php:322 clients.php:39
 msgid "Can't finalize the operation"
 msgstr "No se ha podido completar la operación"
 
@@ -366,8 +366,8 @@ msgstr "El proyecto ha sido borrado correctamente"
 
 #: projects.php:144 include/show_sections.php:60 projects.php:145
 #: include/show_sections.php:66 projects.php:178 include/show_sections.php:69
-#: projects.php:223 projects.php:224 projects.php:224
-#: include/show_sections.php:69
+#: projects.php:223 projects.php:224 include/show_sections.php:69
+#: projects.php:224
 msgid "Project management"
 msgstr "Gestión proyectos"
 
@@ -386,7 +386,7 @@ msgstr "Proyectos"
 #: projects.php:192 users.php:331 projects.php:225 users.php:373
 #: clients.php:206 projects.php:270 clients.php:218 projects.php:271
 #: users.php:374 consult.php:192 consult.php:358 projects.php:271
-#: users.php:374 clients.php:218
+#: users.php:376 clients.php:218
 msgid "Edit"
 msgstr "Editar"
 
@@ -406,9 +406,9 @@ msgstr "Edición de proyectos"
 #: projects.php:259 projevaluation.php:250 projevaluation.php:281
 #: projevaluation.php:334 projevaluation.php:421 users.php:665
 #: projects.php:304 clients.php:341 projectdetails.php:250 projects.php:305
-#: users.php:666 projects.php:305 projevaluation.php:250
-#: projevaluation.php:281 projevaluation.php:334 projevaluation.php:421
-#: users.php:666 clients.php:341 projectdetails.php:250
+#: users.php:666 projectdetails.php:250 projevaluation.php:251
+#: projevaluation.php:282 projevaluation.php:340 projevaluation.php:443
+#: projects.php:305 users.php:680 clients.php:341
 msgid "Name"
 msgstr "Nombre"
 
@@ -421,9 +421,10 @@ msgstr "Descripción:"
 #: projectdetails.php:256 projects.php:291 projevaluation.php:620
 #: projevaluation.php:727 projevaluation.php:742 users.php:668
 #: projects.php:336 clients.php:345 projectdetails.php:258 adminlabels.php:107
-#: projects.php:337 users.php:669 adminlabels.php:107 projects.php:337
-#: projevaluation.php:620 projevaluation.php:727 projevaluation.php:742
-#: users.php:669 clients.php:345 projectdetails.php:258
+#: projects.php:337 users.php:669 projectdetails.php:258
+#: projevaluation.php:651 projevaluation.php:759 projevaluation.php:776
+#: projevaluation.php:789 adminlabels.php:107 projects.php:337 users.php:683
+#: clients.php:345
 msgid "Activation"
 msgstr "Activación"
 
@@ -432,10 +433,10 @@ msgstr "Activación"
 #: projectdetails.php:283 projects.php:305 projevaluation.php:726
 #: projevaluation.php:729 projevaluation.php:732 projevaluation.php:741
 #: projevaluation.php:744 projects.php:350 clients.php:343
-#: projectdetails.php:285 projects.php:351 projects.php:351
-#: projevaluation.php:726 projevaluation.php:729 projevaluation.php:732
-#: projevaluation.php:741 projevaluation.php:744 clients.php:343
-#: projectdetails.php:285
+#: projectdetails.php:285 projects.php:351 projectdetails.php:285
+#: projevaluation.php:757 projevaluation.php:761 projevaluation.php:765
+#: projevaluation.php:775 projevaluation.php:778 projevaluation.php:788
+#: projevaluation.php:791 projects.php:351 clients.php:343
 msgid "Estimated hours"
 msgstr "Horas estimadas"
 
@@ -444,10 +445,10 @@ msgstr "Horas estimadas"
 #: projectdetails.php:267 projects.php:313 projevaluation.php:726
 #: projevaluation.php:729 projevaluation.php:732 projevaluation.php:742
 #: projevaluation.php:745 projects.php:358 clients.php:342
-#: projectdetails.php:269 projects.php:359 projects.php:359
-#: projevaluation.php:726 projevaluation.php:729 projevaluation.php:732
-#: projevaluation.php:742 projevaluation.php:745 clients.php:342
-#: projectdetails.php:269
+#: projectdetails.php:269 projects.php:359 projectdetails.php:269
+#: projevaluation.php:758 projevaluation.php:762 projevaluation.php:766
+#: projevaluation.php:776 projevaluation.php:779 projevaluation.php:789
+#: projevaluation.php:792 projects.php:359 clients.php:342
 msgid "Invoice"
 msgstr "Facturación"
 
@@ -455,8 +456,8 @@ msgstr "Facturación"
 #: projevaluation.php:318 projects.php:270 projevaluation.php:396
 #: userdetails.php:252 projectdetails.php:479 projects.php:321
 #: projevaluation.php:651 projects.php:366 userdetails.php:251
-#: projectdetails.php:481 projects.php:367 projects.php:367
-#: projevaluation.php:651 userdetails.php:251 projectdetails.php:481
+#: projectdetails.php:481 projects.php:367 projectdetails.php:481
+#: projevaluation.php:682 userdetails.php:251 projects.php:367
 msgid "Start date"
 msgstr "Fecha de inicio"
 
@@ -466,15 +467,15 @@ msgstr "Fecha de inicio"
 #: userdetails.php:260 projectdetails.php:487 projects.php:329
 #: projevaluation.php:662 users.php:550 users.php:594 projects.php:374
 #: userdetails.php:259 projectdetails.php:489 projects.php:375 users.php:551
-#: users.php:595 projects.php:375 projevaluation.php:662 users.php:551
-#: users.php:595 userdetails.php:259 projectdetails.php:489
+#: users.php:595 projectdetails.php:489 projevaluation.php:693
+#: userdetails.php:259 projects.php:375 users.php:553 users.php:601
 msgid "End date"
 msgstr "Fecha de fin"
 
 #: projects.php:295 users.php:347 users.php:376 projects.php:296 users.php:384
 #: projects.php:347 users.php:426 clients.php:288 projects.php:392
 #: clients.php:300 projects.php:393 users.php:427 projects.php:393
-#: users.php:427 clients.php:300
+#: users.php:429 clients.php:300
 msgid "Create"
 msgstr "Crear"
 
@@ -483,19 +484,19 @@ msgstr "Crear"
 #: projects.php:301 users.php:574 projects.php:352 users.php:619
 #: clients.php:293 projects.php:397 clients.php:305 adminlabels.php:120
 #: projects.php:398 users.php:620 adminlabels.php:120 consult.php:348
-#: projects.php:398 users.php:620 clients.php:305
+#: projects.php:398 users.php:634 clients.php:305
 msgid "Delete"
 msgstr "Borrar"
 
 #: projevaluation.php:82 projevaluation.php:108 userdetails.php:75
-#: projectdetails.php:115 projevaluation.php:233 projevaluation.php:233
-#: userdetails.php:75 projectdetails.php:115
+#: projectdetails.php:115 projevaluation.php:233 projectdetails.php:115
+#: projevaluation.php:234 userdetails.php:75
 msgid "Incorrect date format, should be DD/MM/YYYY"
 msgstr "Formato de fecha incorrecto, debería ser DD/MM/AAAA"
 
 #: projevaluation.php:85 projevaluation.php:111 userdetails.php:93
-#: projectdetails.php:134 projevaluation.php:236 projevaluation.php:236
-#: userdetails.php:93 projectdetails.php:134
+#: projectdetails.php:134 projevaluation.php:236 projectdetails.php:134
+#: projevaluation.php:237 userdetails.php:93
 msgid "Dates can't be void"
 msgstr "Las fechas no pueden ser vacías"
 
@@ -512,24 +513,24 @@ msgid "uid"
 msgstr "uid"
 
 #: projevaluation.php:276 projevaluation.php:284 projevaluation.php:285
-#: projevaluation.php:355 projevaluation.php:567 projevaluation.php:567
+#: projevaluation.php:355 projevaluation.php:567 projevaluation.php:598
 msgid "Person / task type"
 msgstr "Persona / tipo de tarea"
 
 #: projevaluation.php:277 projevaluation.php:282 projevaluation.php:285
 #: projevaluation.php:290 projevaluation.php:286 projevaluation.php:291
 #: projevaluation.php:356 projevaluation.php:362 projevaluation.php:568
-#: projevaluation.php:574 projevaluation.php:568 projevaluation.php:574
+#: projevaluation.php:574 projevaluation.php:599 projevaluation.php:605
 msgid "Person / project"
 msgstr "Persona / proyecto"
 
 #: projevaluation.php:278 projevaluation.php:286 projevaluation.php:287
-#: projevaluation.php:357 projevaluation.php:569 projevaluation.php:569
+#: projevaluation.php:357 projevaluation.php:569 projevaluation.php:600
 msgid "Hourly personal brief"
 msgstr "Resumen de horas por persona"
 
 #: projevaluation.php:281 projevaluation.php:289 projevaluation.php:290
-#: projevaluation.php:361 projevaluation.php:573 projevaluation.php:573
+#: projevaluation.php:361 projevaluation.php:573 projevaluation.php:604
 msgid "Project / task type"
 msgstr "Proyecto / tipo de tarea"
 
@@ -537,25 +538,25 @@ msgstr "Proyecto / tipo de tarea"
 #: projevaluation.php:291 projevaluation.php:294 projevaluation.php:292
 #: projevaluation.php:295 projevaluation.php:363 projevaluation.php:369
 #: include/show_sections.php:31 include/show_sections.php:75
-#: projevaluation.php:582 include/show_sections.php:78 projevaluation.php:582
+#: projevaluation.php:582 include/show_sections.php:78 projevaluation.php:613
 #: include/show_sections.php:31 include/show_sections.php:78
 msgid "Project evaluation"
 msgstr "Evaluación proyectos"
 
 #: projevaluation.php:285 projevaluation.php:293 projevaluation.php:294
-#: projevaluation.php:366 projevaluation.php:579 projevaluation.php:579
+#: projevaluation.php:366 projevaluation.php:579 projevaluation.php:610
 msgid "Person evaluation"
 msgstr "Evaluación personas"
 
 #: projevaluation.php:300 projevaluation.php:308 projevaluation.php:309
-#: projevaluation.php:384 projevaluation.php:597 projevaluation.php:597
+#: projevaluation.php:384 projevaluation.php:597 projevaluation.php:628
 msgid "Sheets"
 msgstr "Hojas"
 
 #: projevaluation.php:326 projevaluation.php:334 projevaluation.php:335
 #: projevaluation.php:416 userdetails.php:269 projectdetails.php:496
 #: projevaluation.php:673 userdetails.php:268 projectdetails.php:498
-#: projevaluation.php:673 userdetails.php:268 projectdetails.php:498
+#: projectdetails.php:498 projevaluation.php:704 userdetails.php:268
 msgid "View"
 msgstr "Ver"
 
@@ -565,8 +566,8 @@ msgstr "Ver"
 #: userdetails.php:357 projectdetails.php:538 projectdetails.php:576
 #: projevaluation.php:718 projevaluation.php:839 userdetails.php:310
 #: userdetails.php:356 projectdetails.php:540 projectdetails.php:578
-#: projevaluation.php:718 projevaluation.php:839 userdetails.php:310
-#: userdetails.php:356 projectdetails.php:540 projectdetails.php:578
+#: projectdetails.php:540 projectdetails.php:578 projevaluation.php:749
+#: projevaluation.php:886 userdetails.php:310 userdetails.php:356
 msgid "Total result"
 msgstr "Resultado total"
 
@@ -577,16 +578,17 @@ msgstr "Resultado total"
 #: projectdetails.php:539 projectdetails.php:588 projevaluation.php:722
 #: projevaluation.php:872 userdetails.php:311 userdetails.php:368
 #: projectdetails.php:325 projectdetails.php:401 projectdetails.php:541
-#: projectdetails.php:590 projevaluation.php:722 projevaluation.php:872
-#: userdetails.php:311 userdetails.php:368 projectdetails.php:325
-#: projectdetails.php:401 projectdetails.php:541 projectdetails.php:590
+#: projectdetails.php:590 projectdetails.php:325 projectdetails.php:401
+#: projectdetails.php:541 projectdetails.php:590 projevaluation.php:753
+#: projevaluation.php:919 userdetails.php:311 userdetails.php:368
 msgid "Percent"
 msgstr "Porcentaje"
 
 #: projevaluation.php:368 projevaluation.php:376 projevaluation.php:377
 #: projevaluation.php:468 projectdetails.php:312 projevaluation.php:741
-#: projevaluation.php:744 projectdetails.php:314 projevaluation.php:741
-#: projevaluation.php:744 projectdetails.php:314
+#: projevaluation.php:744 projectdetails.php:314 projectdetails.php:314
+#: projevaluation.php:775 projevaluation.php:778 projevaluation.php:788
+#: projevaluation.php:791
 msgid "Worked hours"
 msgstr "Horas trabajadas"
 
@@ -596,111 +598,125 @@ msgstr "Desviación %"
 
 #: projevaluation.php:369 projevaluation.php:377 projevaluation.php:378
 #: projevaluation.php:469 projevaluation.php:742 projevaluation.php:745
-#: projevaluation.php:742 projevaluation.php:745
+#: projevaluation.php:776 projevaluation.php:779 projevaluation.php:789
+#: projevaluation.php:792
 msgid "Desviation abs"
 msgstr "Desviación abs"
 
 #: projevaluation.php:369 projevaluation.php:377 projevaluation.php:378
 #: projevaluation.php:469 projevaluation.php:726 projevaluation.php:729
 #: projevaluation.php:732 projevaluation.php:742 projevaluation.php:745
-#: projevaluation.php:726 projevaluation.php:729 projevaluation.php:732
-#: projevaluation.php:742 projevaluation.php:745
+#: projevaluation.php:758 projevaluation.php:762 projevaluation.php:766
+#: projevaluation.php:776 projevaluation.php:779 projevaluation.php:789
+#: projevaluation.php:792
 msgid "EUR/h real"
 msgstr "EUR/h real"
 
 #: projevaluation.php:369 projevaluation.php:377 projevaluation.php:378
 #: projevaluation.php:469 projevaluation.php:726 projevaluation.php:729
 #: projevaluation.php:732 projevaluation.php:742 projevaluation.php:745
-#: projevaluation.php:726 projevaluation.php:729 projevaluation.php:732
-#: projevaluation.php:742 projevaluation.php:745
+#: projevaluation.php:758 projevaluation.php:762 projevaluation.php:766
+#: projevaluation.php:776 projevaluation.php:779 projevaluation.php:789
+#: projevaluation.php:792
 msgid "EUR/h est."
 msgstr "EUR/h est"
 
-#: report.php:157 report.php:158 report.php:176 report.php:178 report.php:178
+#: report.php:157 report.php:158 report.php:176 report.php:178 report.php:181
 msgid "The report is locked and it can't be modified"
 msgstr "El informe está bloqueado y no puede ser modificado"
 
 #: report.php:166 report.php:171 report.php:178 report.php:194 report.php:197
 #: report.php:167 report.php:172 report.php:179 report.php:195 report.php:198
 #: report.php:185 report.php:190 report.php:213 report.php:216 report.php:187
-#: report.php:192 report.php:199 report.php:215 report.php:218 report.php:187
-#: report.php:192 report.php:199 report.php:215 report.php:218
+#: report.php:192 report.php:199 report.php:215 report.php:218 report.php:190
+#: report.php:195 report.php:202 report.php:218 report.php:221
 msgid "Errors exist that must be corrected"
 msgstr "Existen errores que deben ser corregidos"
 
-#: report.php:167 report.php:168 report.php:186 report.php:188 report.php:188
+#: report.php:167 report.php:168 report.php:186 report.php:188 report.php:191
 msgid "You must use the format HH:MM"
 msgstr "Debes usar el formato HH:MM"
 
-#: report.php:172 report.php:173 report.php:191 report.php:193 report.php:193
+#: report.php:172 report.php:173 report.php:191 report.php:193 report.php:196
 msgid "The hour must be between 00:00 and 24:00"
 msgstr "La hora debe estar entre las 00:00 y las 24:00"
 
-#: report.php:179 report.php:180 report.php:198 report.php:200 report.php:200
+#: report.php:179 report.php:180 report.php:198 report.php:200 report.php:203
 msgid "You must specify this field"
 msgstr "Debes indicar este campo"
 
 #: report.php:192 report.php:193 report.php:194 report.php:211 report.php:212
-#: report.php:213 report.php:214 report.php:213 report.php:214
+#: report.php:213 report.php:214 report.php:216 report.php:217
 msgid "The task overlaps with another one"
 msgstr "La tarea se solapa con otra"
 
 #: report.php:198 report.php:199 report.php:200 report.php:217 report.php:218
-#: report.php:219 report.php:220 report.php:219 report.php:220
+#: report.php:219 report.php:220 report.php:222 report.php:223
 msgid "Invalid interval of hours"
 msgstr "Intervalo de horas no válido"
 
-#: report.php:315 report.php:316 report.php:335 report.php:337 report.php:337
+#: report.php:315 report.php:316 report.php:335 report.php:337 report.php:340
 msgid "The changes have been saved correctly"
 msgstr "Los cambios se han guardado correctamente"
 
 #: report.php:331 include/show_sections.php:18 report.php:332 report.php:350
-#: report.php:352 report.php:352 include/show_sections.php:18
+#: report.php:352 include/show_sections.php:18 report.php:355
 msgid "Report edition"
 msgstr "Edición de informes"
 
 #: report.php:357 report.php:358 report.php:376 report.php:378 report.php:513
+#: report.php:539
 msgid "Tasks of the day"
 msgstr "Tareas del día"
 
 #: report.php:378 report.php:379 report.php:451 report.php:453 report.php:576
+#: report.php:602
 msgid "Start hour"
 msgstr "Hora de inicio"
 
 #: report.php:379 report.php:380 report.php:452 report.php:454 report.php:577
+#: report.php:603
 msgid "End hour"
 msgstr "Hora de fin"
 
 #: report.php:390 report.php:391 report.php:463 report.php:465 report.php:588
+#: report.php:614
 msgid "Current hour"
 msgstr "Hora actual"
 
 #: report.php:439 report.php:440 report.php:523 report.php:525 report.php:746
+#: report.php:772
 msgid "Story"
 msgstr "Caso de uso"
 
 #: report.php:453 report.php:454 report.php:537 report.php:539 report.php:760
+#: report.php:786
 msgid "Telework"
 msgstr "Teletrabajo"
 
 #: report.php:469 report.php:470 report.php:553 report.php:555 report.php:776
+#: report.php:802
 msgid "Description:"
 msgstr "Descripción:"
 
 #: report.php:490 report.php:491 report.php:574 report.php:576 report.php:819
+#: report.php:845
 msgid "Delete task"
 msgstr "Borrar tarea"
 
 #: report.php:510 report.php:511 report.php:595 report.php:597 report.php:840
+#: report.php:866
 msgid "New task"
 msgstr "Nueva tarea"
 
 #: report.php:511 report.php:512 report.php:596 report.php:598 report.php:841
+#: report.php:867
 msgid "Save changes"
 msgstr "Guardar cambios"
 
 #: report.php:515 consult.php:483 consult.php:486 consult.php:487
-#: report.php:516 report.php:600 report.php:602 consult.php:487 report.php:845
+#: report.php:516 report.php:600 report.php:602 report.php:845 consult.php:487
+#: report.php:871
 msgid "Cancel"
 msgstr "Cancelar"
 
@@ -874,127 +890,127 @@ msgstr "OK, documento verificado"
 
 #: include/prepare_calendar.php:35 block.php:59 calendar.php:34
 #: cal_manag.php:136 block.php:60 cal_manag.php:137 calendar.php:35
-#: include/prepare_calendar.php:36 block.php:60 cal_manag.php:137
-#: calendar.php:35 include/prepare_calendar.php:36
+#: include/prepare_calendar.php:36 block.php:60
+#: include/prepare_calendar.php:36 calendar.php:35 cal_manag.php:137
 msgid "January"
 msgstr "Enero"
 
 #: include/prepare_calendar.php:35 block.php:59 calendar.php:34
 #: cal_manag.php:136 block.php:60 cal_manag.php:137 calendar.php:35
-#: include/prepare_calendar.php:36 block.php:60 cal_manag.php:137
-#: calendar.php:35 include/prepare_calendar.php:36
+#: include/prepare_calendar.php:36 block.php:60
+#: include/prepare_calendar.php:36 calendar.php:35 cal_manag.php:137
 msgid "February"
 msgstr "Febrero"
 
 #: include/prepare_calendar.php:35 block.php:59 calendar.php:34
 #: cal_manag.php:136 block.php:60 cal_manag.php:137 calendar.php:35
-#: include/prepare_calendar.php:36 block.php:60 cal_manag.php:137
-#: calendar.php:35 include/prepare_calendar.php:36
+#: include/prepare_calendar.php:36 block.php:60
+#: include/prepare_calendar.php:36 calendar.php:35 cal_manag.php:137
 msgid "March"
 msgstr "Marzo"
 
 #: include/prepare_calendar.php:35 block.php:59 calendar.php:34
 #: cal_manag.php:136 block.php:60 cal_manag.php:137 calendar.php:35
-#: include/prepare_calendar.php:36 block.php:60 cal_manag.php:137
-#: calendar.php:35 include/prepare_calendar.php:36
+#: include/prepare_calendar.php:36 block.php:60
+#: include/prepare_calendar.php:36 calendar.php:35 cal_manag.php:137
 msgid "April"
 msgstr "Abril"
 
 #: include/prepare_calendar.php:35 block.php:59 calendar.php:34
 #: cal_manag.php:136 block.php:60 cal_manag.php:137 calendar.php:35
-#: include/prepare_calendar.php:36 block.php:60 cal_manag.php:137
-#: calendar.php:35 include/prepare_calendar.php:36
+#: include/prepare_calendar.php:36 block.php:60
+#: include/prepare_calendar.php:36 calendar.php:35 cal_manag.php:137
 msgid "May"
 msgstr "Mayo"
 
 #: include/prepare_calendar.php:35 block.php:59 calendar.php:34
 #: cal_manag.php:136 block.php:60 cal_manag.php:137 calendar.php:35
-#: include/prepare_calendar.php:36 block.php:60 cal_manag.php:137
-#: calendar.php:35 include/prepare_calendar.php:36
+#: include/prepare_calendar.php:36 block.php:60
+#: include/prepare_calendar.php:36 calendar.php:35 cal_manag.php:137
 msgid "June"
 msgstr "Junio"
 
 #: include/prepare_calendar.php:36 block.php:60 calendar.php:35
 #: cal_manag.php:137 block.php:61 cal_manag.php:138 calendar.php:36
-#: include/prepare_calendar.php:37 block.php:61 cal_manag.php:138
-#: calendar.php:36 include/prepare_calendar.php:37
+#: include/prepare_calendar.php:37 block.php:61
+#: include/prepare_calendar.php:37 calendar.php:36 cal_manag.php:138
 msgid "July"
 msgstr "Julio"
 
 #: include/prepare_calendar.php:36 block.php:60 calendar.php:35
 #: cal_manag.php:137 block.php:61 cal_manag.php:138 calendar.php:36
-#: include/prepare_calendar.php:37 block.php:61 cal_manag.php:138
-#: calendar.php:36 include/prepare_calendar.php:37
+#: include/prepare_calendar.php:37 block.php:61
+#: include/prepare_calendar.php:37 calendar.php:36 cal_manag.php:138
 msgid "August"
 msgstr "Agosto"
 
 #: include/prepare_calendar.php:36 block.php:60 calendar.php:35
 #: cal_manag.php:137 block.php:61 cal_manag.php:138 calendar.php:36
-#: include/prepare_calendar.php:37 block.php:61 cal_manag.php:138
-#: calendar.php:36 include/prepare_calendar.php:37
+#: include/prepare_calendar.php:37 block.php:61
+#: include/prepare_calendar.php:37 calendar.php:36 cal_manag.php:138
 msgid "September"
 msgstr "Septiembre"
 
 #: include/prepare_calendar.php:36 block.php:60 calendar.php:35
 #: cal_manag.php:137 block.php:61 cal_manag.php:138 calendar.php:36
-#: include/prepare_calendar.php:37 block.php:61 cal_manag.php:138
-#: calendar.php:36 include/prepare_calendar.php:37
+#: include/prepare_calendar.php:37 block.php:61
+#: include/prepare_calendar.php:37 calendar.php:36 cal_manag.php:138
 msgid "October"
 msgstr "Octubre"
 
 #: include/prepare_calendar.php:36 block.php:60 calendar.php:35
 #: cal_manag.php:137 block.php:61 cal_manag.php:138 calendar.php:36
-#: include/prepare_calendar.php:37 block.php:61 cal_manag.php:138
-#: calendar.php:36 include/prepare_calendar.php:37
+#: include/prepare_calendar.php:37 block.php:61
+#: include/prepare_calendar.php:37 calendar.php:36 cal_manag.php:138
 msgid "November"
 msgstr "Noviembre"
 
 #: include/prepare_calendar.php:36 block.php:60 calendar.php:35
 #: cal_manag.php:137 block.php:61 cal_manag.php:138 calendar.php:36
-#: include/prepare_calendar.php:37 block.php:61 cal_manag.php:138
-#: calendar.php:36 include/prepare_calendar.php:37
+#: include/prepare_calendar.php:37 block.php:61
+#: include/prepare_calendar.php:37 calendar.php:36 cal_manag.php:138
 msgid "December"
 msgstr "Diciembre"
 
 #: include/prepare_calendar.php:38 calendar.php:37 calendar.php:38
-#: include/prepare_calendar.php:39 calendar.php:38
-#: include/prepare_calendar.php:39
+#: include/prepare_calendar.php:39 include/prepare_calendar.php:39
+#: calendar.php:38
 msgid "M"
 msgstr "L"
 
 #: include/prepare_calendar.php:38 calendar.php:37 calendar.php:38
-#: include/prepare_calendar.php:39 calendar.php:38
-#: include/prepare_calendar.php:39
+#: include/prepare_calendar.php:39 include/prepare_calendar.php:39
+#: calendar.php:38
 msgid "T"
 msgstr "M"
 
 #: include/prepare_calendar.php:38 calendar.php:37 calendar.php:38
-#: include/prepare_calendar.php:39 calendar.php:38
-#: include/prepare_calendar.php:39
+#: include/prepare_calendar.php:39 include/prepare_calendar.php:39
+#: calendar.php:38
 msgid "W"
 msgstr "M"
 
 #: include/prepare_calendar.php:38 calendar.php:37 calendar.php:38
-#: include/prepare_calendar.php:39 calendar.php:38
-#: include/prepare_calendar.php:39
+#: include/prepare_calendar.php:39 include/prepare_calendar.php:39
+#: calendar.php:38
 msgid "Th"
 msgstr "J"
 
 #: include/prepare_calendar.php:38 calendar.php:37 calendar.php:38
-#: include/prepare_calendar.php:39 calendar.php:38
-#: include/prepare_calendar.php:39
+#: include/prepare_calendar.php:39 include/prepare_calendar.php:39
+#: calendar.php:38
 msgid "F"
 msgstr "V"
 
 #: include/prepare_calendar.php:38 calendar.php:37 calendar.php:38
-#: include/prepare_calendar.php:39 calendar.php:38
-#: include/prepare_calendar.php:39
+#: include/prepare_calendar.php:39 include/prepare_calendar.php:39
+#: calendar.php:38
 msgid "St"
 msgstr "S"
 
 #: include/prepare_calendar.php:38 calendar.php:37 calendar.php:38
-#: include/prepare_calendar.php:39 calendar.php:38
-#: include/prepare_calendar.php:39
+#: include/prepare_calendar.php:39 include/prepare_calendar.php:39
+#: calendar.php:38
 msgid "S"
 msgstr "D"
 
@@ -1006,19 +1022,19 @@ msgstr "Ir"
 
 #: include/prepare_calendar.php:56 include/show_calendar.php:86
 #: include/show_count.php:18 calendar.php:77 calendar.php:78
-#: include/prepare_calendar.php:57 calendar.php:78
+#: include/prepare_calendar.php:57 include/show_count.php:18
 #: include/prepare_calendar.php:57 include/show_calendar.php:86
-#: include/show_count.php:18
+#: calendar.php:78
 msgid "Today"
 msgstr "Hoy"
 
 #: include/show_calendar.php:13 calendar.php:181 calendar.php:182
-#: calendar.php:182 include/show_calendar.php:13
+#: include/show_calendar.php:13 calendar.php:182
 msgid "Calendar"
 msgstr "Calendario"
 
 #: include/show_calendar.php:38 calendar.php:56 calendar.php:57
-#: calendar.php:57 include/show_calendar.php:38
+#: include/show_calendar.php:38 calendar.php:57
 msgid " of "
 msgstr " de "
 
@@ -1061,7 +1077,7 @@ msgstr "Salir"
 
 #: include/show_sections.php:48 block.php:101 calendar.php:158 block.php:102
 #: calendar.php:159 include/show_sections.php:60 block.php:102
-#: calendar.php:159 include/show_sections.php:60
+#: include/show_sections.php:60 calendar.php:159
 msgid "Report blocking"
 msgstr "Bloqueo informes"
 
@@ -1082,8 +1098,8 @@ msgid "User management"
 msgstr "Gestión usuarios"
 
 #: include/show_sections.php:66 cal_manag.php:151 cal_manag.php:152
-#: include/show_sections.php:72 include/show_sections.php:75 cal_manag.php:152
-#: include/show_sections.php:75
+#: include/show_sections.php:72 include/show_sections.php:75
+#: include/show_sections.php:75 cal_manag.php:152
 msgid "Calendar management"
 msgstr "Gestión calendario"
 
@@ -1105,9 +1121,9 @@ msgstr "Las activaciones han sido aplicadas correctamente"
 #: userdetails.php:133 projectdetails.php:172 projectdetails.php:301
 #: projectdetails.php:377 projevaluation.php:252 projevaluation.php:267
 #: projectdetails.php:303 projectdetails.php:379 adminlabels.php:107
-#: adminlabels.php:107 projevaluation.php:252 projevaluation.php:267
-#: userdetails.php:133 projectdetails.php:172 projectdetails.php:303
-#: projectdetails.php:379
+#: projectdetails.php:172 projectdetails.php:303 projectdetails.php:379
+#: projevaluation.php:253 projevaluation.php:268 adminlabels.php:107
+#: userdetails.php:133
 msgid "Type"
 msgstr "Tipo"
 
@@ -1388,25 +1404,25 @@ msgstr "Fichero local"
 msgid "Description or complementary information."
 msgstr "Descripción o información complementaria"
 
-#: users.php:162 users.php:166 users.php:171 users.php:172 users.php:172
+#: users.php:162 users.php:166 users.php:171 users.php:172 users.php:174
 msgid "The changes have save correctly"
 msgstr "Los cambios han sido guardados correctamente"
 
-#: users.php:175 users.php:179 users.php:184 users.php:185 users.php:185
+#: users.php:175 users.php:179 users.php:184 users.php:185 users.php:187
 msgid "An administrator cannot be erased to itself"
 msgstr "Un administrador no se puede borrar a sí mismo"
 
-#: users.php:179 users.php:183 users.php:188 users.php:189 users.php:189
+#: users.php:179 users.php:183 users.php:188 users.php:189 users.php:191
 msgid "The user has been deleted correctly"
 msgstr "El usuario ha sido borrado correctamente"
 
 #: users.php:191 users.php:195 users.php:200 users.php:215 users.php:216
-#: users.php:216
+#: users.php:218
 msgid "You must specify the user login"
 msgstr "Debes indicar el usuario"
 
 #: users.php:195 users.php:199 users.php:204 users.php:219 users.php:220
-#: users.php:220
+#: users.php:222
 msgid "You must specify the user password"
 msgstr "Debes indicar la contraseña"
 
@@ -1415,101 +1431,101 @@ msgid "The user has been created correctly"
 msgstr "El usuario ha sido creado correctamente"
 
 #: users.php:242 users.php:271 users.php:278 users.php:320 users.php:321
-#: users.php:321
+#: users.php:323
 msgid "Users management"
 msgstr "Gestión de usuarios"
 
 #: users.php:262 users.php:291 users.php:298 users.php:340 users.php:341
-#: users.php:341
+#: users.php:343
 msgid "Users list"
 msgstr "Lista de usuarios"
 
 #: users.php:274 users.php:303 users.php:310 users.php:352 users.php:353
-#: users.php:353
+#: users.php:355
 msgid "Users:"
 msgstr "Usuarios:"
 
 #: users.php:304 users.php:333 users.php:339 users.php:381 users.php:382
-#: users.php:382
+#: users.php:384
 msgid "Create new user"
 msgstr "Crear nuevo usuario"
 
 #: users.php:325 users.php:354 users.php:360 users.php:402 users.php:403
-#: users.php:403
+#: users.php:405
 msgid "User creation"
 msgstr "Creación de usuarios"
 
 #: users.php:334 users.php:363 users.php:369 users.php:411 users.php:412
-#: users.php:412
+#: users.php:414
 msgid "New user login"
 msgstr "Nuevo usuario"
 
 #: users.php:335 users.php:364 users.php:370 users.php:412 users.php:413
-#: users.php:413
+#: users.php:415
 msgid "New user password"
 msgstr "Contraseña del nuevo usuario"
 
 #: users.php:336 users.php:382 users.php:365 users.php:411 users.php:371
 #: users.php:418 users.php:413 users.php:460 users.php:414 users.php:461
-#: users.php:414 users.php:461
+#: users.php:416 users.php:463
 msgid "Administrator"
 msgstr "Administrador"
 
 #: users.php:366 users.php:395 users.php:403 users.php:445 users.php:446
-#: users.php:446
+#: users.php:448
 msgid "User edition"
 msgstr "Edición de usuarios"
 
 #: users.php:381 users.php:410 users.php:417 users.php:459 users.php:460
-#: users.php:460
+#: users.php:462
 msgid "New Password"
 msgstr "Nueva contraseña"
 
 #: users.php:413 users.php:443 users.php:472 users.php:517 users.php:518
-#: users.php:518
+#: users.php:520
 msgid "Full time"
 msgstr "Jornada completa"
 
 #: users.php:413 users.php:444 users.php:473 users.php:518 users.php:519
-#: users.php:519
+#: users.php:521
 msgid "Half time"
 msgstr "Media jornada"
 
 #: users.php:413 users.php:445 users.php:474 users.php:519 users.php:520
-#: users.php:520
+#: users.php:522
 msgid "Practice journey"
 msgstr "Jornada en prácticas"
 
 #: users.php:421 users.php:454 users.php:483 users.php:528 users.php:529
-#: users.php:529
+#: users.php:531
 msgid "Existing periods"
 msgstr "Períodos existentes"
 
 #: users.php:434 users.php:467 users.php:496 projectdetails.php:304
-#: users.php:541 projectdetails.php:306 users.php:542 users.php:542
-#: projectdetails.php:306
+#: users.php:541 projectdetails.php:306 users.php:542 projectdetails.php:306
+#: users.php:544
 msgid "Hours"
 msgstr "Horas"
 
 #: users.php:439 users.php:479 users.php:472 users.php:512 users.php:501
 #: users.php:541 users.php:546 users.php:586 users.php:547 users.php:587
-#: users.php:547 users.php:587
+#: users.php:549 users.php:593
 msgid "Init date"
 msgstr "Fecha de inicio"
 
 #: users.php:447 users.php:495 users.php:480 users.php:528 users.php:509
 #: users.php:557 users.php:554 users.php:602 users.php:555 users.php:603
-#: users.php:555 users.php:603
+#: users.php:557 users.php:609
 msgid "City"
 msgstr "Ciudad"
 
 #: users.php:454 users.php:487 users.php:516 users.php:561 users.php:562
-#: users.php:562
+#: users.php:568
 msgid "Delete period"
 msgstr "Borrar período"
 
 #: users.php:470 users.php:503 users.php:532 users.php:577 users.php:578
-#: users.php:578
+#: users.php:584
 msgid "Type of journey"
 msgstr "Tipo de jornada"
 
@@ -1654,17 +1670,17 @@ msgstr "modo_edicion"
 #: projevaluation.php:232 projevaluation.php:236 projectdetails.php:175
 #: projevaluation.php:142 projevaluation.php:204 projevaluation.php:290
 #: projevaluation.php:347 projevaluation.php:351 projevaluation.php:436
-#: projevaluation.php:442 projevaluation.php:142 projevaluation.php:204
-#: projevaluation.php:290 projevaluation.php:347 projevaluation.php:351
-#: projevaluation.php:436 projevaluation.php:442 projectdetails.php:175
+#: projevaluation.php:442 projectdetails.php:175 projevaluation.php:143
+#: projevaluation.php:205 projevaluation.php:291 projevaluation.php:353
+#: projevaluation.php:357 projevaluation.php:458 projevaluation.php:467
 msgid "(empty)"
 msgstr "(vacío)"
 
 #: projevaluation.php:114 projevaluation.php:132 projevaluation.php:253
 #: projevaluation.php:140 projevaluation.php:158 projevaluation.php:315
 #: projectdetails.php:170 projevaluation.php:265 projevaluation.php:283
-#: projevaluation.php:527 projevaluation.php:265 projevaluation.php:283
-#: projevaluation.php:527 projectdetails.php:170
+#: projevaluation.php:527 projectdetails.php:170 projevaluation.php:266
+#: projevaluation.php:284 projevaluation.php:558
 msgid "User"
 msgstr "Usuario"
 
@@ -1673,14 +1689,14 @@ msgstr "Usuario"
 msgid "The operation couldn't be completed: "
 msgstr "No se ha podido completar la operación: "
 
-#: users.php:218 users.php:225 users.php:240 users.php:241 users.php:241
+#: users.php:218 users.php:225 users.php:240 users.php:241 users.php:243
 msgid ""
 "The user has been created correctly. Remember to update her contract periods!"
 msgstr ""
 "El usuario ha sido creado correctamente. Recuerda actualizar sus períodos de "
 "contratación!"
 
-#: users.php:254 users.php:261 users.php:276 users.php:277 users.php:277
+#: users.php:254 users.php:261 users.php:276 users.php:277 users.php:279
 msgid ""
 "New users have appeared in the LDAP and have been created in PhpReport. "
 "Remember to set up their contract properly!"
@@ -1688,38 +1704,39 @@ msgstr ""
 "Han aparecido nuevos usuarios en el LDAP y han sido creados en PhpReport. "
 "Recuerda configurar correctamente su contrato!"
 
-#: projevaluation.php:358 projevaluation.php:570 projevaluation.php:570
+#: projevaluation.php:358 projevaluation.php:570 projevaluation.php:601
 msgid "Hourly personal brief (explained)"
 msgstr ""
 
 #: projevaluation.php:468 projevaluation.php:741 projevaluation.php:744
-#: projevaluation.php:741 projevaluation.php:744
+#: projevaluation.php:775 projevaluation.php:778 projevaluation.php:788
+#: projevaluation.php:791
 msgid "Desviation %"
 msgstr "Desviación %"
 
 #: projevaluation.php:470 projevaluation.php:727 projevaluation.php:730
-#: projevaluation.php:727 projevaluation.php:730
+#: projevaluation.php:759 projevaluation.php:763
 msgid "%"
 msgstr "%"
 
 #: projevaluation.php:470 projevaluation.php:727 projevaluation.php:730
-#: projevaluation.php:727 projevaluation.php:730
+#: projevaluation.php:759 projevaluation.php:763
 msgid "EUR/h real pond"
 msgstr "EUR/h real pond"
 
 #: projevaluation.php:470 projevaluation.php:727 projevaluation.php:730
-#: projevaluation.php:727 projevaluation.php:730
+#: projevaluation.php:759 projevaluation.php:763
 msgid "EUR/h estim pond"
 msgstr "EUR/h estim pond"
 
 #: users.php:372 users.php:419 users.php:456 users.php:414 users.php:461
-#: users.php:501 users.php:415 users.php:462 users.php:502 users.php:415
-#: users.php:462 users.php:502
+#: users.php:501 users.php:415 users.php:462 users.php:502 users.php:417
+#: users.php:464 users.php:504
 msgid "Staff member"
 msgstr ""
 
-#: userdetails.php:88 projectdetails.php:129 userdetails.php:88
-#: projectdetails.php:129
+#: userdetails.php:88 projectdetails.php:129 projectdetails.php:129
+#: userdetails.php:88
 msgid "End date must be greater than start date"
 msgstr "La fecha de fin debe ser superior a la fecha de inicio"
 
@@ -1739,18 +1756,18 @@ msgstr "Admin"
 #: userdetails.php:207 userdetails.php:213 projectdetails.php:258
 #: projevaluation.php:784 projevaluation.php:804 users.php:679
 #: userdetails.php:206 userdetails.php:212 clients.php:356
-#: projectdetails.php:260 users.php:680 projevaluation.php:784
-#: projevaluation.php:804 users.php:680 userdetails.php:206
-#: userdetails.php:212 clients.php:356 projectdetails.php:260
+#: projectdetails.php:260 users.php:680 projectdetails.php:260
+#: projevaluation.php:831 projevaluation.php:851 userdetails.php:206
+#: userdetails.php:212 users.php:694 clients.php:356
 msgid "Yes"
 msgstr "Sí"
 
 #: userdetails.php:207 userdetails.php:213 projectdetails.php:258
 #: projevaluation.php:784 projevaluation.php:804 users.php:679
 #: userdetails.php:206 userdetails.php:212 clients.php:356
-#: projectdetails.php:260 users.php:680 projevaluation.php:784
-#: projevaluation.php:804 users.php:680 userdetails.php:206
-#: userdetails.php:212 clients.php:356 projectdetails.php:260
+#: projectdetails.php:260 users.php:680 projectdetails.php:260
+#: projevaluation.php:831 projevaluation.php:851 userdetails.php:206
+#: userdetails.php:212 users.php:694 clients.php:356
 msgid "No"
 msgstr "No"
 
@@ -1759,24 +1776,24 @@ msgid "Staff"
 msgstr ""
 
 #: userdetails.php:241 projectdetails.php:468 userdetails.php:240
-#: projectdetails.php:470 userdetails.php:240 projectdetails.php:470
+#: projectdetails.php:470 projectdetails.php:470 userdetails.php:240
 msgid "Period to check"
 msgstr "Período a comprobar"
 
 #: userdetails.php:268 projectdetails.php:495 userdetails.php:267
-#: projectdetails.php:497 userdetails.php:267 projectdetails.php:497
+#: projectdetails.php:497 projectdetails.php:497 userdetails.php:267
 msgid "Set defaults"
 msgstr "Establecer predeterminados"
 
 #: userdetails.php:322 graphicbuilder.php:160 graphicbuilder.php:192
-#: userdetails.php:321 userdetails.php:321 graphicbuilder.php:160
-#: graphicbuilder.php:192
+#: userdetails.php:321 graphicbuilder.php:160 graphicbuilder.php:192
+#: userdetails.php:321
 msgid "unknown project"
 msgstr "Proyecto desconocido"
 
 #: userdetails.php:403 projectdetails.php:623 projectdetails.php:622
-#: userdetails.php:401 projectdetails.php:624 userdetails.php:401
-#: projectdetails.php:624
+#: userdetails.php:401 projectdetails.php:624 projectdetails.php:624
+#: userdetails.php:401
 msgid "Select chart type"
 msgstr "Selecciona un tipo de gráfica"
 
@@ -1826,43 +1843,43 @@ msgstr "Facturación (coste por hora)"
 msgid "Actual/current invocing"
 msgstr "Facturación real/actual"
 
-#: userdetails.php:152 projectdetails.php:191 userdetails.php:152
-#: projectdetails.php:191
+#: userdetails.php:152 projectdetails.php:191 projectdetails.php:191
+#: userdetails.php:152
 msgid "area"
 msgstr "area"
 
 #: userdetails.php:152 userdetails.php:161 projectdetails.php:191
-#: projectdetails.php:200 userdetails.php:152 projectdetails.php:191
+#: projectdetails.php:200 projectdetails.php:191 userdetails.php:152
 msgid "bars"
 msgstr "barras"
 
-#: userdetails.php:152 projectdetails.php:191 userdetails.php:152
-#: projectdetails.php:191
+#: userdetails.php:152 projectdetails.php:191 projectdetails.php:191
+#: userdetails.php:152
 msgid "linepoints"
 msgstr "líneas y puntos"
 
-#: userdetails.php:152 projectdetails.php:191 userdetails.php:152
-#: projectdetails.php:191
+#: userdetails.php:152 projectdetails.php:191 projectdetails.php:191
+#: userdetails.php:152
 msgid "lines"
 msgstr "líneas"
 
-#: userdetails.php:153 projectdetails.php:192 userdetails.php:153
-#: projectdetails.php:192
+#: userdetails.php:153 projectdetails.php:192 projectdetails.php:192
+#: userdetails.php:153
 msgid "pie"
 msgstr "sectores"
 
-#: userdetails.php:153 projectdetails.php:192 userdetails.php:153
-#: projectdetails.php:192
+#: userdetails.php:153 projectdetails.php:192 projectdetails.php:192
+#: userdetails.php:153
 msgid "points"
 msgstr "puntos"
 
-#: userdetails.php:153 projectdetails.php:192 userdetails.php:153
-#: projectdetails.php:192
+#: userdetails.php:153 projectdetails.php:192 projectdetails.php:192
+#: userdetails.php:153
 msgid "squared"
 msgstr "cuadrados"
 
-#: userdetails.php:153 projectdetails.php:192 userdetails.php:153
-#: projectdetails.php:192
+#: userdetails.php:153 projectdetails.php:192 projectdetails.php:192
+#: userdetails.php:153
 msgid "thinbarline"
 msgstr "barras finas"
 
@@ -1874,90 +1891,90 @@ msgstr "Dedicación del usuario"
 msgid "Project evolution"
 msgstr "Evolución del proyecto"
 
-#: projevaluation.php:185 projevaluation.php:185
+#: projevaluation.php:185 projevaluation.php:186
 msgid "All areas"
 msgstr "Todas las áreas"
 
-#: projevaluation.php:575 projevaluation.php:575
+#: projevaluation.php:575 projevaluation.php:606
 msgid "Project evaluation (global)"
 msgstr "Evaluación proyectos (global)"
 
-#: projevaluation.php:576 projevaluation.php:576
+#: projevaluation.php:576 projevaluation.php:607
 msgid "Project evaluation (period)"
 msgstr "Evaluación proyectos (período)"
 
-#: projevaluation.php:607 projevaluation.php:607
+#: projevaluation.php:607 projevaluation.php:638
 msgid "All projects"
 msgstr "Todos los proyectos"
 
-#: projevaluation.php:608 projevaluation.php:608
+#: projevaluation.php:608 projevaluation.php:639
 msgid "Only active projects"
 msgstr "Sólo proyectos activos"
 
-#: projevaluation.php:609 projevaluation.php:609
+#: projevaluation.php:609 projevaluation.php:640
 msgid "Only non active projects"
 msgstr "Sólo proyectos no activos"
 
-#: projevaluation.php:629 projevaluation.php:629
+#: projevaluation.php:629 projevaluation.php:660
 msgid "Minimun invoice"
 msgstr "Facturación mínima"
 
-#: projevaluation.php:637 projevaluation.php:637
+#: projevaluation.php:637 projevaluation.php:668
 msgid "Maximun invoice"
 msgstr "Facturación máxima"
 
 #: projevaluation.php:726 projevaluation.php:729 projevaluation.php:732
-#: projevaluation.php:726 projevaluation.php:729 projevaluation.php:732
+#: projevaluation.php:757 projevaluation.php:761 projevaluation.php:765
 msgid "Total worked hours"
 msgstr "Horas trabajadas totales"
 
 #: projevaluation.php:726 projevaluation.php:729 projevaluation.php:732
-#: projevaluation.php:726 projevaluation.php:729 projevaluation.php:732
+#: projevaluation.php:757 projevaluation.php:761 projevaluation.php:765
 msgid "Worked hours within period"
 msgstr "Horas trabajadas en período"
 
 #: report.php:496 users.php:666 projects.php:273 projects.php:318
-#: projects.php:319 report.php:498 users.php:667 projects.php:319
-#: report.php:698 users.php:667
+#: projects.php:319 report.php:498 users.php:667 report.php:698
+#: projects.php:319 users.php:681 report.php:724
 msgid "Customer"
 msgstr "Cliente"
 
-#: report.php:497 report.php:499 report.php:699
+#: report.php:497 report.php:499 report.php:699 report.php:725
 msgid "Task type for this project"
 msgstr "Tipo de tarea para este proyecto"
 
-#: users.php:200 users.php:201 users.php:201
+#: users.php:200 users.php:201 users.php:203
 msgid "The user has been properly assigned to a project"
 msgstr "El usuario ha sido correctamente asignado al proyecto"
 
-#: users.php:208 users.php:209 users.php:209
+#: users.php:208 users.php:209 users.php:211
 msgid "The user has been properly remove from a project"
 msgstr "El usuario ha sido correctamente retirado del proyecto"
 
-#: users.php:637 users.php:638 users.php:638
+#: users.php:637 users.php:638 users.php:652
 msgid "Project assignation"
 msgstr "Asignación a proyectos"
 
-#: users.php:649 users.php:650 users.php:650
+#: users.php:649 users.php:650 users.php:664
 msgid "Add user to project"
 msgstr "Añadir usuario al proyecto"
 
-#: users.php:658 users.php:659 users.php:659
+#: users.php:658 users.php:659 users.php:673
 msgid "There are no assigned projects for this user"
 msgstr "No hay ningún proyecto asignado a este usuario"
 
 #: users.php:664 clients.php:240 clients.php:252 clients.php:340 users.php:665
-#: users.php:665 clients.php:252 clients.php:340
+#: users.php:679 clients.php:252 clients.php:340
 msgid "Id"
 msgstr "Id"
 
 #: users.php:667 projects.php:282 projevaluation.php:612 projects.php:327
-#: clients.php:344 projects.php:328 users.php:668 projects.php:328
-#: projevaluation.php:612 users.php:668 clients.php:344
+#: clients.php:344 projects.php:328 users.php:668 projevaluation.php:643
+#: projects.php:328 users.php:682 clients.php:344
 msgid "Area"
 msgstr "Área"
 
-#: users.php:680 users.php:681 users.php:681
+#: users.php:680 users.php:681 users.php:695
 msgid "Remove from project"
 msgstr "Retirar del proyecto"
 
@@ -2042,10 +2059,35 @@ msgstr "Proyectos asignados"
 msgid "There are no assigned projects for this customer"
 msgstr "No hay ningún proyecto asignado a este cliente"
 
-#: report.php:803
+#: report.php:803 report.php:829
 msgid "Show all data"
 msgstr "Mostrar todo"
 
-#: report.php:806
+#: report.php:806 report.php:832
 msgid "Show only needed data"
 msgstr "Sólo datos necesarios"
+
+#: projevaluation.php:757 projevaluation.php:761 projevaluation.php:765
+#: projevaluation.php:776 projevaluation.php:779
+msgid "Total staff cost"
+msgstr "Coste total de personal"
+
+#: projevaluation.php:757 projevaluation.php:761 projevaluation.php:765
+#: projevaluation.php:776 projevaluation.php:779 projevaluation.php:789
+#: projevaluation.php:792
+msgid "Total profit"
+msgstr "Beneficio total"
+
+#: projevaluation.php:757 projevaluation.php:761 projevaluation.php:765
+#: projevaluation.php:776 projevaluation.php:779 projevaluation.php:789
+#: projevaluation.php:792
+msgid "Total profit per hour"
+msgstr "Beneficio total por hora"
+
+#: projevaluation.php:759 projevaluation.php:763 projevaluation.php:766
+msgid "Total staff cost within period"
+msgstr "Coste de personal en el período"
+
+#: users.php:561 users.php:617
+msgid "Cost per hour"
+msgstr "Coste por hora"
