@@ -73,12 +73,15 @@ if (in_array($admin_group_name,(array)$session_groups)) {
    <br>
     <a href="cal_manag.php?day=<?=$day?>"
      style="font-weight: bold;">- <?=_("Calendar management")?></a>
-                        <br>
-                        <a href="projevaluation.php?day=<?=$day?>&amp;flag=PROJECTS"
-                         style="font-weight: bold;">- <?=_("Project evaluation")?></a>
-                        <br>
-                        <a href="projevaluation.php?day=<?=$day?>&amp;flag=PERSONS"
-                         style="font-weight: bold;">- <?=_("User evaluation")?></a>
+   <br>
+   <a href="projevaluation.php?day=<?=$day?>&amp;flag=PROJECTS"
+    style="font-weight: bold;">- <?=_("Project evaluation")?></a>
+   <br>
+   <a href="projevaluation.php?day=<?=$day?>&amp;flag=PERSONS"
+    style="font-weight: bold;">- <?=_("User evaluation")?></a>
+   <br>
+   <a href="manag_indexes.php?day=<?=$day?>"
+    style="font-weight: bold;">- <?=_("Management indexes")?></a>
 <!-- end text box -->
    </font></td></tr></table></td></tr>
 <?
