@@ -224,11 +224,8 @@ if (!empty($error)) msg_fail($error);
 <!-- title box -->
 <tr>
   <td colspan="4" class="title_table"><?=_("Percent hour deviation against estimation")?></td>
-  <td colspan="4" class="title_table"><?=_("Profit deviation against estimation")?></td>
 </tr>
 <tr>
-  <td colspan="2" class="title_table"><?=_("All")?></td>
-  <td colspan="2" class="title_table"><?=_("PEX only")?></td>
   <td colspan="2" class="title_table"><?=_("All")?></td>
   <td colspan="2" class="title_table"><?=_("PEX only")?></td>
 </tr>
@@ -237,39 +234,23 @@ if (!empty($error)) msg_fail($error);
   <td class="title_table"><?=_("Percent")?></td>
   <td class="title_table"><?=_("Project")?></td>
   <td class="title_table"><?=_("Percent")?></td>
-  <td class="title_table"><?=_("Project")?></td>
-  <td class="title_table"><?=_("EUR/h")?></td>
-  <td class="title_table"><?=_("Project")?></td>
-  <td class="title_table"><?=_("EUR/h")?></td>
 </tr>
 <?
   $odd_even = 0; /* start with odd rows */
   $k_h_all=array_keys($data_hour_dev_all);
   $k_h_pex=array_keys($data_hour_dev_pex);
-  $k_p_all=array_keys($data_prof_dev_all);
-  $k_p_pex=array_keys($data_prof_dev_pex);
   $dev_h_all_less=0;
   $dev_h_all_more=0;
   $dev_h_all_count=0;
   $dev_h_pex_less=0;
   $dev_h_pex_more=0;
   $dev_h_pex_count=0;
-  $dev_p_all_less=0;
-  $dev_p_all_more=0;
-  $dev_p_all_count=0;
-  $dev_p_pex_less=0;
-  $dev_p_pex_more=0;
-  $dev_p_pex_count=0;
-  for($i=0;$i<max(count($data_hour_dev_all),count($data_hour_dev_all),count($data_prof_dev_all),count($data_prof_dev_pex));$i++) {
+  for($i=0;$i<max(count($data_hour_dev_all),count($data_hour_dev_all));$i++) {
     $project_h_all=$k_h_all[$i];
     $project_h_pex=$k_h_pex[$i];
-    $project_p_all=$k_p_all[$i];
-    $project_p_pex=$k_p_pex[$i];
         
     $dev_h_all=$data_hour_dev_all[$project_h_all];
     $dev_h_pex=$data_hour_dev_pex[$project_h_pex];
-    $dev_p_all=$data_prof_dev_all[$project_p_all];
-    $dev_p_pex=$data_prof_dev_pex[$project_p_pex];
 
     if ($dev_h_all<$min_percent_hour_dev) {
       $dev_h_all_color="#990000";
@@ -288,7 +269,76 @@ if (!empty($error)) msg_fail($error);
       $dev_h_pex_more++;
     } else $dev_h_pex_color="#000000";
     $dev_h_pex_count++;
-    
+        
+    if ($dev_h_all=="") $dev_h_all="&nbsp;";
+    else $dev_h_all=sprintf("%01.2f",$dev_h_all);
+    if ($dev_h_pex=="") $dev_h_pex="&nbsp;";
+    else $dev_h_pex=sprintf("%01.2f",$dev_h_pex);
+
+?>
+<tr class="<?=($odd_even==0)?odd:even?>">
+  <td bgcolor="#FFFFFF" class="title_box">
+    <a href="projectdetails.php?id=<?=$project_h_all?>"><?=$project_h_all?></a>
+  </td>
+  <td bgcolor="#FFFFFF" class="text_data" style="color: <?=$dev_h_all_color?>">
+    <?=$dev_h_all?>
+  </td>
+  <td bgcolor="#FFFFFF" class="title_box">
+    <a href="projectdetails.php?id=<?=$project_h_pex?>"><?=$project_h_pex?></a>
+  </td>
+  <td bgcolor="#FFFFFF" class="text_data" style="color: <?=$dev_h_pex_color?>">
+    <?=$dev_h_pex?>
+  </td>
+</tr>
+<?
+    $odd_even = ($odd_even+1)%2; /* update odd_even counter */  
+  }
+?>
+
+<!-- end title box -->
+</table>
+
+</td></tr></table>
+<!-- end box -->
+
+<br/>
+
+<!-- box -->
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td bgcolor="#000000">
+<table border="0" cellspacing="1" cellpadding="2" width="100%">
+<!-- title box -->
+<tr>
+  <td colspan="4" class="title_table"><?=_("Profit deviation against estimation")?></td>
+</tr>
+<tr>
+  <td colspan="2" class="title_table"><?=_("All")?></td>
+  <td colspan="2" class="title_table"><?=_("PEX only")?></td>
+</tr>
+<tr>
+  <td class="title_table"><?=_("Project")?></td>
+  <td class="title_table"><?=_("EUR/h")?></td>
+  <td class="title_table"><?=_("Project")?></td>
+  <td class="title_table"><?=_("EUR/h")?></td>
+</tr>
+<?
+  $odd_even = 0; /* start with odd rows */
+  $k_p_all=array_keys($data_prof_dev_all);
+  $k_p_pex=array_keys($data_prof_dev_pex);
+  $dev_p_all_less=0;
+  $dev_p_all_more=0;
+  $dev_p_all_count=0;
+  $dev_p_pex_less=0;
+  $dev_p_pex_more=0;
+  $dev_p_pex_count=0;
+  for($i=0;$i<max(count($data_prof_dev_all),count($data_prof_dev_pex));$i++) {
+    $project_p_all=$k_p_all[$i];
+    $project_p_pex=$k_p_pex[$i];
+        
+    $dev_p_all=$data_prof_dev_all[$project_p_all];
+    $dev_p_pex=$data_prof_dev_pex[$project_p_pex];
+
     if ($dev_p_all<$min_profit) {
       $dev_p_all_color="#990000";
       $dev_p_all_less++;
@@ -307,10 +357,6 @@ if (!empty($error)) msg_fail($error);
     } else $dev_p_pex_color="#000000";
     $dev_p_pex_count++;  
         
-    if ($dev_h_all=="") $dev_h_all="&nbsp;";
-    else $dev_h_all=sprintf("%01.2f",$dev_h_all);
-    if ($dev_h_pex=="") $dev_h_pex="&nbsp;";
-    else $dev_h_pex=sprintf("%01.2f",$dev_h_pex);
     if ($dev_p_all=="") $dev_p_all="&nbsp;";
     else $dev_p_all=sprintf("%01.2f",$dev_p_all);
     if ($dev_p_pex=="") $dev_p_pex="&nbsp;";
@@ -318,18 +364,6 @@ if (!empty($error)) msg_fail($error);
 
 ?>
 <tr class="<?=($odd_even==0)?odd:even?>">
-  <td bgcolor="#FFFFFF" class="title_box">
-    <a href="projectdetails.php?id=<?=$project_h_all?>"><?=$project_h_all?></a>
-  </td>
-  <td bgcolor="#FFFFFF" class="text_data" style="color: <?=$dev_h_all_color?>">
-    <?=$dev_h_all?>
-  </td>
-  <td bgcolor="#FFFFFF" class="title_box">
-    <a href="projectdetails.php?id=<?=$project_h_pex?>"><?=$project_h_pex?></a>
-  </td>
-  <td bgcolor="#FFFFFF" class="text_data" style="color: <?=$dev_h_pex_color?>">
-    <?=$dev_h_pex?>
-  </td>
   <td bgcolor="#FFFFFF" class="title_box">
     <a href="projectdetails.php?id=<?=$project_p_all?>"><?=$project_p_all?></a>
   </td>
