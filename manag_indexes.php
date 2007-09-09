@@ -253,19 +253,19 @@ if (!empty($error)) msg_fail($error);
     $dev_h_pex=$data_hour_dev_pex[$project_h_pex];
 
     if ($dev_h_all<$min_percent_hour_dev) {
-      $dev_h_all_color="#990000";
+      $dev_h_all_color="#009900";
       $dev_h_all_less++;
     } else if ($dev_h_all>$max_percent_hour_dev) {
-      $dev_h_all_color="#009900";
+      $dev_h_all_color="#990000";
       $dev_h_all_more++;
     } else $dev_h_all_color="#000000";
     $dev_h_all_count++;  
         
     if ($dev_h_pex<$min_percent_hour_dev) {
-      $dev_h_pex_color="#990000";
+      $dev_h_pex_color="#009900";
       $dev_h_pex_less++;
     } else if ($dev_h_pex>$max_percent_hour_dev) {
-      $dev_h_pex_color="#009900";
+      $dev_h_pex_color="#990000";
       $dev_h_pex_more++;
     } else $dev_h_pex_color="#000000";
     $dev_h_pex_count++;
