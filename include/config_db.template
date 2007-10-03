@@ -26,7 +26,7 @@
 // Database connection
 $hostname_db="localhost";
 $port_db="5432";
-$login_db="phpreport15";
-$password_db="phpreport";
-$dbname_db="phpreport15";
+$login_db="_DBC_DBUSER";
+$password_db="_DBC_DBPASS";
+$dbname_db="_DBC_DBNAME";
 ?>

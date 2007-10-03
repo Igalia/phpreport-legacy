@@ -1,0 +1,89 @@
+#!/bin/sh
+# postrm script for phpreport
+#
+
+#set -e
+#DEBCONF_DEBUG=developer
+#export dbc_debug=1
+
+PKG=phpreport
+VERS=1.5
+
+. /usr/share/debconf/confmodule
+
+
+case "$1" in
+    remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+	;;
+    
+    purge)
+	
+	#user and database to drop
+	db_get ${PKG}-${VERS}/db/app-user
+	export user=$RET;
+	db_get ${PKG}-${VERS}/db/dbname
+	export db=$RET
+	db_get ${PKG}-${VERS}/pgsql/admin-user
+	export useradmin=$RET
+	export dbinit=template1
+
+	##functions to drop
+	export f1="one ()"
+	export f2="plpgsql_call_handler ()"
+
+	#sequence to drop
+	export seq="consult_id_seq"
+
+	#tables to drop
+	export t1="block"
+	export t2="compensation"
+	export t3="consult"
+	export t4="customer"
+	export t5="extra_hours"
+	export t6="holiday"
+	export t7="label"
+	export t8="periods"
+	export t9="project_user"
+	export t10="projects"
+	export t11="report"
+	export t12="task"
+	export t13="users"
+
+	tables="\$t1"
+	for i in `seq 2 13`; do
+	    tables="${tables}, \$t${i}";
+        #echo $tables;
+	done
+
+        current_dir=`pwd`
+        cd /tmp/
+
+	#rm -rf /tmp/*${PKG}*
+	ucf --purge /etc/dbconfig-common/${PKG}-${VERS}.conf
+	rm -f /etc/dbconfig-common/${PKG}*
+	rm -rf /etc/${PKG}-${VERS}/
+	rm -rf /etc/apache/${PKG}*
+	rm -rf /etc/apache2/${PKG}*
+	rm -rf /usr/share/${PKG}/rules.dtd
+
+	. /usr/share/debconf/confmodule
+	db_purge
+
+	su $useradmin -c "\
+        psql $db -c \"DROP FUNCTION IF EXISTS $f1\"
+        psql $db -c \"DROP FUNCTION IF EXISTS $f2\"
+        psql $db -c \"DROP SEQUENCE IF EXISTS $seq\"
+        psql $db -c \"DROP TABLE IF EXISTS $tables CASCADE\"
+        psql $dbinit -c \"DROP DATABASE IF EXISTS $db\"
+        psql $dbinit -c \"DROP USER IF EXISTS $user\""
+
+	cd $current_dir
+	;;
+
+    *)
+        echo "postrm called with unknown argument \`$1'" >&2
+        exit 1
+	;;
+esac
+
+exit 0

@@ -1,0 +1,7 @@
+*.php	usr/share/phpreport
+*.html	usr/share/phpreport
+css	usr/share/phpreport
+images	usr/share/phpreport
+include	usr/share/phpreport
+share	usr/share/phpreport
+i18n	usr/share/phpreport

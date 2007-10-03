@@ -1,7 +1,6 @@
 phpreport for Debian
 --------------------
 
-The database install script is far to be perfect yet, and will abort if the 
-database or username already exists.
+<possible notes regarding this package - if none, delete this file>
 
- -- Enrique Ocaña González <eocanha@igalia.com>, Sun, 26 Jun 2005 02:52:13 +0200
+ -- Andres Maneiro <amaneiro@igalia.com>  Thu, 26 Jul 2007 12:11:24 +0200

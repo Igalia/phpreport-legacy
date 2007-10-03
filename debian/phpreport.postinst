@@ -1,0 +1,139 @@
+#!/bin/sh
+# postinst script for phpreport
+#
+
+#set -e
+#export DEBCONF_DEBUG=developer
+#export dbc_debug=1
+
+. /usr/share/debconf/confmodule
+
+case "$1" in
+    configure)
+
+	PKG=phpreport
+	VERS=1.5
+
+	dbc_pgsql_createdb_encoding='UTF8'
+	dbc_generate_include='php:/etc/'${PKG}'-'${VERS}'/config_db.php'
+	dbc_generate_include_owner='www-data:www-data'
+	dbc_generate_include_perms='0640'
+	dbc_generate_include_args="-f template -o template_infile='/etc/'"${PKG}"'-'"${VERS}"'/config_db.template'"
+	# next code generates config_db.php! but not code above :( Why?
+	#dbc_generate_include_args="--dbname=dbname --dbpass=dbpasswd --dbuser=username --dbserver=hostname"
+
+	. /usr/share/dbconfig-common/dpkg/postinst.pgsql
+
+# -------------------------------------------------
+# DATABASE DATA
+# user and database for grant all privileges
+	db_get ${PKG}-${VERS}/db/app-user
+	export user=$RET;
+	db_get ${PKG}-${VERS}/db/dbname
+	export db=$RET;
+	db_get ${PKG}-${VERS}/pgsql/admin-user
+	export useradmin=$RET;
+	export dbinit=template1;
+
+# functions to grant and alter
+	export f1="one ()";
+	export f2="plpgsql_call_handler ()";
+
+# sequence to grant and alter
+	export seq="consult_id_seq";
+
+# tables to grant and alter
+	export tables="block compensation consult customer extra_hours holiday label periods project_user projects report task users";
+
+# FILES TO LOAD AND DIRECTORIES
+	export sql_dir=/usr/share/doc/${PKG}/sql
+	export tmp_dir=/tmp
+	export schema_sql=schema_phpreport.sql
+	export data_sql=data_phpreport.sql
+	export dir_install=`pwd`
+	export www_dir=/usr/share/${PKG}
+	export conf_dir=/usr/share/doc/
+	export etc_dir=/etc/${PKG}
+	mkdir ${etc_dir}
+
+# Consult default file is english: consults_en_phpreport.sql
+# IMPROVEMENT: take language from $LANG and filter it to two-character variable (gl, es, en)
+	db_get ${PKG}-${VERS}/lang
+	export lang_consults=$RET
+	export consults_sql=consults_phpreport_${lang_consults}.sql
+
+	export CMD=""
+
+# -----------------------------------------------
+
+	## For debuging this script only:
+	#dbc_go ${PKG}-${VERS} configure $@
+	dbc_go ${PKG}-${VERS} $@
+
+        cp ${sql_dir}/${schema_sql}.gz $tmp_dir
+	gunzip -f ${tmp_dir}/${schema_sql}.gz
+        chown $useradmin:$useradmin ${tmp_dir}/$schema_sql
+        chmod 777 ${tmp_dir}/$schema_sql
+
+        ## To load example data
+	cp ${sql_dir}/${data_sql}.gz $tmp_dir
+ 	gunzip -f ${tmp_dir}/${data_sql}.gz
+	chown $useradmin:$useradmin ${tmp_dir}/$data_sql
+	chmod 777 ${tmp_dir}/$data_sql
+
+        cp ${sql_dir}/${consults_sql}.gz $tmp_dir
+	gunzip -f ${tmp_dir}/${consults_sql}.gz
+        chown $useradmin:$useradmin ${tmp_dir}/$consults_sql
+        chmod 777 ${tmp_dir}/$consults_sql
+
+	touch ${www_dir}/rules.dtd
+	chown www-data:www-data ${www_dir}/rules.dtd
+	chmod 644 ${www_dir}/rules.dtd
+
+	ln -st ${etc_dir} ${www_dir}/include/config_db.php
+
+	# copy configuration file into directory web server
+	if [ -d /etc/apache ]; then
+	    cp ${conf_dir}/phpreport /etc/apache/conf.d
+	fi
+	    
+	if [ -d /etc/apache2 ]; then
+	    cp ${conf_dir}/phpreport /etc/apache2/conf.d
+	fi
+
+        cd $tmp_dir
+
+        su $useradmin -c "\
+            psql $db -c \"\i $schema_sql\"
+            psql $db -c \"\i $data_sql\"
+            psql $db -c \"\i $consults_sql\"
+            psql $dbinit -c \"ALTER DATABASE $db OWNER TO $user\"
+            psql $dbinit -c \"GRANT ALL PRIVILEGES ON DATABASE $db TO $user\"
+	    psql $db -c \"ALTER FUNCTION $f1 OWNER TO $user\"
+	    psql $db -c \"GRANT ALL PRIVILEGES ON FUNCTION $f1 TO $user\"
+	    psql $db -c \"ALTER FUNCTION $f2 OWNER TO $user\"
+	    psql $db -c \"GRANT ALL PRIVILEGES ON FUNCTION $f2 TO $user\"
+	    psql $db -c \"ALTER SEQUENCE $seq OWNED BY NONE\"
+	    psql $db -c \"GRANT ALL PRIVILEGES ON SEQUENCE $seq TO $user\""
+	
+	for tab in $tables; do
+	    CMD=`cat<<EOF
+$CMD
+psql $db -c "ALTER TABLE $tab OWNER TO $user";
+psql $db -c "GRANT ALL PRIVILEGES ON TABLE $tab TO $user";
+EOF
+`
+	done
+
+	su $useradmin -c "$CMD"
+	cd $dir_install
+	chown -R www-data:www-data ${www_dir}
+	;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+	;;
+esac
+
+exit 0

@@ -1,16 +1,12 @@
 #!/usr/bin/make -f
-# -*- makefile -*-
-# Sample debian/rules that uses debhelper.
-# This file was originally written by Joey Hess and Craig Small.
-# As a special exception, when this file is copied by dh-make into a
-# dh-make output file, you may use that output file without restriction.
-# This special exception was added by Craig Small in version 0.37 of dh-make.
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-
-
+PKG=phpreport
+deb_dir=debian/$(PKG)
+www_dir=usr/share/$(PKG)
+doc_dir=usr/share/doc/$(PKG)
 
 CFLAGS = -Wall -g
 
@@ -23,29 +19,28 @@ endif
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
-	# Add here commands to configure the package.
+# Add here commands to configure the package.
 
 	touch configure-stamp
-
 
 build: build-stamp
 
 build-stamp: configure-stamp 
 	dh_testdir
 
-	# Add here commands to compile the package.
-	$(MAKE)
-	#docbook-to-man debian/phpreport.sgml > phpreport.1
+# Add here commands to compile the package.
+#$(MAKE)
+#docbook-to-man debian/phpreport.sgml > phpreport.1
 
-	touch build-stamp
+	touch $@
 
 clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp configure-stamp
 
-	# Add here commands to clean up after the build process.
-	-$(MAKE) clean
+# Add here commands to clean up after the build process.
+#-$(MAKE) clean
 
 	dh_clean 
 
@@ -55,8 +50,8 @@ install: build
 	dh_clean -k 
 	dh_installdirs
 
-	# Add here commands to install the package into debian/phpreport.
-	$(MAKE) install DESTDIR=$(CURDIR)/debian/phpreport
+# Add here commands to install the package into debian/phpreport.
+#$(MAKE) DESTDIR=$(CURDIR)/debian/phpreport install
 
 
 # Build architecture-independent files here.
@@ -69,30 +64,29 @@ binary-arch: build install
 	dh_testroot
 	dh_installchangelogs 
 	dh_installdocs
-	dh_installexamples
-#	dh_install
-#	dh_installmenu
-#	dh_installdebconf	
-#	dh_installlogrotate
-#	dh_installemacsen
-#	dh_installpam
-#	dh_installmime
-#	dh_installinit
-#	dh_installcron
+	dh_install
+	dh_installdebconf	
 #	dh_installinfo
-	dh_installman
-	dh_link
-	dh_strip
+#	dh_installman
+#	dh_installexamples
+#	dh_link
+#	dh_strip
 	dh_compress
 	dh_fixperms
-#	dh_perl
-#	dh_python
-#	dh_makeshlibs
 	dh_installdeb
-	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
+
+	rm -rf $(deb_dir)/$(doc_dir)/sql/CVS/
+	rm -rf $(deb_dir)/$(www_dir)/css/CVS/
+	rm -rf $(deb_dir)/$(www_dir)/images/CVS/
+	rm -rf $(deb_dir)/$(www_dir)/include/CVS/
+	rm -rf $(deb_dir)/$(www_dir)/i18n/CVS/
+	rm -rf $(deb_dir)/$(www_dir)/share/CVS/
+
 	dh_builddeb
+
+	rm -rf $(deb_dir)
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary install configure

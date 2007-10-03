@@ -1,0 +1,14 @@
+Template: phpreport-1.5/priority
+Type: note
+Description: Priority notice
+ If you want install this package with more options, you can probe to reconfigure
+ with "dpkg-reconfigure -p low packagename"
+
+Template: phpreport-1.5/lang
+Type: select
+Choices: en, sp, gl
+Default: en
+Description: Choose your language for installing and phpreport use.
+ You can choose the language that use in phpreport consult
+ and it will be installing language too. You can choose English (en),
+ Spanish (sp) or Galician (gl)

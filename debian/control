@@ -1,15 +1,15 @@
 Source: phpreport
 Section: web
-Priority: optional
-Maintainer: Enrique Ocaña González <eocanha@igalia.com>
-Build-Depends: debhelper (>= 4.0.0)
-Standards-Version: 3.6.1
+Priority: extra
+Maintainer: Enrique Ocanha <eocanha@igalia.com>
+Build-Depends: debhelper (>= 5), debconf (>= 0.5), dbconfig-common
+Standards-Version: 3.7.2
 
 Package: phpreport
 Architecture: any
-Depends: php4 (>= 4.2.0) | php4-cgi (>= 4.2.0) | libapache2-mod-php4 (>= 4.2.0), php4-pgsql (>= 4.2.0), apache | httpd
+Depends: debconf (>= 0.5)
 Description: Task time tracker tool written in PHP
  PhpReport tracks tasks performed by a company staff or workgroup and allows
  administrators to launch queries and get statistics about the tasks and time
- spent on each one. This give company managers the proper information to do 
+ spent on each one. This give company managers the proper information to do
  cost analysis and decission making.
