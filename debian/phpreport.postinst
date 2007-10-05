@@ -14,11 +14,22 @@ case "$1" in
 	PKG=phpreport
 	VERS=1.5
 
+	## FILES TO LOAD AND DIRECTORIES
+	export sql_dir=/usr/share/doc/${PKG}/sql
+	export tmp_dir=/tmp
+	export schema_sql=schema_phpreport.sql
+	export data_sql=data_phpreport.sql
+	export dir_install=`pwd`
+	export www_dir=/usr/share/${PKG}
+	export conf_dir=/usr/share/doc
+	export etc_dir=/etc/${PKG}
+	mkdir ${etc_dir}
+
 	dbc_pgsql_createdb_encoding='UTF8'
-	dbc_generate_include='php:/etc/'${PKG}'-'${VERS}'/config_db.php'
-	dbc_generate_include_owner='www-data:www-data'
-	dbc_generate_include_perms='0640'
-	dbc_generate_include_args="-f template -o template_infile='/etc/'"${PKG}"'-'"${VERS}"'/config_db.template'"
+	#dbc_generate_include='php:/'${www_dir}'/config_db.php'
+	#dbc_generate_include_owner='www-data:www-data'
+	#dbc_generate_include_perms='0640'
+	#dbc_generate_include_args="-f template -o template_infile='/etc/'"${PKG}"'-'"${VERS}"'/config_db.template'"
 	# next code generates config_db.php! but not code above :( Why?
 	#dbc_generate_include_args="--dbname=dbname --dbpass=dbpasswd --dbuser=username --dbserver=hostname"
 
@@ -35,7 +46,7 @@ case "$1" in
 	export useradmin=$RET;
 	export dbinit=template1;
 
-# functions to grant and alter
+#functions to grant and alter
 	export f1="one ()";
 	export f2="plpgsql_call_handler ()";
 
@@ -45,16 +56,6 @@ case "$1" in
 # tables to grant and alter
 	export tables="block compensation consult customer extra_hours holiday label periods project_user projects report task users";
 
-# FILES TO LOAD AND DIRECTORIES
-	export sql_dir=/usr/share/doc/${PKG}/sql
-	export tmp_dir=/tmp
-	export schema_sql=schema_phpreport.sql
-	export data_sql=data_phpreport.sql
-	export dir_install=`pwd`
-	export www_dir=/usr/share/${PKG}
-	export conf_dir=/usr/share/doc/
-	export etc_dir=/etc/${PKG}
-	mkdir ${etc_dir}
 
 # Consult default file is english: consults_en_phpreport.sql
 # IMPROVEMENT: take language from $LANG and filter it to two-character variable (gl, es, en)
