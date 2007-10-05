@@ -25,13 +25,14 @@ case "$1" in
 	export etc_dir=/etc/${PKG}
 	mkdir ${etc_dir}
 
-	dbc_pgsql_createdb_encoding='UTF8'
-	#dbc_generate_include='php:/'${www_dir}'/config_db.php'
+	#dbc_pgsql_createdb_encoding='UTF8'
 	#dbc_generate_include_owner='www-data:www-data'
 	#dbc_generate_include_perms='0640'
-	#dbc_generate_include_args="-f template -o template_infile='/etc/'"${PKG}"'-'"${VERS}"'/config_db.template'"
-	# next code generates config_db.php! but not code above :( Why?
-	#dbc_generate_include_args="--dbname=dbname --dbpass=dbpasswd --dbuser=username --dbserver=hostname"
+	#dbc_generate_include='template:'${www_dir}'/include/config_db2.php'
+	#dbc_generate_include_args="-o template_infile="${www_dir}"'/include/config_db.template'"
+
+	#note: remove configuration file from phpreport.postrm when it work fine
+	#note: create link to definitive configuration file (actually is include/config_db.php)
 
 	. /usr/share/dbconfig-common/dpkg/postinst.pgsql
 
@@ -91,6 +92,7 @@ case "$1" in
 	chown www-data:www-data ${www_dir}/rules.dtd
 	chmod 644 ${www_dir}/rules.dtd
 
+	# create a soft link into /etc 
 	ln -st ${etc_dir} ${www_dir}/include/config_db.php
 
 	# copy configuration file into directory web server
