@@ -7,7 +7,7 @@ Standards-Version: 3.7.2
 
 Package: phpreport
 Architecture: any
-Depends: php (>=4), postgresql, apache
+Depends: php4 | php5, postgresql-8.2 | postgresql-8.1, apache | apache2
 Recommends: libphp-phplot, rxp, xsltproc
 Suggest: ldap
 Description: Task time tracker tool written in PHP
