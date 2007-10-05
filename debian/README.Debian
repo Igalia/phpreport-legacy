@@ -1,6 +1,13 @@
 phpreport for Debian
 --------------------
 
-<possible notes regarding this package - if none, delete this file>
+At this moment, a bug exist into libphp-phplot package (graphic library for php) which doesn't work with php5. We had report this bug and also fix it. You can view: 
+
+(04 Oct 2007) http://community.igalia.com/twiki/bin/view/PhpReport/ReleasingAndPromotion2007Story
+http://sourceforge.net/tracker/index.php?func=detail&aid=1807476&group_id=14653&atid=114653
+
+ -- Andres Maneiro <amaneiro@igalia.com>  Thu, 26 Jul 2007 12:11:24 +0200
+
+You can view some useful botes about packaging process into http://community.igalia.com/twiki/bin/view/PhpReport/PracticeSummer2007
 
  -- Andres Maneiro <amaneiro@igalia.com>  Thu, 26 Jul 2007 12:11:24 +0200
