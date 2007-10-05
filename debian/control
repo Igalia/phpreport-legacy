@@ -9,7 +9,7 @@ Package: phpreport
 Architecture: any
 Depends: php4 | php5, postgresql-8.2 | postgresql-8.1, apache | apache2
 Recommends: libphp-phplot, rxp, xsltproc
-Suggest: ldap
+Suggests: ldap
 Description: Task time tracker tool written in PHP
  PhpReport tracks tasks performed by a company staff or workgroup and allows
  administrators to launch queries and get statistics about the tasks and time
