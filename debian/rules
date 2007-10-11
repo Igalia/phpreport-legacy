@@ -4,6 +4,7 @@
 #export DH_VERBOSE=1
 
 PKG=phpreport
+VERS=1.5
 deb_dir=debian/$(PKG)
 www_dir=usr/share/$(PKG)
 doc_dir=usr/share/doc/$(PKG)
