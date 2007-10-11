@@ -24,7 +24,6 @@ SELECT pg_catalog.setval('consult_id_seq', 1, false);
 COPY block (uid, _date) FROM stdin;
 admin	1999-12-31
 amaneiro	1999-12-31
-nes	1999-12-31
 andres	1999-12-31
 \.
 
@@ -85,16 +84,42 @@ customer	t	\N	igalia	igalia corporation
 name	t	\N	phpreport	phpreport tool
 csector	t	\N	education	education customers
 customer	t	\N	mit	Massachusetts Institute of Technology
-ttype	t	\N	analysis	analysis
-ttype	t	\N	dev	develope
-type	t	\N	adm	administration tasks
-type	t	\N	form	formation tasks
-type	t	\N	devt	developer tasks
 name	t	\N	debian_course	Debian course at institute
-ttype	t	\N	docs	documentation
-ttype	t	\N	comm	community
 parea	t	\N	adm_area	administration
 name	t	\N	adm_igalia	administration tasks
+type	t	f	vent	Sales
+type	t	f	adm	Administration/Finances
+type	t	f	comu	Comunication
+type	t	f	prac	Practices
+type	t	t	asam	Meeting
+type	t	t	coge	General Coordination
+type	t	t	for	Intern training
+type	t	t	for_ext	Extern training
+type	t	t	ger	Gerency
+type	t	t	rrhh	RRHH
+type	t	f	pex	Extern Projects
+type	t	f	pin	Intern Projects
+type	t	t	ap	Personal Matters
+type	t	t	baj	Sick leave
+type	t	t	hac	Hackfest
+type	t	t	vac	Holidays
+ttype	t	\N	analisis	Analysis
+ttype	t	\N	comunidad	Community
+ttype	t	\N	coordinacion	Coordination
+ttype	t	\N	despliegue	Deployment
+ttype	t	\N	diseno	Design
+ttype	t	\N	documentacion	Documentation
+ttype	t	\N	entorno	Environment
+ttype	t	\N	formacion	Training
+ttype	t	\N	implementacion	Implementation
+ttype	t	\N	prueba	Test
+ttype	t	\N	publicacion	Publication
+ttype	t	\N	requisitos	Requisites
+ttype	f	\N	demo	Demostration
+ttype	f	\N	mantenimiento	Support
+ttype	f	\N	mto_sistemas	Support Systems
+ttype	f	\N	tecnologia	Technology
+ttype	t	\N	seguimiento_com	Sales monitoring
 \.
 
 
@@ -105,7 +130,6 @@ name	t	\N	adm_igalia	administration tasks
 COPY periods (uid, journey, init, _end, city, hour_cost) FROM stdin;
 andres	8	2007-09-01	2008-12-01	vigo	30.0000
 amaneiro	4	2006-08-01	2007-12-01	compostela	20.0000
-nes	6	2007-09-01	2008-09-01	compostela	20.0000
 admin	8	2005-01-01	2006-05-01	compostela	10.0000
 admin	6	2006-08-01	2007-05-01	vigo	30.0000
 \.
@@ -161,16 +185,6 @@ amaneiro	2007-10-10	2007-10-03
 amaneiro	2007-10-11	2007-10-03
 admin	2007-10-03	2007-10-03
 admin	2007-10-11	2007-10-03
-nes	2007-10-01	2007-10-03
-nes	2007-10-02	2007-10-03
-nes	2007-10-03	2007-10-03
-nes	2007-10-04	2007-10-03
-nes	2007-10-05	2007-10-03
-nes	2007-10-08	2007-10-03
-nes	2007-10-09	2007-10-03
-nes	2007-10-10	2007-10-03
-nes	2007-10-11	2007-10-03
-nes	2007-10-12	2007-10-03
 andres	2007-10-01	2007-10-03
 andres	2007-10-02	2007-10-03
 andres	2007-10-03	2007-10-03
@@ -189,77 +203,57 @@ andres	2007-10-12	2007-10-03
 --
 
 COPY task (uid, _date, init, _end, "type", phase, ttype, text, story, telework, customer, name) FROM stdin;
-admin	2007-12-28	660	900	devt	\N	dev	Implementing new use case	STR2007CASE2	\N	igalia	phpreport
-admin	2007-12-28	960	1200	devt	\N	dev	Implementing new use case	STR2007CASE2	\N	igalia	phpreport
-admin	2007-10-04	540	840	devt	\N	dev	Implementing new use case	STR2007CASE2	\N	igalia	phpreport
-admin	2007-10-04	960	1200	form	\N	analysis	Creating documentatio about kernel 2.4	STR20MIT	\N	mit	
-admin	2007-10-05	540	840	devt	\N	dev	Implementing new use case	STR2007CASE2	\N	igalia	phpreport
-admin	2007-10-05	960	1200	form	\N	analysis	Creating documentation about kernel 2.4	STR20MIT	\N	mit	
-admin	2007-10-02	660	900	devt	\N	dev	Implementing new use case	STR2007CASE2	\N	igalia	phpreport
-admin	2007-10-02	960	1200	devt	\N	dev	Implementing new use case	STR2007CASE2	\N	igalia	phpreport
-admin	2007-10-01	660	900	devt	\N	analysis	Studying and creating model to new use case	STR2007CASE1	\N	igalia	phpreport
-admin	2007-10-01	960	1200	devt	\N	dev	Implementing new use case	STR2007CASE2	\N	igalia	phpreport
-admin	2007-10-08	540	840	form	\N	dev	Creating PDF and slides	STR30MIT	\N	mit	debian_course
-admin	2007-10-08	930	1170	form	\N	dev	Creating PDF and slides	STR30MIT	\N	mit	debian_course
-admin	2007-10-09	540	840	form	\N	dev	Creating PDF and slides	STR30MIT	\N	mit	debian_course
-admin	2007-10-09	930	1170	devt	\N	dev	Function to replace date	STR2007CASE3	\N	igalia	phpreport
-admin	2007-10-10	540	840	devt	\N	dev	Function to replace date	STR2007CASE3	\N	igalia	phpreport
-admin	2007-10-10	930	1170	devt	\N	dev	Function to replace date	STR2007CASE3	\N	igalia	phpreport
-admin	2007-10-12	540	840	devt	\N	dev	Write function to create new graphs	STR2007CASE3	\N	igalia	phpreport
-admin	2007-10-12	960	1185	devt	\N	dev	Write function to create new graphs	STR2007CASE3	\N	igalia	phpreport
-amaneiro	2007-10-02	540	840	form	\N	analysis	Learning about phpreport creating projects	STR10NEW2	\N	igalia	phpreport
-amaneiro	2007-10-01	540	840	form	\N	analysis	Learning about phpreport creating projects	STR10NEW2	\N	igalia	phpreport
-amaneiro	2007-10-03	540	840	form	\N	dev	Modify function to plot data	STR10CASE40	\N	igalia	phpreport
-amaneiro	2007-10-04	540	840	form	\N	dev	Modify function to plot data	STR10CASE40	\N	igalia	phpreport
-amaneiro	2007-10-05	540	840	devt	\N	dev	Resolving bugs	STR10CASE40	\N	igalia	phpreport
-amaneiro	2007-10-08	540	840	devt	\N	dev	Resolving bugs	STR10CASE40	\N	igalia	phpreport
-amaneiro	2007-10-09	540	840	devt	\N	dev	Resolving bugs	STR10CASE40	\N	igalia	phpreport
-amaneiro	2007-10-10	540	840	devt	\N	dev	Resolving bugs	STR10CASE40	\N	igalia	phpreport
-amaneiro	2007-10-11	540	840	devt	\N	dev	Write documentation	STR20DOC	\N	igalia	phpreport
-admin	2007-10-03	660	900	devt	\N	dev	Implementing new use case	STR2007CASE2	\N	igalia	phpreport
-admin	2007-10-03	960	1200	adm	\N	docs	Write comunication protocols	STR2007CASE2	\N	igalia	adm_igalia
-admin	2007-10-11	540	840	devt	\N	dev	Write function to create new graphs	STR2007CASE3	\N	igalia	phpreport
-admin	2007-10-11	960	1185	adm	\N	docs	Write management protocols	\N	\N	igalia	adm_igalia
-nes	2007-10-01	660	840	form	\N	comm	Talking with teacher about bash programing students level and writing specification document	\N	\N	mit	debian_course
-nes	2007-10-01	1080	1200	form	\N	docs	Writing specification document	\N	\N	mit	debian_course
-nes	2007-10-02	660	840	form	\N	docs	Write document about bash programing	\N	\N	mit	debian_course
-nes	2007-10-02	1080	1200	form	\N	docs	Write document about bash programing	\N	\N	mit	debian_course
-nes	2007-10-03	660	840	form	\N	docs	Write document about bash programing	\N	\N	mit	debian_course
-nes	2007-10-03	1080	1200	form	\N	docs	Write document about bash programing	\N	\N	mit	debian_course
-nes	2007-10-04	660	840	devt	\N	dev	Script to install new tools	\N	\N	mit	debian_course
-nes	2007-10-04	1080	1200	form	\N	docs	Write document about bash programing	\N	\N	mit	debian_course
-nes	2007-10-05	660	840	form	\N	docs	Write document about bash programing	\N	\N	mit	debian_course
-nes	2007-10-05	1080	1200	form	\N	docs	Write document about bash programing	\N	\N	mit	debian_course
-nes	2007-10-08	720	840	form	\N	comm	Emails and chat with teachers in order to finish documentation about bash programing	\N	\N	mit	debian_course
-nes	2007-10-08	1080	1200	form	\N	analysis	Read documentation about drivers for kernel 2.6	\N	\N	mit	debian_course
-nes	2007-10-09	720	840	form	\N	analysis	Read documentation about drivers for kernel 2.6	\N	\N	mit	debian_course
-nes	2007-10-09	1080	1200	form	\N	analysis	Read documentation about drivers for kernel 2.6	\N	\N	mit	debian_course
-nes	2007-10-10	720	840	form	\N	comm	Talking with teachers about drivers documentation and write first version	\N	\N	mit	debian_course
-nes	2007-10-10	1080	1200	form	\N	dev	Write slides and docs about drivers into kernel 2.4	\N	\N	mit	debian_course
-nes	2007-10-11	720	840	form	\N	dev	Write slides and docs about drivers into kernel 2.4	\N	\N	mit	debian_course
-nes	2007-10-11	1080	1200	form	\N	dev	Write slides and docs about drivers into kernel 2.4	\N	\N	mit	debian_course
-nes	2007-10-12	720	840	form	\N	dev	Write slides and docs about drivers into kernel 2.4	\N	\N	mit	debian_course
-nes	2007-10-12	1080	1200	form	\N	dev	Write slides and docs about drivers into kernel 2.4	\N	\N	mit	debian_course
-andres	2007-10-01	480	720	devt	\N	dev	Programing class to wrapper access database	STR_DEV04	\N	igalia	phpreport
-andres	2007-10-01	840	1080	devt	\N	dev	Programing class to wrapper access database	STR_DEV04	\N	igalia	phpreport
-andres	2007-10-02	480	720	devt	\N	dev	Programing class to wrapper access database	STR_DEV04	\N	igalia	phpreport
-andres	2007-10-02	840	1080	devt	\N	dev	Programing class to wrapper access database	STR_DEV04	\N	igalia	phpreport
-andres	2007-10-03	480	720	devt	\N	dev	Programing function to change permissions	STR_DEV04	\N	igalia	phpreport
-andres	2007-10-03	840	1080	devt	\N	dev	Programing function to edit queries	STR_DEV04	\N	igalia	phpreport
-andres	2007-10-04	480	720	devt	\N	dev	Programing function to change permissions	STR_DEV04	\N	igalia	phpreport
-andres	2007-10-04	840	1080	devt	\N	dev	Programing function to edit queries	STR_DEV04	\N	igalia	phpreport
-andres	2007-10-05	480	720	devt	\N	dev	Programing function to edit queries	STR_DEV04	\N	igalia	phpreport
-andres	2007-10-05	840	1080	devt	\N	dev	Programing function to edit queries	STR_DEV04	\N	igalia	phpreport
-andres	2007-10-08	480	720	devt	\N	dev	Programing function to edit queries	STR_DEV04	\N	igalia	phpreport
-andres	2007-10-08	840	1080	devt	\N	dev	Building class to manage admin profile	STR_DEV05	\N	igalia	phpreport
-andres	2007-10-09	480	720	devt	\N	dev	Building class to manage admin profile	STR_DEV05	\N	igalia	phpreport
-andres	2007-10-09	840	1080	devt	\N	dev	Building class to manage admin profile	STR_DEV05	\N	igalia	phpreport
-andres	2007-10-10	480	720	devt	\N	dev	Building class to manage user profile	STR_DEV05	\N	igalia	phpreport
-andres	2007-10-10	840	1080	devt	\N	dev	Building class to manage user profile	STR_DEV05	\N	igalia	phpreport
-andres	2007-10-11	480	720	devt	\N	dev	Building class to manage user profile	STR_DEV05	\N	igalia	phpreport
-andres	2007-10-11	840	1080	devt	\N	dev	Building class to manage user profile	STR_DEV05	\N	igalia	phpreport
-andres	2007-10-12	480	720	devt	\N	docs	Review code and write documentation about it	STR_DEV05	\N	igalia	phpreport
-andres	2007-10-12	840	1080	devt	\N	docs	Review code and write documentation about it	STR_DEV05	\N	igalia	phpreport
+admin	2007-12-28	660	900	pin	\N	implementacion	Implementing new use case	STR2007CASE2	\N	igalia	phpreport
+admin	2007-12-28	960	1200	pin	\N	implementacion	Implementing new use case	STR2007CASE2	\N	igalia	phpreport
+admin	2007-10-04	540	840	pin	\N	implementacion	Implementing new use case	STR2007CASE2	\N	igalia	phpreport
+admin	2007-10-04	960	1200	pex	\N	documentacion	Creating documentatio about kernel 2.4	STR20MIT	\N	mit	
+admin	2007-10-05	540	840	pin	\N	implementacion	Implementing new use case	STR2007CASE2	\N	igalia	phpreport
+admin	2007-10-05	960	1200	pex	\N	documentacion	Creating documentation about kernel 2.4	STR20MIT	\N	mit	
+admin	2007-10-02	660	900	pin	\N	implementacion	Implementing new use case	STR2007CASE2	\N	igalia	phpreport
+admin	2007-10-02	960	1200	pin	\N	implementacion	Implementing new use case	STR2007CASE2	\N	igalia	phpreport
+admin	2007-10-01	660	900	pin	\N	analisis	Studying and creating model to new use case	STR2007CASE1	\N	igalia	phpreport
+admin	2007-10-01	960	1200	pin	\N	implementacion	Implementing new use case	STR2007CASE2	\N	igalia	phpreport
+admin	2007-10-08	540	840	pex	\N	documentacion	Creating PDF and slides	STR30MIT	\N	mit	debian_course
+admin	2007-10-08	930	1170	pex	\N	documentacion	Creating PDF and slides	STR30MIT	\N	mit	debian_course
+admin	2007-10-09	540	840	pex	\N	documentacion	Creating PDF and slides	STR30MIT	\N	mit	debian_course
+admin	2007-10-09	930	1170	pin	\N	implementacion	Function to replace date	STR2007CASE3	\N	igalia	phpreport
+admin	2007-10-10	540	840	pin	\N	implementacion	Function to replace date	STR2007CASE3	\N	igalia	phpreport
+admin	2007-10-10	930	1170	pin	\N	implementacion	Function to replace date	STR2007CASE3	\N	igalia	phpreport
+admin	2007-10-12	540	840	pin	\N	implementacion	Write function to create new graphs	STR2007CASE3	\N	igalia	phpreport
+admin	2007-10-12	960	1185	pin	\N	implementacion	Write function to create new graphs	STR2007CASE3	\N	igalia	phpreport
+amaneiro	2007-10-02	540	840	for	\N	formacion	Learning about phpreport creating projects	STR10NEW2	\N	igalia	phpreport
+amaneiro	2007-10-01	540	840	for	\N	formacion	Learning about phpreport creating projects	STR10NEW2	\N	igalia	phpreport
+amaneiro	2007-10-03	540	840	pin	\N	implementacion	Modify function to plot data	STR10CASE40	\N	igalia	phpreport
+amaneiro	2007-10-04	540	840	pin	\N	implementacion	Modify function to plot data	STR10CASE40	\N	igalia	phpreport
+amaneiro	2007-10-05	540	840	pin	\N	implementacion	Resolving bugs	STR10CASE40	\N	igalia	phpreport
+amaneiro	2007-10-08	540	840	pin	\N	prueba	Resolving bugs	STR10CASE40	\N	igalia	phpreport
+amaneiro	2007-10-09	540	840	pin	\N	prueba	Resolving bugs	STR10CASE40	\N	igalia	phpreport
+amaneiro	2007-10-10	540	840	pin	\N	prueba	Resolving bugs	STR10CASE40	\N	igalia	phpreport
+amaneiro	2007-10-11	540	840	pin	\N	documentacion	Write documentation	STR20DOC	\N	igalia	phpreport
+admin	2007-10-03	660	900	pin	\N	implementacion	Implementing new use case	STR2007CASE2	\N	igalia	phpreport
+admin	2007-10-03	960	1200	pin	\N	docuementacion	Write comunication protocols	STR2007CASE2	\N	igalia	adm_igalia
+admin	2007-10-11	540	840	pin	\N	documentacion	Write function to create new graphs	STR2007CASE3	\N	igalia	phpreport
+admin	2007-10-11	960	1185	pin	\N	documentacion	Write management protocols	\N	\N	igalia	adm_igalia
+andres	2007-10-01	480	720	pin	\N	implementacion	Programing class to wrapper access database	STR_DEV04	\N	igalia	phpreport
+andres	2007-10-01	840	1080	pin	\N	implementacion	Programing class to wrapper access database	STR_DEV04	\N	igalia	phpreport
+andres	2007-10-02	480	720	pin	\N	implementacion	Programing class to wrapper access database	STR_DEV04	\N	igalia	phpreport
+andres	2007-10-02	840	1080	pin	\N	implementacion	Programing class to wrapper access database	STR_DEV04	\N	igalia	phpreport
+andres	2007-10-03	480	720	pin	\N	implementacion	Programing function to change permissions	STR_DEV04	\N	igalia	phpreport
+andres	2007-10-03	840	1080	pin	\N	implementacion	Programing function to edit queries	STR_DEV04	\N	igalia	phpreport
+andres	2007-10-04	480	720	pin	\N	implementacion	Programing function to change permissions	STR_DEV04	\N	igalia	phpreport
+andres	2007-10-04	840	1080	pin	\N	implementacion	Programing function to edit queries	STR_DEV04	\N	igalia	phpreport
+andres	2007-10-05	480	720	pin	\N	implementacion	Programing function to edit queries	STR_DEV04	\N	igalia	phpreport
+andres	2007-10-05	840	1080	pin	\N	implementacion	Programing function to edit queries	STR_DEV04	\N	igalia	phpreport
+andres	2007-10-08	480	720	pin	\N	implementacion	Programing function to edit queries	STR_DEV04	\N	igalia	phpreport
+andres	2007-10-08	840	1080	pin	\N	implementacion	Building class to manage admin profile	STR_DEV05	\N	igalia	phpreport
+andres	2007-10-09	480	720	pin	\N	implementacion	Building class to manage admin profile	STR_DEV05	\N	igalia	phpreport
+andres	2007-10-09	840	1080	pin	\N	implementacion	Building class to manage admin profile	STR_DEV05	\N	igalia	phpreport
+andres	2007-10-10	480	720	pin	\N	implementacion	Building class to manage user profile	STR_DEV05	\N	igalia	phpreport
+andres	2007-10-10	840	1080	pin	\N	implementacion	Building class to manage user profile	STR_DEV05	\N	igalia	phpreport
+andres	2007-10-11	480	720	pin	\N	implementacion	Building class to manage user profile	STR_DEV05	\N	igalia	phpreport
+andres	2007-10-11	840	1080	pin	\N	implementacion	Building class to manage user profile	STR_DEV05	\N	igalia	phpreport
+andres	2007-10-12	480	720	pin	\N	documentacion	Review code and write documentation about it	STR_DEV05	\N	igalia	phpreport
+andres	2007-10-12	840	1080	pin	\N	documentacion	Review code and write documentation about it	STR_DEV05	\N	igalia	phpreport
 \.
 
 
@@ -270,7 +264,6 @@ andres	2007-10-12	840	1080	devt	\N	docs	Review code and write documentation abou
 COPY users (uid, "password", "admin", staff) FROM stdin;
 andres	231badb19b93e44f47da1bd64a8147f2	f	t
 amaneiro	f8b4a886169853f0dc54b9282583e8d5	f	t
-nes	1d7b2eac3b0ae5d9f772a801186d6c71	f	t
 admin	21232f297a57a5a743894a0e4a801fc3	t	t
 \.
 
