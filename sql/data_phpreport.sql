@@ -89,18 +89,18 @@ parea	t	\N	adm_area	administration
 name	t	\N	adm_igalia	administration tasks
 type	t	f	vent	Sales
 type	t	f	adm	Administration/Finances
-type	t	f	comu	Comunication
+type	t	f	comu	Communication
 type	t	f	prac	Practices
 type	t	t	asam	Assembly
 type	t	t	coge	General Coordination
-type	t	t	for	Intern training
-type	t	t	for_ext	Extern training
-type	t	t	ger	Gerency
-type	t	t	rrhh	RRHH
-type	t	f	pex	Extern Projects
-type	t	f	pin	Intern Projects
+type	t	t	for	Internal Training
+type	t	t	for_ext	External Training
+type	t	t	ger	Management
+type	t	t	rrhh	Human Resources
+type	t	f	pex	External Projects
+type	t	f	pin	Internal Projects
 type	t	t	ap	Personal Matters
-type	t	t	baj	Sick leave
+type	t	t	baj	Sick Leave
 type	t	t	hac	Hackfest
 type	t	t	vac	Holidays
 ttype	t	\N	analisis	Analysis
@@ -117,9 +117,9 @@ ttype	t	\N	publicacion	Publication
 ttype	t	\N	requisitos	Requisites
 ttype	f	\N	demo	Demostration
 ttype	f	\N	mantenimiento	Support
-ttype	f	\N	mto_sistemas	Support Systems
+ttype	f	\N	mto_sistemas	Systems Support
 ttype	f	\N	tecnologia	Technology
-ttype	t	\N	seguimiento_com	Sales monitoring
+ttype	t	\N	seguimiento_com	Sales Monitoring
 \.
 
 
