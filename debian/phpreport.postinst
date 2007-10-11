@@ -21,7 +21,6 @@ case "$1" in
 	export data_sql=data_phpreport.sql
 	export dir_install=`pwd`
 	export www_dir=/usr/share/${PKG}
-	export conf_dir=/usr/share/doc
 	export etc_dir=/etc/${PKG}
 	mkdir ${etc_dir}
 
@@ -97,11 +96,11 @@ case "$1" in
 
 	# copy configuration file into directory web server
 	if [ -d /etc/apache ]; then
-	    cp ${conf_dir}/phpreport /etc/apache/conf.d
+	    cp ${www_dir}/conf.d/phpreport /etc/apache/conf.d
 	fi
 	    
 	if [ -d /etc/apache2 ]; then
-	    cp ${conf_dir}/phpreport /etc/apache2/conf.d
+	    cp ${www_dir}/conf.d/phpreport /etc/apache2/conf.d
 	fi
 
         cd $tmp_dir

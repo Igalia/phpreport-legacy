@@ -5,3 +5,4 @@ images	usr/share/phpreport
 include	usr/share/phpreport
 share	usr/share/phpreport
 i18n	usr/share/phpreport
+conf.d	usr/share/phpreport

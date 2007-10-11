@@ -61,9 +61,9 @@ case "$1" in
 	#rm -rf /tmp/*${PKG}*
 	ucf --purge /etc/dbconfig-common/${PKG}-${VERS}.conf
 	rm -f /etc/dbconfig-common/${PKG}*
-	rm -rf /etc/${PKG}-${VERS}/
-	rm -rf /etc/apache/${PKG}*
-	rm -rf /etc/apache2/${PKG}*
+	rm -rf /etc/${PKG}*
+	rm -rf /etc/apache/conf.d/${PKG}*
+	rm -rf /etc/apache2/conf.d/${PKG}*
 	rm -rf /usr/share/${PKG}/rules.dtd
 
 	. /usr/share/debconf/confmodule
