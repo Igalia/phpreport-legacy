@@ -91,7 +91,7 @@ type	t	f	vent	Sales
 type	t	f	adm	Administration/Finances
 type	t	f	comu	Comunication
 type	t	f	prac	Practices
-type	t	t	asam	Meeting
+type	t	t	asam	Assembly
 type	t	t	coge	General Coordination
 type	t	t	for	Intern training
 type	t	t	for_ext	Extern training

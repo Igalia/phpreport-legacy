@@ -4,57 +4,61 @@
 <weeklyDedication>
 <dedication month="January">
 <dailyDedication day="9">
-<task type="SYS" start="1000" end="1030">
-System task
+<task type="PIN" name="phpreport" start="1000" end="1030">
+Improvements of an internal igalia project called phpreport
 </task>
-<task type="PEX" name="test1" phase="construction"
+<task type="PEX" name="debian_course"
        start="1030" end="1500">
-
+Development debian course for a customer
 </task>
-<task type="PEX" name="test1" phase="construction"
+<task type="PEX" name="debian_course"
        start="1530" end="2000" telework="true">
-Work on project test1
+Development debian course for a customer
 </task>
 </dailyDedication>
 
 <dailyDedication day="10">
-<task type="PEX" name="test1" phase="construction"
+<task type="PEX" name="debian_course"
        start="1100" end="1430">
-Work on project test1
+Work on project debian_course
 </task>
-<task type="PEX" name="test1" phase="construction"
+<task type="PEX" name="debian_course"
        start="1530" end="2000">
-Work on project test1
+Work on project debian_course
 </task>
 </dailyDedication>
 
 <dailyDedication day="11">
-<task type="PEX" name="test1" phase="construction"
-       start="1100" end="1430">
-Work on project test1
+<task type="asam" 
+       start="0900" end="1115">
+Asistance to igalia assembly
 </task>
-<task type="PEX" name="test1" phase="construction"
+<task type="PEX" name="debian_course"
+       start="1115" end="1430">
+Work on project debian_course
+</task>
+<task type="PEX" name="debian_course"
        start="1600" end="2100">
-Work on project test1
+Work on project debian_course
 </task>
 </dailyDedication>
 
 <dailyDedication day="12">
-<task type="PEX" name="test1" phase="construction"
+<task type="PEX" name="debian_course"
        start="1100" end="1430">
-Work on project test1
+Work on project debian_course
 </task>
-<task type="PEX" name="test1" phase="construction"
+<task type="PEX" name="debian_course"
        start="1530" end="2000">
-Work on project test1 (reunión Santiago)
+Work on project debian_course (reunión Santiago)
 </task>
 </dailyDedication>
 
 <dailyDedication day="13">
-<task type="COR" start="1000" end="1400">
+<task type="PIN" start="1000" end="1400">
 Coordination meeting
 </task>
-<task type="COR" start="1600" end="2000">
+<task type="PIN" start="1600" end="2000">
 Coordination meeting
 </task>
 </dailyDedication>
