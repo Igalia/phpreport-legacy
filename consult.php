@@ -460,8 +460,8 @@ foreach(set_to_array($parameters) as $parameter) {
   if (in_array($admin_group_name,(array)$session_groups)) {
 ?>
   <td>
-  <?=_("Predefined variables:");?><br>
-  <input type="text" name="vars" value="<?=$show_vars?>" size="80">
+  <?=_("Predefined variables:");?>
+  <?=$show_vars?>
   </td>
 <?
   }
