@@ -1,0 +1,34 @@
+digraph g {
+node [ fontsize = "10", shape = record ];
+edge [];
+
+"block" [shape = record, label = "{<col0> \N| uid:  character varying(20)\l_date:  date\l}" ];
+
+"compensation" [shape = record, label = "{<col0> \N| uid:  character varying(20)\linit:  date\l_end:  date\lhours:  integer\lpaid:  numeric(8,2)\l}" ];
+
+"consult" [shape = record, label = "{<col0> \N| id:  integer\ltitle:  character varying(80)\lsql:  character varying(4096)\lparameters:  character varying(512)\ldescription:  character varying(1024)\lpublic:  boolean\l}" ];
+
+"customer" [shape = record, label = "{<col0> \N| id:  character varying(256)\lname:  character varying(256)\ltype:  character varying(256)\lsector:  character varying(256)\lurl:  character varying(8192)\l}" ];
+
+"extra_hours" [shape = record, label = "{<col0> \N| uid:  character varying(20)\lhours:  double precision\ldate:  date\l}" ];
+
+"holiday" [shape = record, label = "{<col0> \N| fest:  date\lcity:  character varying(30)\l}" ];
+
+"label" [shape = record, label = "{<col0> \N| type:  character varying(20)\lactivation:  boolean\lno_customer:  boolean\lcode:  character varying(256)\ldescription:  character varying(256)\l}" ];
+
+"periods" [shape = record, label = "{<col0> \N| uid:  character varying(20)\ljourney:  integer\linit:  date\l_end:  date\lcity:  character varying(30)\lhour_cost:  numeric(8,4)\l}" ];
+
+"project_user" [shape = record, label = "{<col0> \N| uid:  character varying(256)\lname:  character varying(256)\l}" ];
+
+"projects" [shape = record, label = "{<col0> \N| activation:  boolean\linit:  date\l_end:  date\linvoice:  double precision\lest_hours:  double precision\lcustomer:  character varying(256)\larea:  character varying(256)\lid:  character varying(256)\ldescription:  character varying(256)\l}" ];
+
+"report" [shape = record, label = "{<col0> \N| uid:  character varying(20)\l_date:  date\lmodification_date:  date\l}" ];
+
+"task" [shape = record, label = "{<col0> \N| uid:  character varying(20)\l_date:  date\linit:  integer\l_end:  integer\ltype:  character varying(10)\lphase:  character varying(15)\lttype:  character varying(40)\ltext:  character varying(8192)\lstory:  character varying(80)\ltelework:  boolean\lcustomer:  character varying(256)\lname:  character varying(256)\l}" ];
+
+"users" [shape = record, label = "{<col0> \N| uid:  character varying(20)\lpassword:  character varying(255)\ladmin:  boolean\lstaff:  boolean\l}" ];
+
+
+}
+
+

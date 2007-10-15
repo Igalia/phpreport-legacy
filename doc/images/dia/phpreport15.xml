@@ -1,0 +1,2217 @@
+<!-- $Header: /var/publiccvs/phpreport-legacy/doc/images/dia/phpreport15.xml,v 1.1.2.1 2007-10-15 08:59:56 amaneiro Exp $ -->
+
+<book id="database.phpreport15" xreflabel="phpreport15 database schema"><title>phpreport15 Model</title>
+
+
+
+
+  <chapter id="public.schema"
+           xreflabel="public">
+    <title>Schema public</title>
+    <para>Standard public schema</para>
+
+
+      <section id="public.table.block"
+               xreflabel="public.block">
+        <title id="public.table.block-title">
+         Table:
+         
+         <structname>block</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>block</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>uid</structfield></term>
+              <listitem><para>
+                <type>character varying(20)</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>_date</structfield></term>
+              <listitem><para>
+                <type>date</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on block</title>
+
+          <varlistentry>
+            <term>block_uid_key</term>
+            <listitem><para>uid</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+        <variablelist>
+          <title>Permissions on block</title>
+
+          <varlistentry>
+            <term>phpreport15</term>
+            <listitem>
+              <para>
+                <simplelist type="inline">
+
+                  <member>Select</member>
+
+
+                  <member>Insert</member>
+
+
+                  <member>Update</member>
+
+
+                  <member>Delete</member>
+
+
+
+                  <member>References</member>
+
+
+                  <member>Trigger</member>
+
+                </simplelist>
+              </para>
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.compensation"
+               xreflabel="public.compensation">
+        <title id="public.table.compensation-title">
+         Table:
+         
+         <structname>compensation</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>compensation</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>uid</structfield></term>
+              <listitem><para>
+                <type>character varying(20)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>init</structfield></term>
+              <listitem><para>
+                <type>date</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>_end</structfield></term>
+              <listitem><para>
+                <type>date</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>hours</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>paid</structfield></term>
+              <listitem><para>
+                <type>numeric(8,2)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+        <variablelist>
+          <title>Permissions on compensation</title>
+
+          <varlistentry>
+            <term>phpreport15</term>
+            <listitem>
+              <para>
+                <simplelist type="inline">
+
+                  <member>Select</member>
+
+
+                  <member>Insert</member>
+
+
+                  <member>Update</member>
+
+
+                  <member>Delete</member>
+
+
+
+                  <member>References</member>
+
+
+                  <member>Trigger</member>
+
+                </simplelist>
+              </para>
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.consult"
+               xreflabel="public.consult">
+        <title id="public.table.consult-title">
+         Table:
+         
+         <structname>consult</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>consult</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+                <literal>DEFAULT nextval((&apos;&quot;consult_id_seq&quot;&apos;::text)::regclass)</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>title</structfield></term>
+              <listitem><para>
+                <type>character varying(80)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>sql</structfield></term>
+              <listitem><para>
+                <type>character varying(4096)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>parameters</structfield></term>
+              <listitem><para>
+                <type>character varying(512)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>description</structfield></term>
+              <listitem><para>
+                <type>character varying(1024)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>public</structfield></term>
+              <listitem><para>
+                <type>boolean</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on consult</title>
+
+          <varlistentry>
+            <term>consult_id_key</term>
+            <listitem><para>id</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+        <variablelist>
+          <title>Permissions on consult</title>
+
+          <varlistentry>
+            <term>phpreport15</term>
+            <listitem>
+              <para>
+                <simplelist type="inline">
+
+                  <member>Select</member>
+
+
+                  <member>Insert</member>
+
+
+                  <member>Update</member>
+
+
+                  <member>Delete</member>
+
+
+
+                  <member>References</member>
+
+
+                  <member>Trigger</member>
+
+                </simplelist>
+              </para>
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.customer"
+               xreflabel="public.customer">
+        <title id="public.table.customer-title">
+         Table:
+         
+         <structname>customer</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>customer</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>character varying(256)</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>name</structfield></term>
+              <listitem><para>
+                <type>character varying(256)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>character varying(256)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>sector</structfield></term>
+              <listitem><para>
+                <type>character varying(256)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>url</structfield></term>
+              <listitem><para>
+                <type>character varying(8192)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+        <variablelist>
+          <title>Permissions on customer</title>
+
+          <varlistentry>
+            <term>phpreport15</term>
+            <listitem>
+              <para>
+                <simplelist type="inline">
+
+                  <member>Select</member>
+
+
+                  <member>Insert</member>
+
+
+                  <member>Update</member>
+
+
+                  <member>Delete</member>
+
+
+
+                  <member>References</member>
+
+
+                  <member>Trigger</member>
+
+                </simplelist>
+              </para>
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.extra-hours"
+               xreflabel="public.extra_hours">
+        <title id="public.table.extra-hours-title">
+         Table:
+         
+         <structname>extra_hours</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>extra_hours</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>uid</structfield></term>
+              <listitem><para>
+                <type>character varying(20)</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>hours</structfield></term>
+              <listitem><para>
+                <type>double precision</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>date</structfield></term>
+              <listitem><para>
+                <type>date</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on extra_hours</title>
+
+          <varlistentry>
+            <term>extra_hours_id_key</term>
+            <listitem><para>uid, date</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+        <variablelist>
+          <title>Permissions on extra_hours</title>
+
+          <varlistentry>
+            <term>phpreport15</term>
+            <listitem>
+              <para>
+                <simplelist type="inline">
+
+                  <member>Select</member>
+
+
+                  <member>Insert</member>
+
+
+                  <member>Update</member>
+
+
+                  <member>Delete</member>
+
+
+
+                  <member>References</member>
+
+
+                  <member>Trigger</member>
+
+                </simplelist>
+              </para>
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.holiday"
+               xreflabel="public.holiday">
+        <title id="public.table.holiday-title">
+         Table:
+         
+         <structname>holiday</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>holiday</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>fest</structfield></term>
+              <listitem><para>
+                <type>date</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>city</structfield></term>
+              <listitem><para>
+                <type>character varying(30)</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on holiday</title>
+
+          <varlistentry>
+            <term>holiday_city_key</term>
+            <listitem><para>city</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>holiday_date_key</term>
+            <listitem><para>fest</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+        <variablelist>
+          <title>Permissions on holiday</title>
+
+          <varlistentry>
+            <term>phpreport15</term>
+            <listitem>
+              <para>
+                <simplelist type="inline">
+
+                  <member>Select</member>
+
+
+                  <member>Insert</member>
+
+
+                  <member>Update</member>
+
+
+                  <member>Delete</member>
+
+
+
+                  <member>References</member>
+
+
+                  <member>Trigger</member>
+
+                </simplelist>
+              </para>
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.label"
+               xreflabel="public.label">
+        <title id="public.table.label-title">
+         Table:
+         
+         <structname>label</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>label</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>character varying(20)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>activation</structfield></term>
+              <listitem><para>
+                <type>boolean</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT true</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>no_customer</structfield></term>
+              <listitem><para>
+                <type>boolean</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>code</structfield></term>
+              <listitem><para>
+                <type>character varying(256)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>description</structfield></term>
+              <listitem><para>
+                <type>character varying(256)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on label</title>
+
+          <varlistentry>
+            <term>label_activation_key</term>
+            <listitem><para>activation</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>label_type_key</term>
+            <listitem><para>&quot;type&quot;</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+        <variablelist>
+          <title>Permissions on label</title>
+
+          <varlistentry>
+            <term>phpreport15</term>
+            <listitem>
+              <para>
+                <simplelist type="inline">
+
+                  <member>Select</member>
+
+
+                  <member>Insert</member>
+
+
+                  <member>Update</member>
+
+
+                  <member>Delete</member>
+
+
+
+                  <member>References</member>
+
+
+                  <member>Trigger</member>
+
+                </simplelist>
+              </para>
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.periods"
+               xreflabel="public.periods">
+        <title id="public.table.periods-title">
+         Table:
+         
+         <structname>periods</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>periods</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>uid</structfield></term>
+              <listitem><para>
+                <type>character varying(20)</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>journey</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>init</structfield></term>
+              <listitem><para>
+                <type>date</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>_end</structfield></term>
+              <listitem><para>
+                <type>date</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>city</structfield></term>
+              <listitem><para>
+                <type>character varying(30)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>hour_cost</structfield></term>
+              <listitem><para>
+                <type>numeric(8,4)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+        <variablelist>
+          <title>Permissions on periods</title>
+
+          <varlistentry>
+            <term>phpreport15</term>
+            <listitem>
+              <para>
+                <simplelist type="inline">
+
+                  <member>Select</member>
+
+
+                  <member>Insert</member>
+
+
+                  <member>Update</member>
+
+
+                  <member>Delete</member>
+
+
+
+                  <member>References</member>
+
+
+                  <member>Trigger</member>
+
+                </simplelist>
+              </para>
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.project-user"
+               xreflabel="public.project_user">
+        <title id="public.table.project-user-title">
+         Table:
+         
+         <structname>project_user</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>project_user</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>uid</structfield></term>
+              <listitem><para>
+                <type>character varying(256)</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>name</structfield></term>
+              <listitem><para>
+                <type>character varying(256)</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+        <variablelist>
+          <title>Permissions on project_user</title>
+
+          <varlistentry>
+            <term>phpreport15</term>
+            <listitem>
+              <para>
+                <simplelist type="inline">
+
+                  <member>Select</member>
+
+
+                  <member>Insert</member>
+
+
+                  <member>Update</member>
+
+
+                  <member>Delete</member>
+
+
+
+                  <member>References</member>
+
+
+                  <member>Trigger</member>
+
+                </simplelist>
+              </para>
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.projects"
+               xreflabel="public.projects">
+        <title id="public.table.projects-title">
+         Table:
+         
+         <structname>projects</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>projects</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>activation</structfield></term>
+              <listitem><para>
+                <type>boolean</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+                <literal>DEFAULT true</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>init</structfield></term>
+              <listitem><para>
+                <type>date</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>_end</structfield></term>
+              <listitem><para>
+                <type>date</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>invoice</structfield></term>
+              <listitem><para>
+                <type>double precision</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>est_hours</structfield></term>
+              <listitem><para>
+                <type>double precision</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>customer</structfield></term>
+              <listitem><para>
+                <type>character varying(256)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>area</structfield></term>
+              <listitem><para>
+                <type>character varying(256)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>id</structfield></term>
+              <listitem><para>
+                <type>character varying(256)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>description</structfield></term>
+              <listitem><para>
+                <type>character varying(256)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+        <variablelist>
+          <title>Permissions on projects</title>
+
+          <varlistentry>
+            <term>phpreport15</term>
+            <listitem>
+              <para>
+                <simplelist type="inline">
+
+                  <member>Select</member>
+
+
+                  <member>Insert</member>
+
+
+                  <member>Update</member>
+
+
+                  <member>Delete</member>
+
+
+
+                  <member>References</member>
+
+
+                  <member>Trigger</member>
+
+                </simplelist>
+              </para>
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.report"
+               xreflabel="public.report">
+        <title id="public.table.report-title">
+         Table:
+         
+         <structname>report</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>report</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>uid</structfield></term>
+              <listitem><para>
+                <type>character varying(20)</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>_date</structfield></term>
+              <listitem><para>
+                <type>date</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>modification_date</structfield></term>
+              <listitem><para>
+                <type>date</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+        <variablelist>
+          <title>Indexes on report</title>
+
+          <varlistentry>
+            <term>report_date_key</term>
+            <listitem><para>_date</para></listitem>
+          </varlistentry>
+
+
+
+          <varlistentry>
+            <term>report_uid_key</term>
+            <listitem><para>uid</para></listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+        <variablelist>
+          <title>Permissions on report</title>
+
+          <varlistentry>
+            <term>phpreport15</term>
+            <listitem>
+              <para>
+                <simplelist type="inline">
+
+                  <member>Select</member>
+
+
+                  <member>Insert</member>
+
+
+                  <member>Update</member>
+
+
+                  <member>Delete</member>
+
+
+
+                  <member>References</member>
+
+
+                  <member>Trigger</member>
+
+                </simplelist>
+              </para>
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.task"
+               xreflabel="public.task">
+        <title id="public.table.task-title">
+         Table:
+         
+         <structname>task</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>task</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>uid</structfield></term>
+              <listitem><para>
+                <type>character varying(20)</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>_date</structfield></term>
+              <listitem><para>
+                <type>date</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>init</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>_end</structfield></term>
+              <listitem><para>
+                <type>integer</type>
+
+
+
+                <literal>NOT NULL</literal>
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>type</structfield></term>
+              <listitem><para>
+                <type>character varying(10)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>phase</structfield></term>
+              <listitem><para>
+                <type>character varying(15)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>ttype</structfield></term>
+              <listitem><para>
+                <type>character varying(40)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>text</structfield></term>
+              <listitem><para>
+                <type>character varying(8192)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>story</structfield></term>
+              <listitem><para>
+                <type>character varying(80)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>telework</structfield></term>
+              <listitem><para>
+                <type>boolean</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>customer</structfield></term>
+              <listitem><para>
+                <type>character varying(256)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>name</structfield></term>
+              <listitem><para>
+                <type>character varying(256)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+        <variablelist>
+          <title>Permissions on task</title>
+
+          <varlistentry>
+            <term>phpreport15</term>
+            <listitem>
+              <para>
+                <simplelist type="inline">
+
+                  <member>Select</member>
+
+
+                  <member>Insert</member>
+
+
+                  <member>Update</member>
+
+
+                  <member>Delete</member>
+
+
+
+                  <member>References</member>
+
+
+                  <member>Trigger</member>
+
+                </simplelist>
+              </para>
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+      </para>
+    </section>
+
+      <section id="public.table.users"
+               xreflabel="public.users">
+        <title id="public.table.users-title">
+         Table:
+         
+         <structname>users</structname>
+        </title>
+ 
+
+
+        <para>
+          <variablelist>
+            <title>
+              Structure of <structname>users</structname>
+            </title>
+
+
+            <varlistentry>
+              <term><structfield>uid</structfield></term>
+              <listitem><para>
+                <type>character varying(20)</type>
+
+
+                <literal>PRIMARY KEY</literal>
+
+
+
+
+
+
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>password</structfield></term>
+              <listitem><para>
+                <type>character varying(255)</type>
+
+
+
+
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>admin</structfield></term>
+              <listitem><para>
+                <type>boolean</type>
+
+
+
+
+
+                <literal>DEFAULT false</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+            <varlistentry>
+              <term><structfield>staff</structfield></term>
+              <listitem><para>
+                <type>boolean</type>
+
+
+
+
+
+                <literal>DEFAULT false</literal>
+
+
+
+              </para>
+
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+
+
+
+
+
+
+
+        <variablelist>
+          <title>Permissions on users</title>
+
+          <varlistentry>
+            <term>phpreport15</term>
+            <listitem>
+              <para>
+                <simplelist type="inline">
+
+                  <member>Select</member>
+
+
+                  <member>Insert</member>
+
+
+                  <member>Update</member>
+
+
+                  <member>Delete</member>
+
+
+
+                  <member>References</member>
+
+
+                  <member>Trigger</member>
+
+                </simplelist>
+              </para>
+            </listitem>
+          </varlistentry>
+
+        </variablelist>
+
+
+
+      </para>
+    </section>
+
+
+
+<!-- Function one(  ) -->
+    <section id="public.function.one"
+             xreflabel="publicone(  )">
+      <title id="public.function.one-title">
+       one(  )
+      </title>
+      <titleabbrev id="public.function.one-titleabbrev">
+       one(  )
+      </titleabbrev>
+
+      <para>
+       <segmentedlist>
+        <title>Function Properties</title>
+        <?dbhtml list-presentation="list"?>
+        <segtitle>Language</segtitle>
+        <segtitle>Return Type</segtitle>
+        <seglistitem>
+         <seg>SQL</seg>
+         <seg>integer</seg>
+        </seglistitem>
+       </segmentedlist>
+ 
+       
+        <programlisting>SELECT 1 as RESULT</programlisting>
+      </para>
+    </section>
+
+  </chapter>
+
+</book>
+
