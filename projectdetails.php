@@ -56,7 +56,7 @@ $project_init=$row["init_date"];
 
 /* End date: date of the last task for this project */
 $project_end="";
-$result=@pg_exec($cnx, $query="SELECT (MAX(_date) + '1 day'::interval)::date AS end_date FROM task WHERE name = '".$id."'")
+$result=@pg_exec($cnx, $query="SELECT MAX(_date) AS end_date FROM task WHERE name = '".$id."'")
         or die("$die $query");
 $row=@pg_fetch_array($result,0,PGSQL_ASSOC);
 $project_end=$row["end_date"];
