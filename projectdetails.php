@@ -149,7 +149,7 @@ $uppest_date = date_web_to_sql($end);
 
 /* Retrieve users who work/worked in this project during the specified interval */
 $users=@pg_exec($cnx,$query="SELECT DISTINCT uid FROM task WHERE ( _date >= '"
-		.$lowest_date."'::date AND _date < '".$uppest_date."'::date ) AND name = '"
+		.$lowest_date."'::date AND _date <= '".$uppest_date."'::date ) AND name = '"
 		.$id."' ORDER BY uid ASC") or die($die);
 $users_consult=array();
 for ($i=0;$row=@pg_fetch_array($users,$i,PGSQL_ASSOC);$i++) {
@@ -159,7 +159,7 @@ for ($i=0;$row=@pg_fetch_array($users,$i,PGSQL_ASSOC);$i++) {
 
 /* Retrieve project dedication during the specified interval */
 $data=@pg_exec($cnx,$query="SELECT type, uid, SUM( _end - init ) / 60.0 AS add_hours FROM task WHERE ( _date >= '"
-	       .$lowest_date."'::date AND _date < '".$uppest_date."'::date ) AND name = '"
+	       .$lowest_date."'::date AND _date <= '".$uppest_date."'::date ) AND name = '"
 	       .$id."' GROUP BY type, uid ORDER BY uid ASC") or die($die);
 $data_consult=array();
 for ($i=0;$row=@pg_fetch_array($data,$i,PGSQL_ASSOC);$i++) {
