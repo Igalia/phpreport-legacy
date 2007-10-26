@@ -304,7 +304,7 @@ if ($size>0) usort ($task, cmp_init_dates);
     $fields=array("uid","_date","init","_end","name","type","customer","ttype","story","telework","text");
     $row=array();
     foreach ($fields as $field) {
-      $row[$field]=$task[$i][$field];
+      $row[$field]=trim($task[$i][$field]);
     }
     $row["uid"]=$session_uid;
     $row["_date"]=date_web_to_sql($day);
