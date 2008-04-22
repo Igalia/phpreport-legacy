@@ -39,7 +39,7 @@ $die=_("Can't finalize the operation");
 
 /* Project info and estimation of cost */
 $project=null;
-$result=@pg_exec($cnx, $query="SELECT id, description, activation, init, _end, invoice, est_hours "
+$result=@pg_exec($cnx, $query="SELECT id, description, type, activation, init, _end, invoice, est_hours "
 		              ."FROM projects WHERE id = "."'$id'")
         or die("$die $query");	
 $row=@pg_fetch_array($result,0,PGSQL_ASSOC);
@@ -142,6 +142,15 @@ for ($i=0;$row=@pg_fetch_array($type,$i,PGSQL_ASSOC);$i++) {
   $type_consult[]=$row["code"];
 }
 @pg_freeresult($type);
+
+/* retrieve project types */
+$result=@pg_exec($cnx,$query="SELECT code, description FROM label WHERE type='ptype'")
+        or die($die);
+$project_types=array();
+while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
+  $project_types[$row["code"]]=$row["description"];
+}
+@pg_freeresult($result);
 
 /* define limits to retrieve data for the specified interval */
 $lowest_date = date_web_to_sql($init);
@@ -254,6 +263,10 @@ if (!empty($confirmation)) msg_ok($confirmation);
 				  <td align="right"><b><?=_("Description: ")?></b></td>
 				  <td align="left"><?=$project["description"]?></td> 
 				</tr>				
+				<tr>
+				  <td align="right"><b><?=_("Project type: ")?></b></td>
+				  <td align="left"><?=$project_types[$project["type"]]?></td> 
+				</tr>
 				<tr>
 				  <td align="right"><b><?=_("Activation")?>:</b></td>
 				  <td align="left">

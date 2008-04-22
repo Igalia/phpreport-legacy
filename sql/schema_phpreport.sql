@@ -171,7 +171,8 @@ CREATE TABLE projects (
     customer character varying(256),
     area character varying(256),
     id character varying(256),
-    description character varying(256)
+    description character varying(256),
+    type character varying(256)
 );
 
 

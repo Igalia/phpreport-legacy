@@ -120,6 +120,8 @@ ttype	f	\N	mantenimiento	Support
 ttype	f	\N	mto_sistemas	Systems Support
 ttype	f	\N	tecnologia	Technology
 ttype	t	\N	seguimiento_com	Sales Monitoring
+ptype	t	\N	per_goals	Per goals
+ptype	t	\N	per_hours	Per hours
 \.
 
 

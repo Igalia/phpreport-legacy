@@ -111,6 +111,21 @@ if ($sheets==4 || $sheets==7) {
     $activationCond=" true ";
   }
 
+  /* Project type filter */
+  if (isset($ptype)) {
+    switch($ptype) {
+    case 'all': /* All projects */
+      $ptypeCond=" true ";
+      break;
+    default:
+      /* some filter specified */
+      $ptypeCond=" type = '".$ptype."' ";
+    }
+  } else {
+    $ptypeCond=" true ";
+    $ptype='all';
+  }
+
   /* Init some useful boolean values */
   $showAllAreas = (isset($area) && ($area=='all_areas'));
   $showAllProjects = (isset($showActivation) && ($showActivation==1));
@@ -134,7 +149,7 @@ if ($sheets==4 || $sheets==7) {
 
     /* Retrieve codes for projects */
     $code=@pg_exec($cnx,$query="SELECT id FROM projects WHERE "
-		   .$areaCond." AND ".$activationCond." AND "
+		   .$areaCond." AND ".$activationCond." AND ".$ptypeCond." AND "
 		   .$minInvoiceCond." AND ".$maxInvoiceCond
 		   ." ORDER BY id")
       or die($die);
@@ -152,13 +167,13 @@ if ($sheets==4 || $sheets==7) {
     if (!empty($init) && !empty($end)) {
       $code=@pg_exec($cnx,$query="SELECT distinct p.id FROM projects p JOIN task t ON p.id = t.name WHERE "
 		     ."t._date >= '".date_web_to_sql($init)."' AND t._date < '".date_web_to_sql($end)
-		     ."' AND ".$areaCond." AND ".$activationCond
+		     ."' AND ".$areaCond." AND ".$activationCond." AND ".$ptypeCond
 		     ." AND ".$minInvoiceCond." AND ".$maxInvoiceCond
 		     ." ORDER BY p.id") 
 	or die($die);
     } else {
       $code=@pg_exec($cnx,$query="SELECT id FROM projects WHERE "
-		     .$areaCond." AND ".$activationCond
+		     .$areaCond." AND ".$activationCond." AND ".$ptypeCond
 		     ." AND ".$minInvoiceCond." AND ".$maxInvoiceCond
 		     ." ORDER BY id")
 	or die($die);
@@ -181,11 +196,26 @@ if ($sheets==4 || $sheets==7) {
   }
   @pg_freeresult($result);
   
+  /* Retrieve list of project types */
+  $result=@pg_exec($cnx,$query="SELECT code, description FROM label WHERE type='ptype' AND activation='t' ORDER BY code")
+    or die("$die $query");
+
+  $project_types=array();
+  while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
+    $project_types[]=$row;
+  }
+  @pg_freeresult($result);
+
   /* Build needed view lists */
   $areasList=array();
   $areasList["all_areas"]=_("All areas");
   foreach ($project_areas as $project_area){ 
     $areasList[$project_area["code"]]=$project_area["description"];
+  }
+  $ptypesList=array();
+  $ptypesList["all"]= _("All");
+  foreach ($project_types as $type){ 
+    $ptypesList[$type["code"]]=$type["description"];
   }
 } else {
 
@@ -327,7 +357,7 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
       LEFT JOIN
       (SELECT * FROM projects
       ) AS proj ON (proj.id=tblTotal.name)
-      WHERE $areaCond AND $activationCond AND $minInvoiceCond AND $maxInvoiceCond
+      WHERE $areaCond AND $activationCond AND $ptypeCond AND $minInvoiceCond AND $maxInvoiceCond
       ORDER BY name")
       or die($die);
 
@@ -393,7 +423,7 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
       $data=@pg_exec($cnx,$query="SELECT SUM( t._end - t.init ) / 60.0 AS period_worked_hours "
 		     ."FROM task  t JOIN projects p ON t.name = p.id WHERE "
 		     ."p.activation = 'f' AND p.invoice > 0 AND p.est_hours > 0 AND t.name <> '' "
-		     ." AND ".$areaCond." AND ".$activationCond
+		     ." AND ".$areaCond." AND ".$activationCond." AND ".$ptypeCond
 		     ." AND ".$minInvoiceCond." AND ".$maxInvoiceCond
 		     ." AND t._date >= '".$init."' AND t._date < '".$end."'") 
 	or die($die);
@@ -427,7 +457,7 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
        JOIN projects p ON t.name = p.id 
 		   WHERE t.name <> '' AND 
 		   t._date >= '$init' AND t._date < '$end'
-                   AND  $areaCond AND $activationCond AND $minInvoiceCond AND $maxInvoiceCond
+                   AND  $areaCond AND $activationCond AND $ptypeCond AND $minInvoiceCond AND $maxInvoiceCond
                    GROUP BY t.name
        ) AS tblPeriod
        WHERE tblTotal.name=tblPeriod.name  ORDER BY name")
@@ -652,6 +682,13 @@ if ($sheets==4 || $sheets==7) {
   <td>
     <select name="showActivation" onchange="javascript: document.results.submit();">
       <?=array_to_option(array_values($activationOptions),$showActivation,array_keys($activationOptions))?>
+    </select>
+  </td>
+ <tr>
+  <td align="right"><b><?=_("Project type")?></b></td>
+  <td>
+    <select name="ptype" onchange="javascript: document.results.submit();">
+      <?=array_to_option(array_values($ptypesList),$ptype,array_keys($ptypesList))?>
     </select>
   </td>
  </tr>

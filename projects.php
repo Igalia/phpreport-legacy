@@ -64,6 +64,7 @@ if (!empty($change)) {
   $project["invoice"]=$invoice;
   $project["init"]=$init;
   $project["_end"]=$end;   
+  $project["type"]=$type;
  
   $init=date_web_to_quoted_sql($init);
   $end=date_web_to_quoted_sql($end);  
@@ -71,7 +72,7 @@ if (!empty($change)) {
   if (!pg_exec($cnx,$query="UPDATE projects SET "
     ." description='$description',activation='".(($activation==1)?"t":"f")."',"
     ." customer='$customer',area='$area',est_hours='$est_hours',invoice='$invoice',"
-    ."init=".$init.", _end=".$end
+    ."init=".$init.", _end=".$end.", type=".(($type != 'unknown_type')?("'$type'"):"NULL")
     ." WHERE id='$id'")||
       !pg_exec($cnx,$query="UPDATE label SET "
     ." description='$description' ,activation='".(($activation==1)?"t":"f")."'"
@@ -99,14 +100,15 @@ if (!empty($create)) {
   $project["invoice"]=$invoice;
   $project["init"]=$init;
   $project["_end"]=$end; 
+  $project["type"]=$type; 
   $init=date_web_to_quoted_sql($init);
   $end=date_web_to_quoted_sql($end);
   $activation=checkbox_to_sql($activation);
 
   if (!pg_exec($cnx,$query="INSERT INTO projects"
-    ." (id,description,customer,area,activation,est_hours,invoice,init,_end) "
+    ." (id,description,customer,area,activation,est_hours,invoice,init,_end,type) "
     ."VALUES ('$id', '$description','$customer','$area','$activation',"
-    ."'$est_hours','$invoice', $init, $end)")
+    ."'$est_hours','$invoice', $init, $end, '$type')")
     ||!pg_exec($cnx,$query="INSERT INTO " 
     ."label (type,code,description,activation) "
     ."VALUES ('name','$id','$description','$activation')")) {
@@ -180,6 +182,16 @@ while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
 }
 @pg_freeresult($result);
 
+/* Retrieve list of project types */
+$result=@pg_exec($cnx,$query="SELECT code, description FROM label WHERE type='ptype' AND activation='t' ORDER BY code")
+     or die("$die $query");
+
+$project_types=array();
+while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
+	$project_types[]=$row;
+}
+@pg_freeresult($result);
+
 /* Build needed view lists */
 $customersList=array();
 foreach ($customers as $cust) { 
@@ -189,6 +201,12 @@ foreach ($customers as $cust) {
 $areasList=array();
 foreach ($project_areas as $area){ 
   $areasList[$area["code"]]=$area["description"];
+}
+
+$ptypesList=array();
+$ptypesList[unknown_type]="(Type not set)";
+foreach ($project_types as $ptype){ 
+  $ptypesList[$ptype["code"]]=$ptype["description"];
 }
 
 // Load the available users to be shown in the combo
@@ -329,6 +347,15 @@ if (!empty($confirmation)) msg_ok($confirmation);
 				  <td>
 				    <select name="area">
 				      <?=array_to_option(array_values($areasList), $project["area"], array_keys($areasList))?>
+				    </select> 
+				  </td> 
+				</tr>
+
+				<tr>
+				  <td><b><?=_("Project type")?>:</b></td>
+				  <td>
+				    <select name="type">
+				      <?=array_to_option(array_values($ptypesList), $project["type"], array_keys($ptypesList))?>
 				    </select> 
 				  </td> 
 				</tr>

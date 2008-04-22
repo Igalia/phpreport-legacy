@@ -36,11 +36,24 @@ if (empty($max_percent_hour_dev)) $max_percent_hour_dev=50;
 if (empty($min_profit)) $min_profit=10;
 if (empty($max_profit)) $max_profit=30;
 
+/* retrieve project types */
+$result=@pg_exec($cnx,$query="SELECT code, description FROM label WHERE type='ptype'")
+        or die($die);
+$project_types=array("all" => _("All"));
+while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
+  $project_types[$row["code"]]=$row["description"];
+}
+@pg_freeresult($result);
+
+/* WHERE conditions */
 $init_end_condition=" p.init IS NOT NULL ";
 if (!empty($init)) $init_end_condition.=" AND p.init>='".date_web_to_sql($init)."' ";
 $init_end_condition.=" AND ";
 $init_end_condition.=" p._end IS NOT NULL ";
 if (!empty($end)) $init_end_condition.=" AND p._end<='".date_web_to_sql($end)."' ";
+
+$project_type_condition="";
+if ((!empty($type))&&($type!="all")) $project_type_condition=" AND p.type='".$type."'";
 
 // PERCENT HOUR DEVIATION AGAINST ESTIMATION (ALL HOURS)
 
@@ -54,7 +67,7 @@ $result=@pg_exec($cnx,$query=
     (SELECT p.id, p.est_hours, SUM( t._end - t.init ) / 60.0 AS tot_wk_hours
     FROM projects p
     JOIN task t ON (t.name=p.id)
-    WHERE ".$init_end_condition."
+    WHERE ".$init_end_condition.$project_type_condition."
     GROUP BY p.id, p.est_hours) AS tot
   WHERE
     tot.est_hours>0    
@@ -78,7 +91,7 @@ $result=@pg_exec($cnx,$query=
     (SELECT p.id, p.est_hours, SUM( t._end - t.init ) / 60.0 AS pex_wk_hours
     FROM projects p
     JOIN task t ON (t.name=p.id)
-    WHERE t.type='pex' AND ".$init_end_condition."
+    WHERE t.type='pex' AND ".$init_end_condition.$project_type_condition."
     GROUP BY p.id, p.est_hours) AS pex  
   WHERE pex.est_hours>0
   ORDER BY pex_dev  
@@ -107,7 +120,7 @@ $result=@pg_exec($cnx,$query=
         (t.uid=periods.uid) AND
         (periods.init IS NULL OR periods.init<=t._date) AND
         (periods._end IS NULL OR periods._end>=t._date) )
-    WHERE ".$init_end_condition."
+    WHERE ".$init_end_condition.$project_type_condition."
     GROUP BY p.id, p.invoice) AS tot  
   WHERE tot.invoice>0
   ORDER BY tot_hour_profit  
@@ -136,7 +149,7 @@ $result=@pg_exec($cnx,$query=
         (t.uid=periods.uid) AND
         (periods.init IS NULL OR periods.init<=t._date) AND
         (periods._end IS NULL OR periods._end>=t._date) )
-    WHERE ".$init_end_condition."
+    WHERE ".$init_end_condition.$project_type_condition."
     GROUP BY p.id, p.invoice) AS tot,
   
     (SELECT p.id, SUM ( t._end - t.init ) / 60.0 AS pex_hours, 
@@ -147,7 +160,7 @@ $result=@pg_exec($cnx,$query=
         (t.uid=periods.uid) AND
         (periods.init IS NULL OR periods.init<=t._date) AND
         (periods._end IS NULL OR periods._end>=t._date) )  
-    WHERE t.type='pex' AND ".$init_end_condition."
+    WHERE t.type='pex' AND ".$init_end_condition.$project_type_condition."
     GROUP BY p.id) AS pex
   
   WHERE
@@ -185,6 +198,15 @@ if (!empty($error)) msg_fail($error);
     <tr>
       <td><?=_("End date")?>:</td>
      <td><input type="text" name="end" value="<?=$end?>"></td> 
+    </tr>
+    <tr>
+    <tr>
+      <td><?=_("Project type: ")?></td>
+      <td>
+        <select name="type">
+          <?=array_to_option(array_values($project_types), $type, array_keys($project_types))?>
+        </select> 
+      </td> 
     </tr>
     <tr>
       <td><?=_("Minimum percent for hour deviation")?>:</td>
