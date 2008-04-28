@@ -170,7 +170,7 @@ CREATE TABLE projects (
     est_hours double precision,
     customer character varying(256),
     area character varying(256),
-    id character varying(256),
+    id character varying(256) NOT NULL,
     description character varying(256),
     type character varying(256)
 );
@@ -258,6 +258,12 @@ ALTER TABLE ONLY holiday
 ALTER TABLE ONLY customer
     ADD CONSTRAINT pk_customer PRIMARY KEY (id);
 
+--
+-- Name: pk_projects; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY projects
+    ADD CONSTRAINT pk_projects PRIMARY KEY(id);
 
 --
 -- Name: pk_project_user; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
