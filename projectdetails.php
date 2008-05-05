@@ -134,15 +134,6 @@ if ($init==""&&$end=="") {
   $error=_("Dates can't be void");
 }
 
-/* retrieve work types */
-$type=@pg_exec($cnx,$query="SELECT code FROM label WHERE type='type'")
-     or die($die);
-$type_consult=array();
-for ($i=0;$row=@pg_fetch_array($type,$i,PGSQL_ASSOC);$i++) {
-  $type_consult[]=$row["code"];
-}
-@pg_freeresult($type);
-
 /* retrieve project types */
 $result=@pg_exec($cnx,$query="SELECT code, description FROM label WHERE type='ptype'")
         or die($die);
@@ -166,22 +157,68 @@ for ($i=0;$row=@pg_fetch_array($users,$i,PGSQL_ASSOC);$i++) {
 }
 @pg_freeresult($users);
 
-/* Retrieve project dedication during the specified interval */
-$data=@pg_exec($cnx,$query="SELECT type, uid, SUM( _end - init ) / 60.0 AS add_hours FROM task WHERE ( _date >= '"
+if(empty($col_index))
+  $col_index="type";
+
+if($col_index=="type")
+{
+  /* Retrieve project dedication during the specified interval */
+  /* user/type table */
+  $data=@pg_exec($cnx,$query="SELECT type, uid, SUM( _end - init ) / 60.0 AS add_hours FROM task WHERE ( _date >= '"
 	       .$lowest_date."'::date AND _date <= '".$uppest_date."'::date ) AND name = '"
 	       .$id."' GROUP BY type, uid ORDER BY uid ASC") or die($die);
-$data_consult=array();
-for ($i=0;$row=@pg_fetch_array($data,$i,PGSQL_ASSOC);$i++) {
-  $data_consult[]=$row;
-}
-@pg_freeresult($data);
-$row_index="uid";
-$row_index_trans=_("User");
-$col_index="type";
-$col_index_trans=_("Type");
+  $data_consult=array();
+  for ($i=0;$row=@pg_fetch_array($data,$i,PGSQL_ASSOC);$i++) {
+    $data_consult[]=$row;
+  }
+  @pg_freeresult($data);
+  $row_index="uid";
+  $row_index_trans=_("User");
+  $col_index_trans=_("Type");
 
+  /* retrieve work types */
+  $type=@pg_exec($cnx,$query="SELECT code FROM label WHERE type='type'")
+        or die($die);
+  $column_field=array();
+  for ($i=0;$row=@pg_fetch_array($type,$i,PGSQL_ASSOC);$i++) {
+    $column_field[]=$row["code"];
+  }
+  @pg_freeresult($type);
+
+}
+if($col_index=="story")
+{
+  /* Retrieve project dedication during the specified interval */
+  /* user/story table */
+  $data=@pg_exec($cnx,$query="SELECT story, uid, SUM( _end - init ) / 60.0 AS add_hours FROM task WHERE ( _date >= '"
+	       .$lowest_date."'::date AND _date <= '".$uppest_date."'::date ) AND name = '"
+	       .$id."' GROUP BY story, uid ORDER BY uid ASC") or die($die);
+  $data_consult=array();
+  for ($i=0;$row=@pg_fetch_array($data,$i,PGSQL_ASSOC);$i++) {
+    $data_consult[]=$row;
+  }
+  @pg_freeresult($data);
+  $row_index="uid";
+  $row_index_trans=_("User");
+  $col_index_trans=_("Story");
+  
+  /* retrieve distinct stories in specified interval */
+  $story=@pg_exec($cnx,$query="SELECT DISTINCT story FROM task WHERE ( _date >= '"
+		.$lowest_date."'::date AND _date <= '".$uppest_date."'::date ) AND name = '"
+		.$id."' ORDER BY story ASC")
+        or die($die);
+  $column_field=array();
+  for ($i=0;$row=@pg_fetch_array($story,$i,PGSQL_ASSOC);$i++) {
+    if($row["story"]!="")
+      $column_field[]=$row["story"];
+    else
+      $column_field[]=_("(unassigned)");
+  }
+  @pg_freeresult($story);
+}
 foreach((array)$data_consult as $row2) {
   if($row2[$row_index]=="") $row2[$row_index]=_("(empty)");
+  if($row2[$col_index]=="") $row2[$col_index]=_("(unassigned)");
   $a[$row2[$row_index]][$row2[$col_index]]=$row2["add_hours"];
   $add_hours_row[$row2[$row_index]]+=$row2["add_hours"];
   $add_hours_col[$row2[$col_index]]+=$row2["add_hours"];
@@ -191,7 +228,7 @@ foreach ((array)$users_consult as $uid) {
   $percent_row[$uid]+=@($add_hours_row[$uid]*100/$add_hours);
   $percent_row["tot"]+=@($add_hours_row[$uid]*100/$add_hours);
 }
-foreach ((array)$type_consult as $type) {
+foreach ((array)$column_field as $type) {
   $percent_col[$type]+=@($add_hours_col[$type]/$add_hours*100);
   $percent_col["tot"]+=@($add_hours_col[$type]/$add_hours*100);
 }
@@ -513,6 +550,7 @@ if (!empty($confirmation)) msg_ok($confirmation);
 		    </tr>
 		  </table>
 		  <!-- set data from the other form to send it when this one is submitted -->
+			<input type="hidden" name="col_index" value="<?=$col_index?>">
 		  <input type="hidden" name="chart_type" value="<?=$ctype?>">
 		  </form>		  
 		</td>
@@ -526,7 +564,7 @@ if (!empty($confirmation)) msg_ok($confirmation);
       </table>
       
 
-      <!-- PERSON/TASK TABLE -->
+      <!-- PERSON/TASK-STORY TABLE -->
 
       <!-- box -->
       <table border="0" cellspacing="0" cellpadding="0">
@@ -542,7 +580,7 @@ if (!empty($confirmation)) msg_ok($confirmation);
 	      <tr>
 		<td bgcolor="#FFFFFF" class="title_box"></td>
 		<?
-		foreach ((array)$type_consult as $col) {
+		foreach ((array)$column_field as $col) {
 		?>
 		<td bgcolor="#FFFFFF" class="title_box">
 		  <?=$col?>
@@ -562,7 +600,7 @@ if (!empty($confirmation)) msg_ok($confirmation);
 		  <a href="userdetails.php?id=<?=$row?>"><?=$row?></a>
 		</td>
 		<? 
-		foreach ((array)$type_consult as $col) {
+		foreach ((array)$column_field as $col) {
 		if ($a[$row][$col]==""){
 		?>
 		<td bgcolor="#FFFFFF" class="text_data">&nbsp;</td>
@@ -590,7 +628,7 @@ if (!empty($confirmation)) msg_ok($confirmation);
 	      <tr>
 		<td bgcolor="#FFFFFF" class="title_box"><?=_("Total result")?></td>
 		<?
-		foreach ((array)$type_consult as $col) {
+		foreach ((array)$column_field as $col) {
 		?>
 		<td bgcolor="#FFFFFF" class="text_result"><b><?=sprintf("%01.2f",$add_hours_col[$col])?></b></td>
 		<?
@@ -602,7 +640,7 @@ if (!empty($confirmation)) msg_ok($confirmation);
 	      <tr>
 		<td bgcolor="#FFFFFF" class="title_box"><?=_("Percent")?></td>
 		<?
-		foreach ((array)$type_consult as $col) {
+		foreach ((array)$column_field as $col) {
 		?>
 		<td bgcolor="#FFFFFF" class="text_percent"><b><?=sprintf("%01.2f",$percent_col[$col])?></b></td>
 		<?
@@ -612,12 +650,42 @@ if (!empty($confirmation)) msg_ok($confirmation);
 		<td bgcolor="#FFFFFF" class="text_percent">&nbsp;</td>
 	      </tr>
 	      
-	      
 	      <!-- end title box -->
 	    </table>
 	    
 	  </td>
+
 	</tr>
+
+    <!-- TABLE SELECTION FORM -->
+
+	<tr>
+	  <td>
+		<form name="table_type" method="post">
+		  <!-- set data from the other forms to send it when this one is submitted -->
+		  <input type="hidden" name="chart_type" value="<?=$ctype?>">
+		  <input type="hidden" name="init" value="<?=$init?>">
+		  <input type="hidden" name="end" value="<?=$end?>">
+		  <?php
+		  if($col_index=="type")
+		  {
+		  ?>
+			<input type="hidden" name="col_index" value="story">
+			<input type="submit" name="view" value="<?=_("Change to user/story table")?>">
+		  <?php
+		  }
+		  if($col_index=="story")
+		  {
+		  ?>
+			<input type="hidden" name="col_index" value="type">
+			<input type="submit" name="view" value="<?=_("Change to user/task type table")?>">
+		  <?php
+		  }
+		  ?>
+		</form>
+	  </td>
+	</tr>
+
 	<tr>
 	  <td height="35px"><!-- spacing cell --></td>
 	</tr>
@@ -658,6 +726,7 @@ if (!empty($confirmation)) msg_ok($confirmation);
 			  ?>
 			</select>
 			<!-- set data from the other form to send it when this one is submitted -->
+			<input type="hidden" name="col_index" value="<?=$col_index?>">
 			<input type="hidden" name="init" value="<?=$init?>">
 			<input type="hidden" name="end" value="<?=$end?>">
 		      </td>
