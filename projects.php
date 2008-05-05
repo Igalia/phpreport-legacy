@@ -108,7 +108,7 @@ if (!empty($create)) {
   if (!pg_exec($cnx,$query="INSERT INTO projects"
     ." (id,description,customer,area,activation,est_hours,invoice,init,_end,type) "
     ."VALUES ('$id', '$description','$customer','$area','$activation',"
-    ."'$est_hours','$invoice', $init, $end, '$type')")
+    ."'$est_hours','$invoice', $init, $end, ".(($type != 'unknown_type')?("'$type'"):"NULL").")")
     ||!pg_exec($cnx,$query="INSERT INTO " 
     ."label (type,code,description,activation) "
     ."VALUES ('name','$id','$description','$activation')")) {
