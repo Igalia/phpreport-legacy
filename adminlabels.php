@@ -104,9 +104,9 @@ if (!empty($apply)) {
  }
 }
 
-$label=array(array(_('Type'),_('Code'),_('Description'),_('Activation'),_('Deleted')));
+$label=array(array(_('Type'),_('Code'),_('Description'),_('Activation'),_('No customer'),_('Deleted')));
 $die=_("Can't finalize the operation");
-$result=@pg_exec($cnx,$query="SELECT * FROM label"
+$result=@pg_exec($cnx,$query="SELECT type, code, description, activation, no_customer FROM label"
  ." ORDER BY type,code")
 or die($die);
 
