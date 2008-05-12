@@ -157,11 +157,14 @@ for ($i=0;$row=@pg_fetch_array($users,$i,PGSQL_ASSOC);$i++) {
 }
 @pg_freeresult($users);
 
-if(empty($col_index))
-  $col_index="type";
+if(empty($type_of_table))
+  $type_of_table="type";
 
-if($col_index=="type")
+$work_consult=array();
+if($type_of_table=="type")
 {
+  $type_of_table_trans=_("Type");
+
   /* Retrieve project dedication during the specified interval */
   /* user/type table */
   $data=@pg_exec($cnx,$query="SELECT type, uid, SUM( _end - init ) / 60.0 AS add_hours FROM task WHERE ( _date >= '"
@@ -172,22 +175,20 @@ if($col_index=="type")
     $data_consult[]=$row;
   }
   @pg_freeresult($data);
-  $row_index="uid";
-  $row_index_trans=_("User");
-  $col_index_trans=_("Type");
 
   /* retrieve work types */
   $type=@pg_exec($cnx,$query="SELECT code FROM label WHERE type='type'")
         or die($die);
-  $column_field=array();
   for ($i=0;$row=@pg_fetch_array($type,$i,PGSQL_ASSOC);$i++) {
-    $column_field[]=$row["code"];
+    $work_consult[]=$row["code"];
   }
   @pg_freeresult($type);
 
 }
-if($col_index=="story")
+if($type_of_table=="story")
 {
+  $type_of_table_trans=_("Story");
+
   /* Retrieve project dedication during the specified interval */
   /* user/story table */
   $data=@pg_exec($cnx,$query="SELECT story, uid, SUM( _end - init ) / 60.0 AS add_hours FROM task WHERE ( _date >= '"
@@ -198,39 +199,53 @@ if($col_index=="story")
     $data_consult[]=$row;
   }
   @pg_freeresult($data);
-  $row_index="uid";
-  $row_index_trans=_("User");
-  $col_index_trans=_("Story");
   
   /* retrieve distinct stories in specified interval */
   $story=@pg_exec($cnx,$query="SELECT DISTINCT story FROM task WHERE ( _date >= '"
 		.$lowest_date."'::date AND _date <= '".$uppest_date."'::date ) AND name = '"
 		.$id."' ORDER BY story ASC")
         or die($die);
-  $column_field=array();
   for ($i=0;$row=@pg_fetch_array($story,$i,PGSQL_ASSOC);$i++) {
     if($row["story"]!="")
-      $column_field[]=$row["story"];
+      $work_consult[]=$row["story"];
     else
-      $column_field[]=_("(unassigned)");
+      $work_consult[]=_("(unassigned)");
   }
   @pg_freeresult($story);
 }
+
+if(!empty($invert_cols_and_rows)&&($invert_cols_and_rows=="yes")) {
+  $row_field=$work_consult;
+  $column_field=$users_consult;
+  $row_index=$type_of_table;
+  $col_index="uid";
+  $row_index_trans=$type_of_table_trans;
+  $col_index_trans=_("User");
+} else {
+  $row_field=$users_consult;
+  $column_field=$work_consult;
+  $row_index="uid";
+  $col_index=$type_of_table;
+  $row_index_trans=_("User");
+  $col_index_trans=$type_of_table_trans;
+}
+
 foreach((array)$data_consult as $row2) {
-  if($row2[$row_index]=="") $row2[$row_index]=_("(empty)");
-  if($row2[$col_index]=="") $row2[$col_index]=_("(unassigned)");
+  if($row2["uid"]=="")   $row2["uid"]=_("(empty)");
+  if($row2["story"]=="") $row2["story"]=_("(unassigned)");
+
   $a[$row2[$row_index]][$row2[$col_index]]=$row2["add_hours"];
   $add_hours_row[$row2[$row_index]]+=$row2["add_hours"];
   $add_hours_col[$row2[$col_index]]+=$row2["add_hours"];
   $add_hours+=$row2["add_hours"];
 } 
-foreach ((array)$users_consult as $uid) {
-  $percent_row[$uid]+=@($add_hours_row[$uid]*100/$add_hours);
-  $percent_row["tot"]+=@($add_hours_row[$uid]*100/$add_hours);
+foreach ((array)$row_field as $row) {
+  $percent_row[$row]+=@($add_hours_row[$row]*100/$add_hours);
+  $percent_row["tot"]+=@($add_hours_row[$row]*100/$add_hours);
 }
-foreach ((array)$column_field as $type) {
-  $percent_col[$type]+=@($add_hours_col[$type]/$add_hours*100);
-  $percent_col["tot"]+=@($add_hours_col[$type]/$add_hours*100);
+foreach ((array)$column_field as $col) {
+  $percent_col[$col]+=@($add_hours_col[$col]/$add_hours*100);
+  $percent_col["tot"]+=@($add_hours_col[$col]/$add_hours*100);
 }
 
 /* SET NEEDED DATA FOR DRAWING GRAPHS */
@@ -550,7 +565,8 @@ if (!empty($confirmation)) msg_ok($confirmation);
 		    </tr>
 		  </table>
 		  <!-- set data from the other form to send it when this one is submitted -->
-			<input type="hidden" name="col_index" value="<?=$col_index?>">
+		  <input type="hidden" name="type_of_table" value="<?=$type_of_table?>">
+		  <input type="hidden" name="invert_cols_and_rows" value="<?=$invert_cols_and_rows?>">
 		  <input type="hidden" name="chart_type" value="<?=$ctype?>">
 		  </form>		  
 		</td>
@@ -577,6 +593,7 @@ if (!empty($confirmation)) msg_ok($confirmation);
 		<td colspan="100%"  class="title_table"><?=$col_index_trans?></td>
 	      </tr>
 	      
+	      <!-- column names -->
 	      <tr>
 		<td bgcolor="#FFFFFF" class="title_box"></td>
 		<?
@@ -591,16 +608,23 @@ if (!empty($confirmation)) msg_ok($confirmation);
 		<td bgcolor="#FFFFFF" class="title_box"><?=_("Total result")?></td>
 		<td bgcolor="#FFFFFF" class="title_box"><?=_("Percent")?></td>
 	      </tr>
+
 	      <?
+              /* loop to print each row */
 	      $odd_even = 0; /* start with odd rows */
-	      foreach ((array)$users_consult as $row) {
+              foreach ((array)$row_field as $row) {
 	      ?>
 	      <tr class="<?=($odd_even==0)?odd:even?>">
+                <!-- row name -->
 		<td bgcolor="#FFFFFF" class="title_box">
-		  <a href="userdetails.php?id=<?=$row?>"><?=$row?></a>
+              	  <!--<a href="userdetails.php?id=<?=$row?>">-->
+                    <?=$row?>
+              	  <!--</a>-->
 		</td>
 		<? 
+            	/* loop to print the colums for this row */
 		foreach ((array)$column_field as $col) {
+              	/* empty field */
 		if ($a[$row][$col]==""){
 		?>
 		<td bgcolor="#FFFFFF" class="text_data">&nbsp;</td>
@@ -625,6 +649,8 @@ if (!empty($confirmation)) msg_ok($confirmation);
                 $odd_even = ($odd_even+1)%2; /* update odd_even counter */  
 	      }
 	      ?>
+
+              <!-- total result row -->
 	      <tr>
 		<td bgcolor="#FFFFFF" class="title_box"><?=_("Total result")?></td>
 		<?
@@ -637,6 +663,7 @@ if (!empty($confirmation)) msg_ok($confirmation);
 		<td bgcolor="#FFFFFF" class="text_result"><b><?=sprintf("%01.2f",$add_hours)?></b></td>
 		<td bgcolor="#FFFFFF" class="text_percent"><b><?=sprintf("%01.2f",$percent_row["tot"])?></b></td>
 	      </tr>
+              <!-- percent row -->
 	      <tr>
 		<td bgcolor="#FFFFFF" class="title_box"><?=_("Percent")?></td>
 		<?
@@ -652,13 +679,17 @@ if (!empty($confirmation)) msg_ok($confirmation);
 	      
 	      <!-- end title box -->
 	    </table>
-	    
 	  </td>
-
 	</tr>
+      </table>
+      <!-- end box -->
 
-    <!-- TABLE SELECTION FORM -->
+      <!-- TABLE SELECTION FORM -->
 
+      <table border="0" cellspacing="0" cellpadding="0">
+	<tr>
+	  <td height="5px"><!-- spacing cell --></td>
+	</tr>
 	<tr>
 	  <td>
 		<form name="table_type" method="post">
@@ -666,22 +697,54 @@ if (!empty($confirmation)) msg_ok($confirmation);
 		  <input type="hidden" name="chart_type" value="<?=$ctype?>">
 		  <input type="hidden" name="init" value="<?=$init?>">
 		  <input type="hidden" name="end" value="<?=$end?>">
+		  <input type="hidden" name="invert_cols_and_rows" value="<?=$invert_cols_and_rows?>">
 		  <?php
-		  if($col_index=="type")
+		  if($type_of_table=="type")
 		  {
 		  ?>
-			<input type="hidden" name="col_index" value="story">
+			<input type="hidden" name="type_of_table" value="story">
 			<input type="submit" name="view" value="<?=_("Change to user/story table")?>">
 		  <?php
 		  }
-		  if($col_index=="story")
+		  if($type_of_table=="story")
 		  {
 		  ?>
-			<input type="hidden" name="col_index" value="type">
+			<input type="hidden" name="type_of_table" value="type">
 			<input type="submit" name="view" value="<?=_("Change to user/task type table")?>">
 		  <?php
 		  }
 		  ?>
+		</form>
+	  </td>
+	</tr>
+      </table>
+
+      <!-- INVERT ROWS/COLUMNS FORM -->
+
+      <table border="0" cellspacing="0" cellpadding="0">
+	<tr>
+	  <td height="5px"><!-- spacing cell --></td>
+	</tr>
+	<tr>
+	  <td>
+		<form name="invert_table" method="post">
+		  <!-- set data from the other forms to send it when this one is submitted -->
+		  <input type="hidden" name="type_of_table" value="<?=$type_of_table?>">
+		  <input type="hidden" name="chart_type" value="<?=$ctype?>">
+		  <input type="hidden" name="init" value="<?=$init?>">
+		  <input type="hidden" name="end" value="<?=$end?>">
+		  <?php
+      		  if(!empty($invert_cols_and_rows)&&($invert_cols_and_rows=="yes")) {
+		  ?>
+			<input type="hidden" name="invert_cols_and_rows" value="no">
+		  <?php
+		  } else {
+		  ?>
+			<input type="hidden" name="invert_cols_and_rows" value="yes">
+	  	  <?php
+		  }
+		  ?>
+		  <input type="submit" name="invert" value="<?=_("Invert rows/columns")?>">
 		</form>
 	  </td>
 	</tr>
@@ -690,7 +753,6 @@ if (!empty($confirmation)) msg_ok($confirmation);
 	  <td height="35px"><!-- spacing cell --></td>
 	</tr>
       </table>
-      <!-- end box -->
 
       <!-- GRAPH TYPE SELECTION FORM -->
 
@@ -726,7 +788,8 @@ if (!empty($confirmation)) msg_ok($confirmation);
 			  ?>
 			</select>
 			<!-- set data from the other form to send it when this one is submitted -->
-			<input type="hidden" name="col_index" value="<?=$col_index?>">
+			<input type="hidden" name="type_of_table" value="<?=$type_of_table?>">
+			<input type="hidden" name="invert_cols_and_rows" value="<?=$invert_cols_and_rows?>">
 			<input type="hidden" name="init" value="<?=$init?>">
 			<input type="hidden" name="end" value="<?=$end?>">
 		      </td>
