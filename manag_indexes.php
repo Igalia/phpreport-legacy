@@ -39,7 +39,7 @@ if (empty($max_profit)) $max_profit=30;
 /* retrieve project types */
 $result=@pg_exec($cnx,$query="SELECT code, description FROM label WHERE type='ptype'")
         or die($die);
-$project_types=array("all" => _("All"));
+$project_types=array("all" => _("All"), "unassigned" => _("Unassigned"));
 while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
   $project_types[$row["code"]]=$row["description"];
 }
@@ -53,7 +53,12 @@ $init_end_condition.=" p._end IS NOT NULL ";
 if (!empty($end)) $init_end_condition.=" AND p._end<='".date_web_to_sql($end)."' ";
 
 $project_type_condition="";
-if ((!empty($type))&&($type!="all")) $project_type_condition=" AND p.type='".$type."'";
+if (!empty($type)) {
+  if($type=="unassigned")
+    $project_type_condition=" AND p.type IS NULL";
+  else if ($type!="all")
+    $project_type_condition=" AND p.type='".$type."'";
+}
 
 // PERCENT HOUR DEVIATION AGAINST ESTIMATION (ALL HOURS)
 

@@ -117,6 +117,9 @@ if ($sheets==4 || $sheets==7) {
     case 'all': /* All projects */
       $ptypeCond=" true ";
       break;
+    case 'unassigned': /* All projects */
+      $ptypeCond=" type IS NULL ";
+      break;
     default:
       /* some filter specified */
       $ptypeCond=" type = '".$ptype."' ";
@@ -214,6 +217,7 @@ if ($sheets==4 || $sheets==7) {
   }
   $ptypesList=array();
   $ptypesList["all"]= _("All");
+  $ptypesList["unassigned"]= _("Unassigned");
   foreach ($project_types as $type){ 
     $ptypesList[$type["code"]]=$type["description"];
   }

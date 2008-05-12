@@ -137,7 +137,7 @@ if ($init==""&&$end=="") {
 /* retrieve project types */
 $result=@pg_exec($cnx,$query="SELECT code, description FROM label WHERE type='ptype'")
         or die($die);
-$project_types=array();
+$project_types=array("" => _("Unassigned"));
 while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
   $project_types[$row["code"]]=$row["description"];
 }
