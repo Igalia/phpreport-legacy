@@ -33,12 +33,15 @@
       );
      ?>
     <tr>
-     <td colspan="7" style="<?=$style["T"]?>">
+     <td colspan="8" style="<?=$style["T"]?>">
 <?$arrayDMA=date_web_to_arrayDMA($day); ?>
       <?=$arrayDMA[0]._(" of ").$months_minical[$arrayDMA[1]-1]._(" of ").$arrayDMA[2]?>
      </td>
     </tr>
     <tr>
+     <td style="<?=$style["T"]?>">
+     &nbsp;
+     </td>
      <?
       // Cálculo de los titles de los días
       foreach ($days_minical as $d) {
@@ -54,6 +57,10 @@
      foreach ($calendar as $s) {
     ?>
    <tr>
+     <!-- Week number -->
+     <td style="<?=$style["T"]?>">
+      <?=strftime("%V", mktime(0, 0, 0, (($s[1][1]=="G")?$arrayDMA[1]-1:$arrayDMA[1]), $s[1][0], $arrayDMA[2]))?>
+     </td>
      <?
       foreach ($s as $d) {
      ?>
