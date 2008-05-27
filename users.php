@@ -224,6 +224,7 @@ if (!empty($new_user_login)&&!empty($new_user_password)||!empty($create)) {
     } 		
     $city="corunha";
     $jour_hours="8";
+    $new_user_login=trim($new_user_login);
     if (!@pg_exec($cnx,$query=
 	"SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; "
 	."BEGIN TRANSACTION; ")) {

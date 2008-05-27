@@ -75,6 +75,7 @@ if (!empty($new)) {
 }
 if (!empty($create)) {
   $creating=true;
+  $id=trim($id);
   $customer["id"]=$id;
   $customer["name"]=$name;
   $customer["url"]=$url;

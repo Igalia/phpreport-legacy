@@ -89,7 +89,7 @@ if (!empty($new)) {
 }
 if (!empty($create)) {
   $creating=true;
-  $id=$name;
+  $id=trim($name);
 
   $project["id"]=$id;
   $project["description"]=$description;
