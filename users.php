@@ -55,6 +55,18 @@ if (!empty($change)) $user=reset(array_keys($change));
 elseif (!empty($edit)) $user=reset(array_keys($edit));
 else $user=$id;
 
+
+/* Retrieve list of cities */
+   $result=pg_exec($cnx, $query="SELECT DISTINCT CITY FROM periods")
+	or die("$die $query");
+$cities = array();
+
+//pg_fetch_array returns a row in an array form
+while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
+	$cities[]=$row["city"];
+}
+ @pg_freeresult($result);
+
 if(!empty($edit)&&empty($periods)||(!empty($id)&&empty($del_period)&&empty($change))) {
  $periods=array();
  
@@ -75,6 +87,7 @@ if(!empty($edit)&&empty($periods)||(!empty($id)&&empty($del_period)&&empty($chan
 if (!empty($change)) {
 
  do {
+ 
    $k=array_keys($change);
    $uid=$k[0];
 
@@ -100,7 +113,6 @@ if (!empty($change)) {
        $error=_("Can't finalize the operation");
        break;
      }
-
      if(!(@pg_exec($cnx,$query="UPDATE users SET admin='".
 	 (($administrator[$uid]==1)?"t":"f")
    ."', staff='".
@@ -110,10 +122,9 @@ if (!empty($change)) {
      	  $error=_("Can't finalize the operation");
      	  break;
     }
-
-
 $empty=true;
 
+//Setting last information (not related with only one period)
 if(($init_date!=""&&$end_date!=""&&$city!="")){
   $empty=false;
   $s=sizeof($periods);
@@ -124,7 +135,6 @@ if(($init_date!=""&&$end_date!=""&&$city!="")){
   $periods[$s]["city"]=$city;
   $periods[$s]["hour_cost"]=$hour_cost;
 }
-
 for ($i=0;$i<sizeof($periods);$i++) {
     $fields=array("uid","journey","init","_end","city","hour_cost");
     $row=array();
@@ -150,13 +160,14 @@ for ($i=0;$i<sizeof($periods);$i++) {
 
     // AND FINALLY THEY ARE INSERTED
   if (!empty($periods)) {
+
     if (!@pg_exec($cnx,$query="INSERT INTO periods ("
      .implode(",",$fields).") VALUES (".implode(",",$row).")")) {
      $error=_("Can't finalize the operation").$query;
      break;
     }
   }
-}
+} // end for periods
 
   // AND ALL THE PROCESS IS DONE
 
@@ -171,7 +182,7 @@ for ($i=0;$i<sizeof($periods);$i++) {
    break;
   }
 
-  $confirmation=_("The changes have save correctly");
+  $confirmation=_("The changes have been saved correctly");
 } while(false);
 
 }
@@ -193,6 +204,7 @@ if (!empty($delete)) {
 
     $result2=pg_exec($cnx,$query="DELETE FROM periods WHERE uid='$user'")
         or die("$die $query");
+
     @pg_freeresult($result2);
  }
 }
@@ -393,7 +405,6 @@ if ($authentication_mode=="sql") {
 <!-- end text box -->
 </font></td></tr></table></td></tr></table></td></tr></table>
 <!-- end box -->
-
 <?
 if(!empty($new)) {?>
 <br><br><br>
@@ -555,8 +566,12 @@ for ($i=0;$i<sizeof($periods);$i++) {
   <td><input type="text" name="<?="periods[$i][_end]"?>" value="<?=$periods[$i]["_end"]?>"></td>
 </tr>
 <tr>
-  <td><?=_("City");?>:</td>
-  <td><input type="text" name="<?="periods[$i][city]"?>" value="<?=$periods[$i]["city"]?>"></td>
+  <td><?=_("City")?>:</td>
+  <td>
+    <select name="<?="periods[$i][city]"?>">
+	<?=array_to_option(array_values($cities), $periods[$i]["city"], array_values($cities));?>
+    </select> 
+  </td> 
 </tr>
 <tr>
   <td><?=_("Cost per hour");?>:</td>
@@ -606,13 +621,13 @@ for ($i=0;$i<sizeof($periods);$i++) {
   </td> 
  </tr>
  <tr>
-  <td><br>
-<?=_("City");?>
-  </td>
-  <td><br>
-    <input type="text" name="city">
+  <td><?=_("City")?>:</td>
+  <td>
+    <select name="city">
+	 <?=array_to_option(array_values($cities),NULL, array_values($cities))?>
+    </select> 
   </td> 
- </tr>
+</tr>
  <tr>
   <td><br>
 <?=_("Cost per hour");?>
@@ -721,3 +736,4 @@ for ($i=0;$i<sizeof($periods);$i++) {
 <?
 require("include/template-post.php");
 ?>
+
