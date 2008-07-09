@@ -85,10 +85,12 @@ if(!empty($edit)&&empty($periods)||(!empty($id)&&empty($del_period)&&empty($chan
 }
 
 if (!empty($change)) {
+
  do {
  
    $k=array_keys($change);
    $uid=$k[0];
+
    if (!empty($new_password[$uid])) {
      $query_password=", password=md5('$new_password[$uid]')";
    } else {
@@ -106,7 +108,6 @@ if (!empty($change)) {
    do{
      
      // PERIOD DELETE
-
      if (!pg_exec($cnx,$query=
      "DELETE FROM periods WHERE uid='$uid'")) {
        $error=_("Can't finalize the operation");
@@ -187,14 +188,6 @@ for ($i=0;$i<sizeof($periods);$i++) {
 }
 
 if (!empty($del_period)) {
-/* $del_period contains index of deleted period */
-/* Let's assume (uid,init) is primary key in periods */
- if (!pg_exec($cnx,$query=
-     "DELETE FROM periods WHERE uid='$id' AND
-      init='".date_web_to_sql($periods[current(array_keys($del_period))]["init"])."'"))	 {
-       $error=_("Can't finalize the operation");
-     }
-
 $periods=del_elements_shifting($periods, current(array_keys($del_period)));
 }
 
@@ -650,14 +643,17 @@ for ($i=0;$i<sizeof($periods);$i++) {
 <table border="0" style="margin-left: auto; margin-right: auto">
 <tr>
   <td>
-     <input type="submit" name="change[<?=$user["uid"]?>]" value="<?=_("Change")?>">
+     <input type="submit" name="change[<?=$user["uid"]?>]" value="<?=_("Save changes")?>">
   </td>
 <? if ($authentication_mode=="sql") {?>
   <td>
-   <input type="submit" name="delete[<?=$user["admin"]?>]" value="<?=_("Delete")?>"></td>
+   <input type="submit" name="delete[<?=$user["admin"]?>]" value="<?=_("Delete user")?>"></td>
 <?}?>
   </tr>
 </table>
+
+
+
 <!-- end text box -->
 </font></td></tr></table></td></tr></table></td></tr></table>
 
