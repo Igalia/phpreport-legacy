@@ -151,14 +151,35 @@ if (!empty($new_task)) {
   "text"=>""
  );
 
- if ($i==0) {	
+ if ($i==0) {	// if no task
   $task[$i]["init"]=date("H:i",mktime());
  } else if (empty($task[$i-1]["_end"])) {
   $task[$i-1]["_end"]=date("H:i",mktime());
   $task[$i]["init"]=$task[$i-1]["_end"];
  }
 }
+//CLONE TASK
 
+if(!empty($clone_task)){
+ /* $clone_task is an array of only one element with index i =  ith task to be cloned */
+ /* array_keys($clone_task)[0] returns an array whose first element is the index of the ith task to be cloned */
+ 
+  /* Select data from selected task */
+  $cloned_task= array_keys($clone_task);  
+  $cloned_task_index= $cloned_task[0];  
+  $task[]=array(
+  "init"=>date("H:i",mktime()),
+  "_end"=>"",
+  "type"=>$task[$cloned_task_index]["type"],
+  "customer"=>$task[$cloned_task_index]["customer"],
+  "name"=>$task[$cloned_task_index]["name"],
+  "ttype"=>$task[$cloned_task_index]["ttype"],
+  "story"=>$task[$cloned_task_index]["story"],
+  "telework"=>$task[$cloned_task_index]["telework"],
+  "text"=>$task[$cloned_task_index]["text"],
+ );
+ 
+}
 // RETURN TO CALENDAR
 
 if (!empty($cancel)) {
@@ -843,6 +864,7 @@ if (!$blocked) {
    <input type="hidden" name="<?="task[$i][showingAllData]"?>" value="<?=($showingAllDataValue?"t":"f")?>">
 
    <input type="submit" name="<?="delete_task[$i]"?>" value="<?=_("Delete task")?>">
+   <input type="submit" name="<?="clone_task[$i]"?>" value="<?=_("Clone task")?>">
   </td>
  </tr>
 <?
