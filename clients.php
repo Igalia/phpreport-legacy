@@ -82,6 +82,10 @@ if (!empty($create)) {
   $customer["type"]=$type;
   $customer["sector"]=$sector;
 
+if(empty($id))
+  $error= "An identifier for customer is needed";
+  else{
+
   if (!pg_exec($cnx,$query="INSERT INTO customer"
     ." (id, name, url, type, sector) "
     ."VALUES ('$id', '$name', '$url','$type', '$sector')")
@@ -93,8 +97,8 @@ if (!empty($create)) {
     $creating=false;
     $confirmation=_("The customer has been created correctly");
   }
+ }
 }
-
 if (!empty($delete)) {
   $k=array_keys($delete);
   $id=$k[0];
