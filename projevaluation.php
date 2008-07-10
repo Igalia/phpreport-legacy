@@ -60,6 +60,10 @@ $die=_("Can't finalize the operation");
 
 // In sheet 5, init date will be the same as end date
 if ($sheets==5) {
+  if(empty($end)){
+  //set default end date to today's date
+    $end=date('d\/m\/Y');
+} 
   $init=$end;
 }
 
@@ -550,6 +554,7 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
 
     // Select most recent overriden extra hours before 
     // the init date for each user
+    //Remember $init=$end in this case
     $extra_hours=@pg_exec($cnx,$query="SELECT e.uid,e.hours,e.date
       FROM extra_hours AS e JOIN (
         SELECT uid,MAX(date) AS date FROM extra_hours
