@@ -57,7 +57,7 @@ else $user=$id;
 
 
 /* Retrieve list of cities */
-   $result=pg_exec($cnx, $query="SELECT DISTINCT CITY FROM periods")
+   $result=pg_exec($cnx, $query="SELECT DISTINCT CITY FROM holiday;")
 	or die("$die $query");
 $cities = array();
 
