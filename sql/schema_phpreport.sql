@@ -272,6 +272,12 @@ ALTER TABLE ONLY projects
 ALTER TABLE ONLY project_user
     ADD CONSTRAINT pk_project_user PRIMARY KEY (uid, name);
 
+--
+-- Name: pk_periods; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY periods
+    ADD CONSTRAINT pk_periods PRIMARY KEY (uid, init);
 
 --
 -- Name: report_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
