@@ -511,6 +511,30 @@ function num_weekend_days($init,$end) {
   return $result;
 }
 
+function num_work_days($init,$end) {
+  // Taking on account the things said in function num_weekend_days,
+  // this is a function that works in a similar way to get the number
+  // of *work* days (that means excluding weekends) between two dates.
+
+  // NOTE: -1 because we also include the start date
+  // (init<=x<=end, INSTEAD OF init<x<=end)
+  $days_epoch_to_init=days_from_epoch($init)-1;
+  $days_epoch_to_end=days_from_epoch($end);
+
+  $weekend_days_epoch_to_init=floor($days_epoch_to_init/7)*2;
+  if ($days_epoch_to_init%7==5) $weekend_days_epoch_to_init+=1;
+  else if ($days_epoch_to_init%7==6) $weekend_days_epoch_to_init+=2;
+
+  $weekend_days_epoch_to_end=floor($days_epoch_to_end/7)*2;
+  if ($days_epoch_to_end%7==5) $weekend_days_epoch_to_end+=1;
+  else if ($days_epoch_to_end%7==6) $weekend_days_epoch_to_end+=2;
+
+  $result = $days_epoch_to_end - $days_epoch_to_init -
+            ($weekend_days_epoch_to_end - $weekend_days_epoch_to_init);
+
+  return $result;
+}
+
 function net_extra_hours($cnx,$init,$end,$uid=null) {
   if (empty($uid)) $uid_condition=" true";
   else $uid_condition=" uid='$uid'";
@@ -596,4 +620,13 @@ function multi_in_array($needles,$haystack,$strict=false) {
     return $found;
 }
 
+// Returns the number of hours devoted to a project
+function devoted_hours($cnx, $project_id) {
+  $query="SELECT SUM( _end - init ) / 60.0 AS add_hours FROM task WHERE name = '".$id."'";
+  $data=@pg_exec($cnx,$query) or die($die);
+  $data_consult=@pg_fetch_result($data,"add_hours");
+  @pg_freeresult($data);
+  
+  return $data_result;
+}
 ?>

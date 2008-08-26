@@ -82,6 +82,9 @@ if (in_array($admin_group_name,(array)$session_groups)) {
    <br>
    <a href="manag_indexes.php?day=<?=$day?>"
     style="font-weight: bold;">- <?=_("Management indexes")?></a>
+   <br>
+   <a href="turnover_goals.php"
+    style="font-weight: bold;">- <?=_("Turnover goals")?></a>
 <!-- end text box -->
    </font></td></tr></table></td></tr>
 <?
