@@ -134,30 +134,42 @@ if(!$empty_dates&&!isset($error)) {
     $projects_data[$row["name"]] ["hours_in_period"] +=$row["add_hours"];
   }
   @pg_freeresult($data);
-  
-  
+
+
   /* Calculate the estimated turnover at the end of the period */
   
-  $today_getdate=getdate(time());
-  $today=$today_getdate["year"]."-".$today_getdate["mon"]."-".$today_getdate["mday"];
+  $day=getdate(time());
+  $day=$day["mday"]."/".$day["mon"]."/".$day["year"];
+  $day_sql=date_web_to_sql($day);
+  $day_ts =date_sql_to_ts($day_sql);
+  
+  $init_ts=date_sql_to_ts($sql_init);
+  $end_ts =date_sql_to_ts($sql_end);
   foreach($projects_data as $pname => $data) {
     if($data["hours_in_period"]>0){
-      $a=max($data["init"],$sql_init);
-      if($data["end"]<$sql_init)
-        $b=$sql_init;
-      else
-        $b=min($data["end"],$sql_end,$today);
-      if($data["end"]<$today)
-        $c=$today;
-      else
-        $c=min($data["end"],$sql_end);
+      $proj_init_ts=date_sql_to_ts($data["init"]);
+      $proj_end_ts =date_sql_to_ts($data["end"]);
+      
+      $a=max($proj_init_ts,$init_ts);
+      $b=min($proj_end_ts,$end_ts,$day_ts);
+      $c=min($proj_end_ts,$end_ts,$day_ts);
+      $d=min($day_ts,$proj_end_ts);
+      
+      $a=date_ts_to_sql($a);
+      $b=date_ts_to_sql($b);
+      $c=date_ts_to_sql($c);
+      $d=date_ts_to_sql($d);
+      
       $worked_days=num_work_days($a,$b);
-      $remaining_work_days=num_work_days($today,$c);
+      $remaining_work_days=num_work_days($day_sql,$c);
 
-      if($worked_days>0 && $today<$sql_end) {
+      if($worked_days>0 && $day_ts<$end_ts) {
         $invoice_per_day=$data["invoice"]/$worked_days;
-        $est_turnover=$remaining_work_days*$invoice_per_day+$data["invoice"];
-        $est_potential_turnover=num_work_days($today,$sql_end)*$invoice_per_day+$data["invoice"];
+        if ($remaining_work_days>0)
+          $est_turnover=$remaining_work_days*$invoice_per_day+$data["invoice"];
+        else
+          $est_turnover=$data["invoice"];
+        $est_potential_turnover=num_work_days($d,$sql_end)*$invoice_per_day+$data["invoice"];
       } else {
         $est_turnover=$data["invoice"];
         $est_potential_turnover=$data["invoice"];

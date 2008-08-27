@@ -112,6 +112,18 @@ function date_sql_to_web($date_sql) {
  return($dateAMD[2]."/".$dateAMD[1]."/".$dateAMD[0]);
 }
 
+// Convert from "PostgreSQL" (YYYY-MM-DD) date to timestamp
+function date_sql_to_ts($date_sql) {
+  $date_array = explode("-",$date_sql);
+  return mktime(0, 0, 0, $date_array[1], $date_array[2], $date_array[0]);
+}
+
+// Convert from timestamp to "PostgreSQL" (YYYY-MM-DD) date
+function date_ts_to_sql($date_ts) {
+  $date=getdate($date_ts);
+  return $date["year"]."-".$date["mon"]."-".$date["mday"];
+}
+
 // Returns NULL if there is any null date
 function date_web_to_quoted_sql($web_date) {
   if($web_date=="") return "NULL";
