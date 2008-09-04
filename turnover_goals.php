@@ -66,8 +66,8 @@ if(!$empty_dates&&!isset($error)) {
 
   /* Convert dates to SQL format */
 
-  $sql_init=date_web_to_sql($init);
-  $sql_end=date_web_to_sql($end);
+  $init_sql=date_web_to_sql($init);
+  $end_sql=date_web_to_sql($end);
 
 
   /* Retrieve the data about projects from the DB */
@@ -76,6 +76,7 @@ if(!$empty_dates&&!isset($error)) {
     FROM 
     (SELECT SUM( _end - init ) / 60.0 AS total_hours,  name
     FROM task 
+    WHERE (task.type='pex' OR task.type='pin')
     GROUP BY name
     ) AS tblTotal
     LEFT JOIN projects AS proj ON (proj.id=tblTotal.name)     
@@ -93,6 +94,9 @@ if(!$empty_dates&&!isset($error)) {
     $projects_data[$row["name"]]["name"]=$row["name"];
     $projects_data[$row["name"]]["init"]=$row["init"];
     $projects_data[$row["name"]]["end"] =$row["_end"];
+    $projects_data[$row["name"]]["total_invoice"]=$row["invoice"];
+    $projects_data[$row["name"]]["total_hours"]  =$row["total_hours"];
+    $projects_data[$row["name"]]["est_hours"]    =$row["est_hours"];
     if($row["area"]!="")
       $projects_data[$row["name"]]["area"]=$row["area"];
     else
@@ -113,7 +117,7 @@ if(!$empty_dates&&!isset($error)) {
 
   $data=@pg_exec($cnx,$query="SELECT SUM( task._end - task.init ) / 60.0 AS add_hours, task.name as name, periods.hour_cost as hour_cost
      FROM task JOIN periods ON task.uid=periods.uid AND task._date>=periods.init AND task._date<=periods._end
-     WHERE task._date>='$sql_init' AND task._date<='$sql_end' AND (task.type='pex' OR task.type='pin')
+     WHERE task._date>='$init_sql' AND task._date<='$end_sql' AND (task.type='pex' OR task.type='pin')
      GROUP BY task.name, periods.hour_cost")
     or die(_("failed processing query ").$query);
     
@@ -137,47 +141,62 @@ if(!$empty_dates&&!isset($error)) {
 
 
   /* Calculate the estimated turnover at the end of the period */
-  
+
   $day=getdate(time());
   $day=$day["mday"]."/".$day["mon"]."/".$day["year"];
   $day_sql=date_web_to_sql($day);
-  $day_ts =date_sql_to_ts($day_sql);
-  
-  $init_ts=date_sql_to_ts($sql_init);
-  $end_ts =date_sql_to_ts($sql_end);
-  foreach($projects_data as $pname => $data) {
-    if($data["hours_in_period"]>0){
-      $proj_init_ts=date_sql_to_ts($data["init"]);
-      $proj_end_ts =date_sql_to_ts($data["end"]);
-      
-      $a=max($proj_init_ts,$init_ts);
-      $b=min($proj_end_ts,$end_ts,$day_ts);
-      $c=min($proj_end_ts,$end_ts,$day_ts);
-      $d=min($day_ts,$proj_end_ts);
-      
-      $a=date_ts_to_sql($a);
-      $b=date_ts_to_sql($b);
-      $c=date_ts_to_sql($c);
-      $d=date_ts_to_sql($d);
-      
-      $worked_days=num_work_days($a,$b);
-      $remaining_work_days=num_work_days($day_sql,$c);
+  $day_ts =date_sql_to_ts($day_sql);  
+  $init_ts=date_sql_to_ts($init_sql);
+  $end_ts =date_sql_to_ts($end_sql);
 
-      if($worked_days>0 && $day_ts<$end_ts) {
-        $invoice_per_day=$data["invoice"]/$worked_days;
-        if ($remaining_work_days>0)
-          $est_turnover=$remaining_work_days*$invoice_per_day+$data["invoice"];
-        else
-          $est_turnover=$data["invoice"];
-        $est_potential_turnover=num_work_days($d,$sql_end)*$invoice_per_day+$data["invoice"];
-      } else {
-        $est_turnover=$data["invoice"];
-        $est_potential_turnover=$data["invoice"];
-      }
-      $projects_data[$pname]["est_turnover"]=$est_turnover;
-      $projects_data[$pname]["est_potential_turnover"]=$est_potential_turnover;
-      $areas_data[$data["area"]]["est_turnover"]+=$est_turnover;
-      $areas_data[$data["area"]]["est_potential_turnover"]+=$est_potential_turnover;
+  foreach($projects_data as $pname => $pdata) {
+    if($pdata["hours_in_period"]>0){
+      $proj_init_ts=date_sql_to_ts($pdata["init"]);
+      $proj_end_ts =date_sql_to_ts($pdata["end"]);
+    
+      $est_turnover=0;
+      if($proj_init_ts>=$init_ts && $proj_end_ts<=$end_ts) {
+        //the project begins and ends in this time period
+        $est_turnover=$pdata["total_invoice"];
+        
+      } else if ($proj_init_ts<$init_ts && $proj_end_ts<=$end_ts) {
+        //the project began before the time period and ends before the time period end
+        //(or it has already ended)
+        $hours=($pdata["est_hours"] > $pdata["total_hours"])? ($pdata["est_hours"] - $pdata["total_hours"]):0;
+        $est_turnover=$pdata["invoice"] + $hours * $pdata["price_per_hour"];
+        
+      } else if ($proj_end_ts>$end_ts) {
+        //the project estimated end is after the selected time period
+        $a=max($proj_init_ts,$init_ts);
+        $b=min($end_ts,$day_ts);
+        $a=date_ts_to_sql($a);
+        $b=date_ts_to_sql($b);
+
+        $daily_dedication=$pdata["hours_in_period"]/num_work_days($a,$b);
+        $hours=$pdata["est_hours"]-$pdata["total_hours"];
+        $days_end_hours=$hours/$daily_dedication; //work days until the estimated hours end
+   
+        if($hours > 0 && $days_end_hours>num_work_days($b,$end_sql)) {
+          //we estimate that the project ends after the end of the time period
+          $hours_end_period=$daily_dedication*num_work_days($a,$end_sql); //estimated work hours in this period
+          $est_turnover=$hours_end_period*$pdata["price_per_hour"];
+
+        }
+        else {
+          //the hours for this project will be finished before the end of the time period, or they have already finished.
+          if($proj_init_ts>=$init_ts) {
+            //the project began in this time period
+            $est_turnover=$pdata["total_invoice"];
+
+          } else if ($proj_init_ts<$init_ts) {
+            //the project began before the time period
+            if ($hours<0) $hours=0;
+            $est_turnover=$pdata["invoice"] + $hours * $pdata["price_per_hour"];
+          }
+        }
+      }      
+      $projects_data     [$pname]["est_turnover"] = $est_turnover;
+      $areas_data[$pdata["area"]]["est_turnover"]+= $est_turnover;
     }
   }
 
@@ -186,8 +205,10 @@ if(!$empty_dates&&!isset($error)) {
 
   if(isset($turnover_goals)) {
     foreach($turnover_goals as $index => $value) {
+      $area=$area_names[$index];
+      $potential_turnover_daily=$areas_data[$area]["invoice"]/num_work_days($init_sql,$day_sql);
+      $areas_data[$area]["est_potential_turnover"]=$potential_turnover_daily*num_work_days($init_sql,$end_sql);
       if($value!=0) {
-        $area=$area_names[$index];
         $areas_data[$area]["turnover_goal"]=$value;
         $areas_data[$area]["turnover_percentage"]=$areas_data[$area]["invoice"]*100.00/$value;
         $areas_data[$area]["est_turnover_percentage"]=$areas_data[$area]["est_turnover"]*100/$value;
@@ -315,7 +336,6 @@ if (!empty($confirmation)) msg_ok($confirmation);
           <td class="title_box"><?=_("Expenses")?></td>
           <td class="title_box"><?=_("Turnover")?></td>
           <td class="title_box"><?=_("Estimated turnover")?></td>
-          <td class="title_box"><?=_("Potential turnover")?></td>
         </tr>
         <?
         $odd_even = 0; /* start with odd rows */
@@ -329,7 +349,6 @@ if (!empty($confirmation)) msg_ok($confirmation);
               <td class="text_data"><?=sprintf("%01.2f",$data["expenses"])?></td>
               <td class="text_data"><?=sprintf("%01.2f",$data["invoice"])?></td>
               <td class="text_data"><?=sprintf("%01.2f",$data["est_turnover"])?></td>
-              <td class="text_data"><?=sprintf("%01.2f",$data["est_potential_turnover"])?></td>
             </tr>
             <?
             $odd_even = ($odd_even+1)%2; /* update odd_even counter */  
