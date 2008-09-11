@@ -67,6 +67,17 @@ while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
 }
  @pg_freeresult($result);
 
+/* Retrieve list of project areas */
+$result=@pg_exec($cnx,$query="SELECT code, description FROM label WHERE type='parea' AND activation='t' ORDER BY code")
+     or die("$die $query");
+
+$areasList=array();
+$areasList["NULL"]=_("(Area not set)");
+while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
+  $areasList[$row["code"]]=$row["description"];
+}
+@pg_freeresult($result);
+
 if(!empty($edit)&&empty($periods)||(!empty($id)&&empty($del_period)&&empty($change))) {
  $periods=array();
  
@@ -136,11 +147,13 @@ if(($init_date!=""&&$end_date!=""&&$city!="")){
   $periods[$s]["hour_cost"]=$hour_cost;
 }
 for ($i=0;$i<sizeof($periods);$i++) {
-    $fields=array("uid","journey","init","_end","city","hour_cost");
+    $fields=array("uid","journey","init","_end","city","hour_cost","area");
     $row=array();
     foreach ($fields as $field)
     $row[$field]=$periods[$i][$field];
     $row["uid"]=$uid;
+    if ($periods[$i]["area"]=="NULL")
+      $row["area"]="";
     if ($periods[$i]["init"]=="NULL") {
       $row["init"]="";
     } else  {
@@ -249,8 +262,8 @@ if (!empty($new_user_login)&&!empty($new_user_password)||!empty($create)) {
   ."','"
   .(($new_user_staff==1)?"t":"f")
   ."')"))||(!$result2=pg_exec($cnx,$query="INSERT INTO periods"
-	." (uid,journey,init,_end,city,hour_cost) VALUES ('$new_user_login', '$jour_hours'," 
-	."CURRENT_DATE, NULL,'$city', NULL)"))) {
+	." (uid,journey,init,_end,city,hour_cost,area) VALUES ('$new_user_login', '$jour_hours'," 
+	."CURRENT_DATE, NULL,'$city', NULL, NULL)"))) {
 	$error=_("Can't finalize the operation");
     } else {
 	$confirmation=_("The user has been created correctly. Remember to update her contract periods!");
@@ -555,6 +568,11 @@ for ($i=0;$i<sizeof($periods);$i++) {
 <tr>
   <td><?=_("Hours");?>:</td>
   <td><select name="<?="periods[$i][journey]"?>"><?=array_to_option(array_values($journey),$periods[$i]["journey"],array_keys($journey))?>
+   </select>
+</tr>
+<tr>
+  <td><?=_("Area");?>:</td>
+  <td><select name="<?="periods[$i][area]"?>"><?=array_to_option(array_values($areasList),$periods[$i]["area"],array_keys($areasList))?>
    </select>
 </tr>
 <tr>

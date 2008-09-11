@@ -144,7 +144,8 @@ CREATE TABLE periods (
     init date,
     _end date,
     city character varying(30),
-    hour_cost numeric(8,4)
+    hour_cost numeric(8,4),
+    area character varying(256)
 );
 
 

@@ -71,7 +71,7 @@ if (!empty($change)) {
 
   if (!pg_exec($cnx,$query="UPDATE projects SET "
     ." description='$description',activation='".(($activation==1)?"t":"f")."',"
-    ." customer='$customer',area='$area',est_hours='$est_hours',invoice='$invoice',"
+    ." customer='$customer',area=".(($area != 'unknown_area')?("'$area'"):"NULL").",est_hours='$est_hours',invoice='$invoice',"
     ."init=".$init.", _end=".$end.", type=".(($type != 'unknown_type')?("'$type'"):"NULL")
     ." WHERE id='$id'")||
       !pg_exec($cnx,$query="UPDATE label SET "
@@ -107,7 +107,7 @@ if (!empty($create)) {
 
   if (!pg_exec($cnx,$query="INSERT INTO projects"
     ." (id,description,customer,area,activation,est_hours,invoice,init,_end,type) "
-    ."VALUES ('$id', '$description','$customer','$area','$activation',"
+    ."VALUES ('$id', '$description','$customer',".(($area != 'unknown_area')?("'$area'"):"NULL").",'$activation',"
     ."'$est_hours','$invoice', $init, $end, ".(($type != 'unknown_type')?("'$type'"):"NULL").")")
     ||!pg_exec($cnx,$query="INSERT INTO " 
     ."label (type,code,description,activation) "
@@ -177,6 +177,7 @@ $result=@pg_exec($cnx,$query="SELECT code, description FROM label WHERE type='pa
      or die("$die $query");
 
 $project_areas=array();
+$project_areas[]=array("code"=>"unknown_area", "description"=>_("(Area not set)"));
 while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
 	$project_areas[]=$row;
 }
