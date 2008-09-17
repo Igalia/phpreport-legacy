@@ -115,7 +115,7 @@ function date_sql_to_web($date_sql) {
 // Convert from "PostgreSQL" (YYYY-MM-DD) date to timestamp
 function date_sql_to_ts($date_sql) {
   $date_array = explode("-",$date_sql);
-  return mktime(0, 0, 0, $date_array[1], $date_array[2], $date_array[0]);
+  return mktime(0, 0, 0, intval($date_array[1]), intval($date_array[2]), intval($date_array[0]));
 }
 
 // Convert from timestamp to "PostgreSQL" (YYYY-MM-DD) date
