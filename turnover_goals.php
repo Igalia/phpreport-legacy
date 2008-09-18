@@ -115,22 +115,38 @@ if(!$empty_dates&&!isset($error)) {
 
   /* Retrieve the data about tasks from the DB */
 
-  $data=@pg_exec($cnx,$query="SELECT SUM( task._end - task.init ) / 60.0 AS add_hours, task.name as name, periods.hour_cost as hour_cost
+  $data=@pg_exec($cnx,$query="SELECT SUM( task._end - task.init ) / 60.0 AS add_hours, task.name as name, periods.hour_cost as hour_cost, periods.area as worker_area
      FROM task JOIN periods ON task.uid=periods.uid AND task._date>=periods.init AND task._date<=periods._end
      WHERE task._date>='$init_sql' AND task._date<='$end_sql' AND (task.type='pex' OR task.type='pin')
-     GROUP BY task.name, periods.hour_cost")
+     GROUP BY task.name, periods.hour_cost, periods.area")
     or die(_("failed processing query ").$query);
     
   for ($i=0;$row=@pg_fetch_array($data,$i,PGSQL_ASSOC);$i++) {
 
     if($row["name"]=="") {
+      //a task without a project name is charged to '(unassigned)' project and area
       $row["name"]=_("(unassigned)");
-      $project_area=_("(unassigned)");
-      $projects_data[$row["name"]] ["area"]=$project_area;
-    } else 
+      $project_area =_("(unassigned)");
+      $project_price=0;
+      $projects_data[$row["name"]] ["area"]=$project_area; // this line creates an element for '(unassigned)'
+                                                           // in the array of projects if it doesn't exist
+    } else {
       $project_area =$projects_data[$row["name"]]["area"];
-    $project_price=$projects_data[$row["name"]]["price_per_hour"];
-  
+      $project_price=$projects_data[$row["name"]]["price_per_hour"];
+    }
+
+    if($project_area==_("(unassigned)") && $row["name"]!=_("(unassigned)")) {
+      //it's a project without an assigned area
+      //we have to split it into the areas of its workers
+      if ($row["worker_area"]=='')
+        $project_area =_("(unassigned)");
+      else
+        $project_area=$row["worker_area"];
+
+      $projects_data[$row["name"]] ["subareas"] [$project_area] ["invoice"]  +=$row["add_hours"]*$project_price;
+      $projects_data[$row["name"]] ["subareas"] [$project_area] ["expenses"] +=$row["add_hours"]*$row["hour_cost"];
+      $projects_data[$row["name"]] ["subareas"] [$project_area] ["hours_in_period"] +=$row["add_hours"];
+    }
     $areas_data[$project_area]   ["hours"]    +=$row["add_hours"];
     $areas_data[$project_area]   ["invoice"]  +=$row["add_hours"]*$project_price;
     $projects_data[$row["name"]] ["invoice"]  +=$row["add_hours"]*$project_price;
@@ -194,9 +210,20 @@ if(!$empty_dates&&!isset($error)) {
             $est_turnover=$pdata["invoice"] + $hours * $pdata["price_per_hour"];
           }
         }
-      }      
-      $projects_data     [$pname]["est_turnover"] = $est_turnover;
-      $areas_data[$pdata["area"]]["est_turnover"]+= $est_turnover;
+      }
+      if(isset($pdata["subareas"])) {
+        //in this project there were multiple areas participating
+        //we split the estimation proportionaly to the hours worked per each area
+        foreach($pdata["subareas"] as $subarea => $subdata) {
+          $est_turnover_proportional = $est_turnover * ($subdata["hours_in_period"]/$pdata["hours_in_period"]);
+          $projects_data [$pname] ["subareas"] [$subarea] ["est_turnover"] = $est_turnover_proportional;
+          $areas_data[$subarea]["est_turnover"]+= $est_turnover_proportional;
+        }
+      }
+      else {
+        $projects_data     [$pname]["est_turnover"] = $est_turnover;
+        $areas_data[$pdata["area"]]["est_turnover"]+= $est_turnover;
+      }
     }
   }
 
@@ -340,7 +367,22 @@ if (!empty($confirmation)) msg_ok($confirmation);
         <?
         $odd_even = 0; /* start with odd rows */
         foreach($projects_data as $project_name => $data) {
-          if($data["hours_in_period"]!=0) {
+          if(isset($data["subareas"])) {
+            foreach($data["subareas"] as $subarea => $subdata) {
+            ?>
+              <tr class="<?=($odd_even==0)?odd:even?>">
+                <td class="title_box"><?=$project_name?></td>
+                <td class="text_data"><?=$subarea?></td>
+                <td class="text_data"><?=sprintf("%01.2f",$subdata["hours_in_period"])?></td>
+                <td class="text_data"><?=sprintf("%01.2f",$subdata["expenses"])?></td>
+                <td class="text_data"><?=sprintf("%01.2f",$subdata["invoice"])?></td>
+                <td class="text_data"><?=sprintf("%01.2f",$subdata["est_turnover"])?></td>
+              </tr>
+              <?
+              $odd_even = ($odd_even+1)%2; /* update odd_even counter */
+            }
+          }
+          else if($data["hours_in_period"]!=0) {
           ?>
             <tr class="<?=($odd_even==0)?odd:even?>">
               <td class="title_box"><?=$project_name?></td>
@@ -351,8 +393,8 @@ if (!empty($confirmation)) msg_ok($confirmation);
               <td class="text_data"><?=sprintf("%01.2f",$data["est_turnover"])?></td>
             </tr>
             <?
-            $odd_even = ($odd_even+1)%2; /* update odd_even counter */  
-            }
+            $odd_even = ($odd_even+1)%2; /* update odd_even counter */
+          }
         }?>
       </table>
       <?}?>
