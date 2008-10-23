@@ -253,6 +253,18 @@ if (!empty($place)&&$place!="---"||!empty($holidays)||!empty($ok)||!empty($new_p
 
          </tr>
          <tr>
+          <td bgcolor="#000000" class="title_box" colspan="7"> 
+           <font color="#FFFFFF" class="title_box"> 
+           <?
+            $dayDMA= date_web_to_arrayDMA($day);
+            $current_month=date('F',mktime(0,0,0,$dayDMA[1], $dayDMA[0], $dayDMA[2]));
+            $current_year=date('Y',mktime(0,0,0,$dayDMA[1], $dayDMA[0], $dayDMA[2]));
+            echo ($current_month."  ".$current_year);
+           ?>
+           <br>
+          </td>
+         </tr>
+         <tr>
         <?
          // Day titles computation
          foreach ($days as $d) {
@@ -274,6 +286,7 @@ if (!empty($place)&&$place!="---"||!empty($holidays)||!empty($ok)||!empty($new_p
         ?>
           <td style="<?=$style[$d[1]]?>">
           <? if ($d[1]=="N"){?> 
+       
 		 <a href="cal_manag.php?day=<?=$d[2]?>&amp;insert=<?="true"?>&amp;place=<?="$place"?>" style="<?=$style[$d[1]]?>">
 
 	  <?}
