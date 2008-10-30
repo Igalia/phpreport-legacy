@@ -363,7 +363,7 @@ if ($size>0) usort ($task, cmp_init_dates);
  } while(false);
 }
 
-// WEEKLY AND DAILY WORKED HOURS COMPUTATION
+// WEEKLY, MONTHLY AND DAILY WORKED HOURS COMPUTATION
 
 if (empty($weekly_minutes) || !empty($save)) {
  $weekly_minutes=worked_minutes_this_week($cnx,$session_uid,date_web_to_sql($day));
@@ -372,7 +372,8 @@ if (empty($weekly_minutes) || !empty($save)) {
   if (!empty($t["init"]) && !empty($t["_end"]))
    $daily_minutes+=(hour_web_to_sql($t["_end"])-hour_web_to_sql($t["init"]));
 }
-
+$monthly_minutes= worked_minutes_this_month($cnx, $session_uid, date_web_to_sql($day));
+	
 $title=_("Report edition");
 require("include/template-pre.php");
 
@@ -549,6 +550,7 @@ function setCombosStatus(type, task_number) {
 <input type="hidden" name="hoxe" value="<?=$hoxe?>">
 <input type="hidden" name="weekly_hours" value="<?=$weekly_hours?>">
 <input type="hidden" name="daily_hours" value="<?=$daily_hours?>">
+<input type="hidden" name="monthly_hours" value="<?=$monthly_hours?>">
 
 <!-- box -->
 <table border="0" cellspacing="0" cellpadding="0">

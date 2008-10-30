@@ -19,7 +19,10 @@
 			(<?=hour_sql_to_web($daily_minutes) ?>)
 			<br>
 			<?=_("Week")?>: <?=$weekly_minutes/60?>h
-			(<?=hour_sql_to_web($weekly_minutes) ?>)			
+			(<?=hour_sql_to_web($weekly_minutes) ?>)
+			<br>
+			<?=_("Month")?>: <?=$monthly_minutes/60?>h
+			(<?=hour_sql_to_web($monthly_minutes) ?>)			
 			<!-- end text box -->
 			</font>
 		</td></tr>

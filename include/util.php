@@ -397,6 +397,41 @@ GROUP BY uid");
  return $minutes;
 }
 
+
+// Compute the minutes that a worker has worked during current week
+
+function worked_minutes_this_month($cnx,$uid,$day) {
+ 
+ $time_stamp= strtotime($day);
+ $days_in_month= date('t',$time_stamp);
+ $year=date('Y',$time_stamp);
+ $day=date('d',$time_stamp);
+ $month=date('m',$time_stamp);
+ $init_month= "01/".$month."/".$year;
+ $end_month= $days_in_month."/".$month."/".$year;
+ $init_month=date_web_to_sql($init_month);
+ $end_month= date_web_to_sql($end_month);
+ 
+ $result=@pg_exec($cnx,$query="
+ SELECT uid, SUM(_end-init) - 60*COALESCE((
+  SELECT SUM(hours)
+  FROM compensation
+  WHERE uid=task.uid AND uid='$uid'
+   AND init>='$init_month' 
+   AND _end<='$end_month'
+ ),0) AS add_hours
+FROM task
+WHERE _date>='$init_month'
+ AND _date<= '$end_month'
+ AND uid='$uid'
+GROUP BY uid");
+
+
+ if ($row=@pg_fetch_row($result)) $minutes=$row[1];
+ @pg_freeresult($result);
+ 
+ return $minutes;
+}
 function make_calendar2($holidays,$day) {
 $empty=false;
 
