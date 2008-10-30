@@ -140,8 +140,8 @@ if (!empty($new_task)) {
  @pg_freeresult($result);
 
  $task[]=array(
-  "init"=>date("H:i",mktime()),
-  "_end"=>"",
+  "init"=>"",
+  "_end"=>date("H:i",mktime()),
   "type"=>isset($last_task["type"])?$last_task["type"]:"",
   "customer"=>isset($last_task["customer"])?$last_task["customer"]:"",
   "name"=>isset($last_task["name"])?$last_task["name"]:"",
@@ -152,7 +152,8 @@ if (!empty($new_task)) {
  );
 
  if ($i==0) {	// if no task
-  $task[$i]["init"]=date("H:i",mktime());
+ 
+  $task[$i]["_end"]=date("H:i",mktime());
  } else if (empty($task[$i-1]["_end"])) {
   $task[$i-1]["_end"]=date("H:i",mktime());
   $task[$i]["init"]=$task[$i-1]["_end"];
@@ -168,8 +169,8 @@ if(!empty($clone_task)){
   $cloned_task= array_keys($clone_task);  
   $cloned_task_index= $cloned_task[0];  
   $task[]=array(
-  "init"=>date("H:i",mktime()),
-  "_end"=>"",
+  "init"=>"",
+  "_end"=>date("H:i",mktime()),
   "type"=>$task[$cloned_task_index]["type"],
   "customer"=>$task[$cloned_task_index]["customer"],
   "name"=>$task[$cloned_task_index]["name"],
