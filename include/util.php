@@ -35,6 +35,9 @@ function msg_ok($msg) {
 function msg_fail($msg) {
  echo("<p class=\"msg_fail\"><b>$msg</b></p>");
 }
+function msg_warning($msg){
+ echo("<p class=\"msg_warning\"><b>$msg</b></p>");
+}
 
 // Get the greatest key of a monodimensional array
 /*
@@ -53,6 +56,14 @@ function set_to_array($set) {
  else return explode(",",$set);
 }
 
+function indexOf($needle, $haystack) {                // conversion of JavaScripts most awesome
+        for ($i=0;$i<count($haystack);$i++) {         // indexOf function.  Searches an array for
+                if ($haystack[$i] == $needle) {       // a value and returns the index of the *first*
+                        return $i;                    // occurance
+                }
+        }
+        return -1;
+}
 /*
 function checked($checkbox) {
  if ($checkbox==1) return "CHECKED";
@@ -80,7 +91,14 @@ function validate_date_web($web_date) {
    return false;
  }
  /* if valid length, check regular expression */
- return preg_match("/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4,4}/",$web_date);
+ if(preg_match("/[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4,4}/",$web_date)){
+   if(($arrayDMA[1]<=12)&&($arrayDMA[1]>=1) && ($arrayDMA[0]>=1) &&($arrayDMA[0]<=31))
+     return TRUE;
+   else
+     return FALSE;
+ }
+ else
+   return FALSE;
 }
 
 // Tests if a time is valid HH:MM or H:MM
@@ -397,6 +415,38 @@ GROUP BY uid");
  return $minutes;
 }
 
+// Compute the minutes that a worker has worked during current week
+// between init_date and _end_date
+function worked_minutes_this_week_during_project($cnx,$uid,$day,$init_date,$_end_date,$project_name) {
+ $hours="---";
+ $result=@pg_exec($cnx,$query="
+SELECT uid, SUM(_end-init) - 60*COALESCE((
+  SELECT SUM(hours)
+  FROM compensation
+  WHERE uid=task.uid AND uid='$uid'
+   AND init>=(timestamp '$day' -
+    ((int2(date_part('dow',timestamp '$day')+7-1) % 7)||' days')::interval)::date
+ AND init>='$init_date'
+ AND _end<='$_end_date'
+   AND _end<=(timestamp '$day'-
+    ((int2(date_part('dow',timestamp '$day')+7-1) % 7)-6||' days')::interval)::date
+ ),0) AS add_hours
+FROM task
+WHERE _date>=(timestamp '$day' -
+ ((int2(date_part('dow',timestamp '$day')+7-1) % 7)||' days')::interval)::date
+ AND _date>='$init_date'
+ AND _date<= (timestamp '$day' -
+ ((int2(date_part('dow',timestamp '$day')+7-1) % 7)-6||' days')::interval)::date
+ AND _date<='$_end_date' 
+ AND name='$project_name'
+ AND uid='$uid'
+
+GROUP BY uid");
+ if ($row=@pg_fetch_row($result)) $minutes=$row[1];
+ @pg_freeresult($result);
+ return $minutes;
+}
+
 
 // Compute the minutes that a worker has worked during current week
 
@@ -666,6 +716,27 @@ function multi_in_array($needles,$haystack,$strict=false) {
     }
     return $found;
 }
+/* 
+ * param: $f date in web format
+ * param: $f date in web format
+ * elapsed_days($f, $t) computes the amount of days elapsed between two dates in a closed interval [$f, $t]
+ * (both dates are included)
+ * It returns the amount of days elapsed from $f to $t
+ */
+function elapsed_days($f, $t){
+  if(empty($f) || empty($t))
+    return NULL;
+  
+  $fDMA=date_web_to_arrayDMA($f);		
+  $tDMA=date_web_to_arrayDMA($t);
+
+  $ts_f = mktime(0,0,0,$fDMA[1],$fDMA[0],$fDMA[2]);
+  $ts_t = mktime(0,0,0,$tDMA[1],$tDMA[0],$tDMA[2]);
+  $seconds = $ts_t-$ts_f;
+  $elapsed_days = floor($seconds / (60 * 60 * 24)); 
+  return $elapsed_days;
+}
+
 
 // Returns the number of hours devoted to a project
 function devoted_hours($cnx, $project_id) {

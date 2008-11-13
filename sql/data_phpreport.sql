@@ -122,6 +122,12 @@ ttype	f	\N	tecnologia	Technology
 ttype	t	\N	seguimiento_com	Sales Monitoring
 ptype	t	\N	per_goals	Per goals
 ptype	t	\N	per_hours	Per hours
+evtype	t	\N	vac	Holidays
+evtype	t	\N	asam	Assembly
+evtype	t	\N	reun	Group meeting
+evtype	t	\N	otros	Others
+schedtype	t	\N	init_est	Init date, Estimated hours
+schedtype	t	\N	init_end	Init date, End date
 \.
 
 

@@ -38,7 +38,14 @@ input, select, textarea {
   border-style: dotted;
   border-color: #808764
 }
-
+.msg_warning {
+  font: bold 9pt tahoma, lucida, helvetica, sansserif;
+  border-width: 1px;
+  color: #666666;
+  background: #F0C60A;
+  border-style: dotted;
+  border-color: #808764
+}
 .title_box {
   font: bold 10pt tahoma, lucida, helvetica, sansserif;
   text-align: center;
@@ -194,6 +201,30 @@ input, select, textarea {
 .neg_value {
   color: #ff0000;
 }
+input.green_value{ 
+  background: #f0f0f9;
+  border:0;
+  text-align:center;
+  width:100%;
+  color:green;
+  font-weight:bold;
+  font-style:italic;            
+ }
+input.red_value{ 
+  background: #f0f0f9;
+  border:0;
+  text-align:center;
+  width:100%;
+  color:red;
+  font-weight:bold;
+  font-style:italic;
+ }
+input.auto_value{ 
+  background: #f0f0f9;
+border:0;
+text-align:center;
+width:100%;
+ }
 
 /* Link image without border */
 a img.noborder 

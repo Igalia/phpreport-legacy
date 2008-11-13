@@ -219,7 +219,42 @@ CREATE TABLE users (
     staff boolean DEFAULT false
 );
 
+--
+-- Name: busy_hours; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+CREATE TABLE busy_hours (
+uid character varying(20) NOT NULL,
+date date,
+hours double precision NOT NULL,
+ev_type character varying(256) NOT NULL
+);
 
+
+--
+-- Name: project_schedule; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+CREATE TABLE project_schedule (
+uid character varying(20) NOT NULL,
+pid character varying(256) NOT NULL,
+init_week timestamp NOT NULL,
+end_week timestamp NOT NULL,
+weekly_load double precision NOT NULL
+);
+
+--
+-- Name: edited_project_schedule; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+CREATE TABLE edited_project_schedule (
+uid character varying(20) NOT NULL,
+pid character varying(256) NOT NULL,
+year_week timestamp NOT NULL,
+edited_hours double precision NOT NULL
+);
+--
+-- Name: sched_type; Type: column in projects table; Schema: public; Owner: -; Tablespace: 
+--
+ALTER TABLE projects
+    ADD COLUMN sched_type varchar(256);
 --
 -- Name: block_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
@@ -302,6 +337,28 @@ ALTER TABLE ONLY task
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (uid);
+
+--
+-- Name: busy_hours_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY busy_hours
+    ADD CONSTRAINT busy_hours_pkey PRIMARY KEY (uid,date);
+
+--
+-- Name: project_schedule_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY project_schedule
+    ADD CONSTRAINT project_schedule_pkey PRIMARY KEY (pid,uid,init_week);
+    
+--
+-- Name: edited_project_schedule_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY edited_project_schedule
+    ADD CONSTRAINT edited_project_schedule_pkey PRIMARY KEY (uid, pid, year_week);
+
 
 
 --

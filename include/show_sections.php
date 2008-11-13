@@ -23,6 +23,10 @@
                         <br>
                         <a href="projevaluation.php?day=<?=$day?>&amp;flag=PERSONS"
                          style="font-weight: bold;">- <?=_("User evaluation")?></a>
+                         <br>
+                         <a href="time_manag.php?day=<?=$day?>"  style="font-weight: bold;">- <?=_("Time planning")?></a>
+                         <br>
+                         <a href="project_schedule.php?day=<?=$day?>" style="font-weight: bold;">- <?=_("Project scheduling")?></a>
 <?
 if (multi_in_array($board_group_names,(array)$session_groups)) {
 ?>
