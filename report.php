@@ -412,7 +412,8 @@ for ($k=0;$row=@pg_fetch_array($result,$k,PGSQL_ASSOC);$k++) {
 /* Retrieve user customers combo values */
 $result=@pg_exec($cnx,$query="SELECT type,code,description FROM label"
 		 ." WHERE activation='t' AND type='customer' AND code IN "
-		 ." (SELECT DISTINCT customer FROM project_user pu JOIN projects p ON pu.name=p.id WHERE uid='$session_uid') "
+		 ." (SELECT DISTINCT customer FROM project_user pu JOIN projects p ON pu.name=p.id"
+		 ."  WHERE uid='$session_uid' and activation='t') "
 		 ."ORDER BY description")
      or die($die."$query");
      
