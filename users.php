@@ -143,6 +143,7 @@ if(($init_date!=""&&$end_date!=""&&$city!="")){
   $periods[$s]["journey"]=$jour_hours;
   $periods[$s]["init"]=$init_date;
   $periods[$s]["_end"]=$end_date;
+  $periods[$s]["area"]=$area;
   $periods[$s]["city"]=$city;
   $periods[$s]["hour_cost"]=$hour_cost;
 }
@@ -262,8 +263,8 @@ if (!empty($new_user_login)&&!empty($new_user_password)||!empty($create)) {
   ."','"
   .(($new_user_staff==1)?"t":"f")
   ."')"))||(!$result2=pg_exec($cnx,$query="INSERT INTO periods"
-	." (uid,journey,init,_end,city,hour_cost,area) VALUES ('$new_user_login', '$jour_hours'," 
-	."CURRENT_DATE, NULL,'$city', NULL, NULL)"))) {
+	." (uid,journey,init,_end,area,city,hour_cost,area) VALUES ('$new_user_login', '$jour_hours'," 
+	."CURRENT_DATE, NULL,NULL,'$city', NULL, NULL)"))) {
 	$error=_("Can't finalize the operation");
     } else {
 	$confirmation=_("The user has been created correctly. Remember to update her contract periods!");
@@ -538,6 +539,8 @@ if ($authentication_mode=="sql") {
 <?
 }
 ?>
+<!-- end text box -->
+</font></td></tr></table></td></tr></table></td></tr></table>
 <br>
 
 <?
@@ -547,115 +550,84 @@ $journey=array(
   6=>_("Practice journey"));
 
 if (!empty($periods)) {?>
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<table border="0" cellspacing="0" cellpadding="0"">
 <tr><td bgcolor="#000000">
-<table border="0" cellspacing="1" cellpadding="0" width="100%"><tr>
-<td bgcolor="#000000" class="title_box"><font
- color="#FFFFFF" class="title_box">
+<table border="0" cellspacing="1" cellpadding="0""><tr>
+<td bgcolor="#000000" class="title_table" colspan="100"><font
+ color="#FFFFFF" class="title_table">
 <!-- title box -->
 <?=_("Existing periods")?> 
 <!-- end title box -->
 </font></td></tr>
 
+<tr>
+  <!-- title row -->
+  <td class="title_box"><?=_("Init date");?></td>
+  <td class="title_box"><?=_("End date");?></td>
+  <td class="title_box"><?=_("Type of journey");?></td>
+  <td class="title_box"><?=_("Area");?></td>
+  <td class="title_box"><?=_("City")?></td>
+  <td class="title_box"><?=_("Cost per hour");?></td>
+  <td class="title_box">&nbsp;</td>
+  <!-- end title row -->
+</tr>
+
 <?
 for ($i=0;$i<sizeof($periods);$i++) {
 ?>
-<tr><td bgcolor="#FFFFFF" class="text_box">
-<table border="0" cellspacing="0" cellpadding="10"><tr><td>
-<font
- color="#000000" class="text_box">
-<!-- text box -->
 <tr>
-  <td><?=_("Hours");?>:</td>
+  <td><input type="text" name="<?="periods[$i][init]"?>" value="<?=$periods[$i]["init"]?>"></td>
+  <td><input type="text" name="<?="periods[$i][_end]"?>" value="<?=$periods[$i]["_end"]?>"></td>
   <td><select name="<?="periods[$i][journey]"?>"><?=array_to_option(array_values($journey),$periods[$i]["journey"],array_keys($journey))?>
    </select>
-</tr>
-<tr>
-  <td><?=_("Area");?>:</td>
+  </td>
   <td><select name="<?="periods[$i][area]"?>"><?=array_to_option(array_values($areasList),$periods[$i]["area"],array_keys($areasList))?>
    </select>
-</tr>
-<tr>
-  <td><?=_("Init date");?>:</td>
-  <td><input type="text" name="<?="periods[$i][init]"?>" value="<?=$periods[$i]["init"]?>"></td>
-</tr>
-<tr>
-  <td><?=_("End date");?>:</td>
-  <td><input type="text" name="<?="periods[$i][_end]"?>" value="<?=$periods[$i]["_end"]?>"></td>
-</tr>
-<tr>
-  <td><?=_("City")?>:</td>
-  <td>
-    <select name="<?="periods[$i][city]"?>">
-	<?=array_to_option(array_values($cities), $periods[$i]["city"], array_values($cities));?>
-    </select> 
-  </td> 
-</tr>
-<tr>
-  <td><?=_("Cost per hour");?>:</td>
+  </td>
+  <td><select name="<?="periods[$i][city]"?>"><?=array_to_option(array_values($cities), $periods[$i]["city"], array_values($cities));?>
+    </select>
+  </td>
   <td><input type="text" name="<?="periods[$i][hour_cost]"?>" value="<?=$periods[$i]["hour_cost"]?>"></td>
-</tr>
-
- <tr>
-  <td></td><td align="center">
+<td align="center">
 
    <input type="submit" name="<?="del_period[$i]"?>" value="<?=_("Delete period")?>">
   </td>
- </tr>
-
-</font></td></tr></table>
+</tr>
 <?}
 ?>
 
-<!-- end text box -->
-</td></tr></table></td></tr></table>
 <?} /*end if !empty(periods)*/?>   
 
-<br><br>
-<table>
- <tr>
-  <td>
-<?=_("Type of journey");?>:
-   <select name="jour_hours"><?=array_to_option(array_values($journey),$journey,array_keys($journey))?>
-   </select>
-  </td>
- </tr>
-
-<table><br>
- <tr>
-  <td>
-<?=_("Init date");?>:
-  </td>
+<!-- new period row -->
+<tr>
   <td>
     <input type="text" name="init_date">
   </td> 
- </tr>
- <tr>
-  <td>
-<?=_("End date");?>:
-  </td>
   <td>
     <input type="text" name="end_date">
   </td> 
- </tr>
- <tr>
-  <td><?=_("City")?>:</td>
+  <td>
+   <select name="jour_hours"><?=array_to_option(array_values($journey),$journey,array_keys($journey))?>
+   </select>
+  </td>
+  <td>
+    <select name="area"?>"><?=array_to_option(array_values($areasList),NULL,array_keys($areasList))?>
+    </select>
+  </td>
   <td>
     <select name="city">
 	 <?=array_to_option(array_values($cities),NULL, array_values($cities))?>
     </select> 
   </td> 
-</tr>
- <tr>
-  <td><br>
-<?=_("Cost per hour");?>
-  </td>
-  <td><br>
+  <td>
     <input type="text" name="hour_cost">
   </td> 
- </tr>
+</tr>
+<!-- end new period row -->
 
-</table>
+</table></td></tr></table>
+
+<table>
 
 <br>
 <table border="0" style="margin-left: auto; margin-right: auto">
@@ -670,10 +642,6 @@ for ($i=0;$i<sizeof($periods);$i++) {
   </tr>
 </table>
 
-
-
-<!-- end text box -->
-</font></td></tr></table></td></tr></table></td></tr></table>
 
 <br><br><br>
 
