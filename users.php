@@ -51,8 +51,9 @@ if (!(in_array($admin_group_name,(array)$session_groups)
  header("Location: login.php");
 }
  
+$reset_new_period=false;
 if (!empty($change)) $user=reset(array_keys($change));
-elseif (!empty($edit)) $user=reset(array_keys($edit));
+elseif (!empty($edit)){ $user=reset(array_keys($edit)); $reset_new_period=true;}
 else $user=$id;
 
 
@@ -78,7 +79,7 @@ while ($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)) {
 }
 @pg_freeresult($result);
 
-if(!empty($edit)&&empty($periods)||(!empty($id)&&empty($del_period)&&empty($change))) {
+if(!empty($edit)&&empty($periods)||(!empty($id)&&empty($del_period)&&empty($change)&&empty($copy_last_period))) {
  $periods=array();
  
  $die=_("Can't finalize the operation");
@@ -194,6 +195,9 @@ for ($i=0;$i<sizeof($periods);$i++) {
    $error.="<!-- $query -->";
    @pg_exec($cnx,$query="ROLLBACK TRANSACTION");
    break;
+  } else {
+    //new period (if any) was inserted sucessfully, we reset it
+    $reset_new_period=true;
   }
 
   $confirmation=_("The changes have been saved correctly");
@@ -205,6 +209,35 @@ if (!empty($del_period)) {
 $periods=del_elements_shifting($periods, current(array_keys($del_period)));
 }
 
+if (!empty($copy_last_period)) {
+  
+  if(sizeof($periods)>=1) {
+    $last_period=$periods[sizeof($periods)-1];
+
+    //new init date is the day after the end of the last period
+    $date_array=date_web_to_arrayDMA($last_period["_end"]);
+    $init_date=date("d/m/Y",mktime(0,0,0,$date_array[1],$date_array[0]+1,$date_array[2]));
+    //new end date is 31/12 of the year
+    $init_date_array=date_web_to_arrayDMA($init_date);
+    $end_date=date("d/m/Y",mktime(0,0,0,12,31,$init_date_array[2]));
+    $jour_hours=$last_period["journey"];
+    $area=$last_period["area"];
+    $city=$last_period["city"];
+    $hour_cost=$last_period["hour_cost"];
+  } else
+    $reset_new_period=true;
+}
+
+if ($reset_new_period) {
+    //new period (if any) was inserted sucessfully, we reset it
+    $init_date="";
+    $end_date="";
+    $jour_hours=NULL;
+    $area=NULL;
+    $city=NULL;
+    $hour_cost="";
+  }
+  
 if (!empty($delete)) {
   $k=array_keys($delete);
   $admin=$k[0];
@@ -263,8 +296,8 @@ if (!empty($new_user_login)&&!empty($new_user_password)||!empty($create)) {
   ."','"
   .(($new_user_staff==1)?"t":"f")
   ."')"))||(!$result2=pg_exec($cnx,$query="INSERT INTO periods"
-	." (uid,journey,init,_end,area,city,hour_cost,area) VALUES ('$new_user_login', '$jour_hours'," 
-	."CURRENT_DATE, NULL,NULL,'$city', NULL, NULL)"))) {
+	." (uid,journey,init,_end,city,hour_cost,area) VALUES ('$new_user_login', '$jour_hours'," 
+	."CURRENT_DATE, NULL,'$city', NULL, NULL)"))) {
 	$error=_("Can't finalize the operation");
     } else {
 	$confirmation=_("The user has been created correctly. Remember to update her contract periods!");
@@ -461,7 +494,7 @@ if(!empty($new)) {?>
 
 <?
 }
-if (!empty($edit)||!empty($id)&&(empty($new)&&empty($create))||!empty($del_period)){
+if (!empty($edit)||!empty($id)&&(empty($new)&&empty($create))||!empty($del_period)||!empty($copy_last_period)){
 ?>
 <br><br><br>
 
@@ -543,13 +576,6 @@ if ($authentication_mode=="sql") {
 </font></td></tr></table></td></tr></table></td></tr></table>
 <br>
 
-<?
-$journey=array(
-  8=>_("Full time"),
-  4=>_("Half time"),
-  6=>_("Practice journey"));
-
-if (!empty($periods)) {?>
 <table border="0" cellspacing="0" cellpadding="0"">
 <tr><td bgcolor="#000000">
 <table border="0" cellspacing="1" cellpadding="0""><tr>
@@ -560,6 +586,13 @@ if (!empty($periods)) {?>
 <!-- end title box -->
 </font></td></tr>
 
+<?
+$journey=array(
+  8=>_("Full time"),
+  4=>_("Half time"),
+  6=>_("Practice journey"));
+
+if (!empty($periods)) {?>
 <tr>
   <!-- title row -->
   <td class="title_box"><?=_("Init date");?></td>
@@ -601,27 +634,30 @@ for ($i=0;$i<sizeof($periods);$i++) {
 <!-- new period row -->
 <tr>
   <td>
-    <input type="text" name="init_date">
+    <input type="text" name="init_date" value="<?=$init_date?>">
   </td> 
   <td>
-    <input type="text" name="end_date">
+    <input type="text" name="end_date" value="<?=$end_date?>">
   </td> 
   <td>
-   <select name="jour_hours"><?=array_to_option(array_values($journey),$journey,array_keys($journey))?>
+   <select name="jour_hours"><?=array_to_option(array_values($journey),$jour_hours,array_keys($journey))?>
    </select>
   </td>
   <td>
-    <select name="area"?>"><?=array_to_option(array_values($areasList),NULL,array_keys($areasList))?>
+    <select name="area"?>"><?=array_to_option(array_values($areasList),$area,array_keys($areasList))?>
     </select>
   </td>
   <td>
     <select name="city">
-	 <?=array_to_option(array_values($cities),NULL, array_values($cities))?>
+	 <?=array_to_option(array_values($cities),$city, array_values($cities))?>
     </select> 
   </td> 
   <td>
-    <input type="text" name="hour_cost">
+    <input type="text" name="hour_cost" value="<?=$hour_cost?>">
   </td> 
+  <td>
+    <input type="submit" name="copy_last_period" value="<?=_("Copy last period")?>">
+  </td>
 </tr>
 <!-- end new period row -->
 
