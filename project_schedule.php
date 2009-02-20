@@ -86,16 +86,10 @@ if(!empty($project)){
     }
     @pg_freeresult($result);
 
-    $init_proj= date_sql_to_web($project_info["init"]);
-    $initDMA= date_web_to_arrayDMA($init_proj);
-    $ts= mktime(0 ,0,0,$initDMA[1], $initDMA[0],$initDMA[2]);
-    
-    $init_year=date('o', $ts);
+    $init_proj=date_sql_to_web($project_info["init"]);
+    $init_year=get_ISO_year($init_proj);
     $end_proj= date_sql_to_web($project_info["_end"]);
-    $endDMA= date_web_to_arrayDMA($end_proj);
-    $ts= mktime(0,0,0,$endDMA[1], $endDMA[0],$endDMA[2]);
-    
-    $end_year=date('o', $ts);
+    $end_year= get_ISO_year($end_proj);
     $current_year=$init_year;
 
     /* Select users related to the project */
@@ -672,6 +666,25 @@ for($i=1; $i<=max_week_hours; $i++){
 
 /*********** USEFUL FUNCTIONS **********/
 
+/* param: $date: date in a string with the format DD/MM/YYYY
+ * get_ISO_year returns ISO-8601 year number in 4-digit representation.
+ * In general is the same value of the year, except that if the ISO week number belongs to the previous
+ * or next year, that year is used instead.
+ */
+function get_ISO_year($date) {
+    $date_DMA= date_web_to_arrayDMA($date);
+    $ts= mktime(0,0,0,$date_DMA[1],$date_DMA[0],$date_DMA[2]);
+
+  if(version_compare(PHP_VERSION, '5.1', '<')) {
+    $year=$date_DMA[2];
+    $week=date('W', $ts);
+    if($date_DMA[1]==12&&$week==1) $year+=1;
+    if($date_DMA[1]==1&&$week>=52) $year-=1;
+  } else {
+    $year=date('o', $ts);
+  }
+  return $year;
+}
 /* param: $week_user: variable which contains both week and user concatenated by means of week_user_separator
  * get_user_from_link returns user from $week_user variable and NULL otherwise 
  */
@@ -802,8 +815,7 @@ function get_edited_weeks($cnx,$project){
 function create_year_week($web_date){
   if(!empty($web_date)){    
     $dma_init=date_web_to_arrayDMA($web_date);
-    $ts_init=mktime(0,0,0,$dma_init[1], $dma_init[0], $dma_init[2]);
-    $current_year=date('o', mktime(0,0,0,$dma_init[1], $dma_init[0], $dma_init[2]));	
+    $current_year=get_ISO_year($web_date);
     $w=date('W',mktime(0,0,0,$dma_init[1], $dma_init[0], $dma_init[2]));	
     $current_year_week= $current_year.year_week_separator.$w;
     return $current_year_week;
@@ -912,7 +924,8 @@ function prune($acc,$i,$est_hours){
  function create_end_week($init_week){
   $init_dma=date_web_to_arrayDMA($init_week);
   $ts=mktime(0,0,0,$init_dma[1],$init_dma[0],$init_dma[2]);
-  $week_day=date('N',$ts);
+  $week_day=date('w',$ts);
+  if($week_day==0) $week_day=7; //'w' in date returns 0 for Sunday
   $days2move=abs($week_day-7);
   return day_day_moved($init_week, $days2move);
 }
@@ -973,10 +986,7 @@ function create_combo_values($week_dates){
 function get_year_from_web_date($web_date){
   if(empty($web_date))
     return NULL;
-  $dma=date_web_to_arrayDMA($web_date);
-  $ts=mktime(0,0,0,$dma[1], $dma[0], $dma[2]);
-  $year=date('o',$ts);
-  return $year;
+  return get_ISO_year($web_date);
 }
 /*
  * param: $web_date: Date in web format
@@ -1609,6 +1619,24 @@ function check_feasibility($cnx,$periods,$est_hours){
  * get_indexes_edited_weeks parses the string $edited_cells to get the indexes of edited_weeks
  */
 function get_indexes_edited_weeks($edited_cells,$uid){
+if(version_compare(PHP_VERSION, '5.0', '<')) {
+  //version for PHP4
+  $edited=explode(',',$edited_cells);
+  if(!empty($edited)){
+    $indexes=array();
+    foreach($edited as $e){
+      if(!(strpos($e,"users_weeks[".$uid."][")===false)) {
+        $index=str_replace("users_weeks[".$uid."][","",$e);
+        $length= strpos($index,"]");
+        $index=substr($index,0,$length);
+        array_push($indexes,$index);
+      }
+    }
+    return $indexes;
+  }
+  return NULL;
+} else {
+  //version for PHP5
   $edited=explode(',',$edited_cells);
   if(!empty($edited)){
     $indexes=array();
@@ -1623,6 +1651,7 @@ function get_indexes_edited_weeks($edited_cells,$uid){
     return $indexes;
   }
   return NULL;
+}
 }
 /*
  * param: $periods_list. array of periods belonging to a same user
