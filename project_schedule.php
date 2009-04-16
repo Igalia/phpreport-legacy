@@ -78,13 +78,15 @@ if(!empty($project)){
   }
   else{
     /* Select init and _end dates from project (always) */
-    $result=@pg_exec($cnx, $query="SELECT init,_end, est_hours FROM projects WHERE id='$project'")
+    $result=@pg_exec($cnx, $query="SELECT init,_end, est_hours, moved_hours FROM projects WHERE id='$project'")
       or exit("Cant't finalize this operation. ".$query);
 
     while($row=@pg_fetch_array($result,NULL,PGSQL_ASSOC)){
       $project_info=$row;
     }
     @pg_freeresult($result);
+
+    $project_info["total_hours"]=$project_info["est_hours"]+$project_info["moved_hours"];
 
     $init_proj=date_sql_to_web($project_info["init"]);
     $init_year=get_ISO_year($init_proj);
@@ -324,14 +326,14 @@ if(!empty($project)){
               $project_type=$schedule_type;
             
             if($project_type=="init_est"){
-              check_feasibility($cnx,$periods,$project_info["est_hours"]);
+              check_feasibility($cnx,$periods,$project_info["total_hours"]);
               if(empty($error)){
               $weeks=array();
               $this_week=$init_proj; //web format
               $acc_hours=0;
               $i=0;
              
-              while(($acc_hours<$project_info["est_hours"]) && empty($error) && empty($warning)){
+              while(($acc_hours<$project_info["total_hours"]) && empty($error) && empty($warning)){
 
                 $end_week=create_end_week($this_week);         
                 if(!empty($users_project)){
@@ -372,7 +374,7 @@ if(!empty($project)){
                 $i++;
               }//end while 
 
-              if($acc_hours!=$project_info["est_hours"]){
+              if($acc_hours!=$project_info["total_hours"]){
                 if(!empty($users_project)){
                   $acc_last_week=0;
                   foreach($users_project as $uid){
@@ -382,7 +384,7 @@ if(!empty($project)){
                 $acc_hours=$acc_hours-$acc_last_week;
                 if(empty($error) && empty($warning)) // in order to avoid infinite loops because excess is distributed among users equally 
                   // assuming no error so far
-                  prune($acc_hours,$i-2,$project_info["est_hours"]);
+                  prune($acc_hours,$i-2,$project_info["total_hours"]);
               }
               } //error:not feasible
             } //end if init_est
@@ -480,7 +482,7 @@ if(!empty($project)){
           }
         }
         else if($project_type=="init_est"){
-          check_feasibility($cnx,$periods,$project_info["est_hours"]);
+          check_feasibility($cnx,$periods,$project_info["total_hours"]);
 
           if(empty($error)){
           $acc=0;            //calculating hours invested in a schedule
@@ -498,14 +500,14 @@ if(!empty($project)){
                   $acc_last_week+=$users_weeks[$uid][count($weeks)-1];
                 }
               }
-            if($acc>$project_info["est_hours"]){  //more weeks than needed: keep values until goal(est_hours) is met
+            if($acc>$project_info["total_hours"]){  //more weeks than needed: keep values until goal(est_hours) is met
               $_acc=0;
               for($i=0;$i<count($weeks);$i++){
                 if(!empty($users_project)){
                   foreach ($users_project as $uid){
                     $_acc=$_acc+$users_weeks[$uid][$i];
                   }
-                  if($_acc>$project_info["est_hours"]){
+                  if($_acc>$project_info["total_hours"]){
                     $index=$i; //index of first week which exceeds est_hours
                     break;
                   }
@@ -521,11 +523,11 @@ if(!empty($project)){
               
               $_acc=$_acc-$acc_last_week; 
               if(empty($error)&& empty($warning))// in order to avoid infinite loops because excess is distributed among users assuming no error has occurred
-                prune($_acc,count($weeks)-2,$project_info["est_hours"]);
+                prune($_acc,count($weeks)-2,$project_info["total_hours"]);
             }
-            else if($acc<$project_info["est_hours"]){ //less weeks than needed: add more weeks
+            else if($acc<$project_info["total_hours"]){ //less weeks than needed: add more weeks
               $acc-=$acc_last_week;
-              reschedule($cnx,$init_proj,$acc,$project_info["est_hours"]);
+              reschedule($cnx,$init_proj,$acc,$project_info["total_hours"]);
               
             }
           }// error feasible
@@ -1553,7 +1555,7 @@ function validate_periods(){
         }
       }
     }
-    if($acc<$project_info["est_hours"])
+    if($acc<$project_info["total_hours"])
       $error=_("Periods duration and weekly load are not enough to reach estimated hours for this project: Only $acc hours scheduled.");
   }
 
@@ -1776,6 +1778,7 @@ if (!empty($warning)){
                 <td class="title_box"><b><?=_("Init date")?></b></td>
                 <td class="title_box"><b><?=_("End date")?></b></td>
                 <td class="title_box"><b><?=_("Est. Hours")?></b></td>
+                <td class="title_box"><b><?=_("Moved Hours")?></b></td>
                 <td class="title_box"><b><?=_("Schedule type")?></b></td>
               </tr>
               <tr>
@@ -1783,6 +1786,7 @@ if (!empty($warning)){
                 <td align="center"><?=date_sql_to_web($project_info["init"])?></td> 
                 <td align="center"><?=date_sql_to_web($project_info["_end"])?></td> 
                 <td align="center"><?=$project_info["est_hours"]?></td> 
+                <td align="center"><?=$project_info["moved_hours"]?></td> 
                 <td align="center"><?=$project_type?></td> 
               </tr>
             </table>
@@ -2126,7 +2130,7 @@ if (!empty($warning)){
           }
           $real_acc=$real_acc+$real_week;
           $th_acc=$th_acc+$th_week;
-          echo number_format((($real_acc-$th_acc)/$project_info["est_hours"])*100,2);
+          echo number_format((($real_acc-$th_acc)/$project_info["total_hours"])*100,2);
           echo '%';
           ?>
         </td>

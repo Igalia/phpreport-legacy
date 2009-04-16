@@ -173,7 +173,8 @@ CREATE TABLE projects (
     area character varying(256),
     id character varying(256) NOT NULL,
     description character varying(256),
-    type character varying(256)
+    type character varying(256),
+    moved_hours double precision
 );
 
 

@@ -61,6 +61,7 @@ if (!empty($change)) {
   $project["area"]=$area;   
   $project["activation"]=checkbox_to_sql($activation);
   $project["est_hours"]=$est_hours;
+  $project["moved_hours"]=$moved_hours;
   $project["invoice"]=$invoice;
   $project["init"]=$init;
   $project["_end"]=$end;   
@@ -71,8 +72,8 @@ if (!empty($change)) {
 
   if (!pg_exec($cnx,$query="UPDATE projects SET "
     ." description='$description',activation='".(($activation==1)?"t":"f")."',"
-    ." customer='$customer',area=".(($area != 'unknown_area')?("'$area'"):"NULL").",est_hours='$est_hours',invoice='$invoice',"
-    ."init=".$init.", _end=".$end.", type=".(($type != 'unknown_type')?("'$type'"):"NULL")
+    ." customer='$customer',area=".(($area != 'unknown_area')?("'$area'"):"NULL").",est_hours='$est_hours',moved_hours='$moved_hours',"
+    ." invoice='$invoice', init=".$init.", _end=".$end.", type=".(($type != 'unknown_type')?("'$type'"):"NULL")
     ." WHERE id='$id'")||
       !pg_exec($cnx,$query="UPDATE label SET "
     ." description='$description' ,activation='".(($activation==1)?"t":"f")."'"
@@ -97,6 +98,7 @@ if (!empty($create)) {
   $project["area"]=$area;   
   $project["activation"]=checkbox_to_sql($activation);
   $project["est_hours"]=$est_hours;
+  $project["moved_hours"]=$moved_hours;
   $project["invoice"]=$invoice;
   $project["init"]=$init;
   $project["_end"]=$end; 
@@ -106,9 +108,9 @@ if (!empty($create)) {
   $activation=checkbox_to_sql($activation);
 
   if (!pg_exec($cnx,$query="INSERT INTO projects"
-    ." (id,description,customer,area,activation,est_hours,invoice,init,_end,type) "
+    ." (id,description,customer,area,activation,est_hours,moved_hours,invoice,init,_end,type) "
     ."VALUES ('$id', '$description','$customer',".(($area != 'unknown_area')?("'$area'"):"NULL").",'$activation',"
-    ."'$est_hours','$invoice', $init, $end, ".(($type != 'unknown_type')?("'$type'"):"NULL").")")
+    ."'$est_hours','$moved_hours','$invoice', $init, $end, ".(($type != 'unknown_type')?("'$type'"):"NULL").")")
     ||!pg_exec($cnx,$query="INSERT INTO " 
     ."label (type,code,description,activation) "
     ."VALUES ('name','$id','$description','$activation')")) {
@@ -404,6 +406,14 @@ if (!empty($confirmation)) msg_ok($confirmation);
 				    </td>
 				    <td>
 				      <input type="text" name="end" value="<?=$project["_end"]?>">
+				    </td> 
+				  </tr>
+				  <tr>
+				    <td><br>
+				      <?=_("Moved hours");?>:
+				    </td>
+				    <td><br>
+				      <input type="text" name="moved_hours" value="<?=$project["moved_hours"]?>">
 				    </td> 
 				  </tr>
 				</table>
