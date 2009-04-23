@@ -1,10 +1,14 @@
 PhpReport - A task reporting application
 
-Copyright (C) 2003-2005
- Igalia, S.L. <info@igalia.com>
+Copyright (C) 2003-2009 Igalia, S.L. <info@igalia.com>
  Andrés Gómez García <agomez@igalia.com>
+ Andrés Maneiro Boga <amaneiro@igalia.com>
  Enrique Ocaña González <eocanha@igalia.com>
+ Jacobo Aragunde Pérez <jaragunde@igalia.com>
  José Riguera López <jriguera@igalia.com>
+ Jesús Pérez Díaz <jperez@igalia.com>
+ María Fernández Rodríguez <maria.fdez.rguez@gmail.com>
+ Mario Sánchez Prada <msanchez@igalia.com>
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
