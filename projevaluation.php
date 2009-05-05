@@ -52,6 +52,8 @@ require_once("include/autenticate.php");
 require_once("include/connect_db.php");
 require_once("include/prepare_calendar.php");
 
+define("YEARLY_HOLIDAY_HOURS", "184");
+
 $die=_("Can't finalize the operation");
 
 /* if ($flag=="PROJECTS" && !multi_in_array($board_group_names,(array)$session_groups)) { */
@@ -551,6 +553,20 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
   } 
 
   if ($sheets==5 || $sheets==6) {
+
+    // Select the holiday hours spent in the selected year
+    $year=substr($init,0,4);
+    $lowest_date=$year."-01-01";
+    $uppest_date=$year."-12-31";
+    $holiday_hours=@pg_exec($cnx,$query="SELECT uid, SUM( _end - init ) / 60.0 AS add_hours FROM task WHERE ( _date >= '"
+	       .$lowest_date."'::date AND _date <= '".$uppest_date."'::date ) AND type='vac' "
+	       ."GROUP BY uid ORDER BY uid ASC")
+      or die($die);
+    $holiday_hours_consult=array();
+    for ($i=0;$row=@pg_fetch_array($holiday_hours,$i,PGSQL_ASSOC);$i++) {
+      $holiday_hours_consult[$row["uid"]]=$row;
+    }
+    @pg_freeresult($holiday_hours);
     
     $worked_hours_consult=net_extra_hours($cnx,$init,$end);
 
@@ -592,14 +608,14 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
       // Put them all
       $worked_hours_consult[$k]["total_extra_hours"]=$worked_hours_consult[$k]["extra_hours"]
         +$previous_hours;
-
+      $worked_hours_consult[$k]["pending_holiday_hours_year"]=YEARLY_HOLIDAY_HOURS-$holiday_hours_consult[$k]["add_hours"];
     }
 
     $row_index="uid";
     $row_index_trans=_("User");
     $row_title_var="users_consult";
     if ($sheets==5) {
-      $project_consult=array("total_extra_hours");
+      $project_consult=array("total_extra_hours", "pending_holiday_hours_year");
     } else {
       $project_consult=array("total_hours","workable_hours","extra_hours","total_extra_hours");
     }
@@ -612,14 +628,16 @@ if (!empty($sheets)&&$sheets!="0"&&empty($error)) {
       $add_workable_hours+=$row2["workable_hours"];
       $add_extra_hours+=$row2["extra_hours"];
       $add_total_extra_hours+=$row2["total_extra_hours"];
+      $add_total_pending_holiday_hours_year+=$row2["pending_holiday_hours_year"];
+      $add_positive_total_extra_hours+=$row2["pending_holiday_hours_year"];
     }
     foreach($worked_hours_consult as $k=>$row2) {
       // Use @ (error quieting) to prevent division by zero. Result will be zero anyway...
-      $percent_row[$k]=@(100*$row2["total_extra_hours"]/$add_positive_total_extra_hours);
+      $percent_row[$k]=@(100*($row2["total_extra_hours"]+$row2["pending_holiday_hours_year"])/$add_positive_total_extra_hours);
     }
     
     if ($sheets==5) {
-      $add_totals=array($add_total_extra_hours);
+      $add_totals=array($add_total_extra_hours, $add_total_pending_holiday_hours_year);
     } else {
       $add_totals=array($add_total_hours,$add_workable_hours,$add_extra_hours,
         $add_total_extra_hours);
