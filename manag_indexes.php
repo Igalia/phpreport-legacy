@@ -434,31 +434,43 @@ if (!empty($error)) msg_fail($error);
  color="#000000" class="text_box">
 <!-- text box -->
 
+<?
+if($dev_h_all_count!=0) {?>
 <?=sprintf(_('%01.2f percent of the projects have less than %01.2f percent of all hour deviation.'),
   $dev_h_all_less/$dev_h_all_count*100,$min_percent_hour_dev)?><br/>
-
+<?}
+if($dev_h_pex_count!=0) {?>
 <?=sprintf(_('%01.2f percent of the projects have less than %01.2f percent of PEX hour deviation.'),
   $dev_h_pex_less/$dev_h_pex_count*100,$min_percent_hour_dev)?><br/>
-
+<?}
+if($dev_h_all_count!=0) {?>
 <?=sprintf(_('%01.2f percent of the projects have more than %01.2f percent of all hour deviation.'),
   $dev_h_all_more/$dev_h_all_count*100,$max_percent_hour_dev)?><br/>
-
+<?}
+if($dev_h_pex_count!=0) {?>
 <?=sprintf(_('%01.2f percent of the projects have more than %01.2f percent of PEX hour deviation.'),
   $dev_h_pex_more/$dev_h_pex_count*100,$max_percent_hour_dev)?><br/>
+<?}?>
 
 <br/>
   
+<?
+if($dev_p_all_count!=0) {?>
 <?=sprintf(_('%01.2f percent of the projects have less than %01.2f EUR/h of profit.'),
   $dev_p_all_less/$dev_p_all_count*100,$min_profit)?><br/>
-
+<?}
+if($dev_p_pex_count!=0) {?>
 <?=sprintf(_('%01.2f percent of the projects have less than %01.2f EUR/h of profit considering PEX hour only.'),
   $dev_p_pex_less/$dev_p_pex_count*100,$min_profit)?><br/>
-
+<?}
+if($dev_p_all_count!=0) {?>
 <?=sprintf(_('%01.2f percent of the projects have more than %01.2f EUR/h of profit.'),
   $dev_p_all_more/$dev_p_all_count*100,$max_profit)?><br/>
-
+<?}
+if($dev_p_pex_count!=0) {?>
 <?=sprintf(_('%01.2f percent of the projects have more than %01.2f EUR/h of profit considering PEX hour only.'),
   $dev_p_pex_more/$dev_p_pex_count*100,$max_profit)?><br/>
+<?}?>
 
 <!-- end text box -->
 </font></td></tr></table></td></tr></table></td></tr></table>
