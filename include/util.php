@@ -107,7 +107,10 @@ function validate_date_web($web_date) {
 
 // Tests if a time is valid HH:MM or H:MM
 function validate_time_web($web_time) {
- return preg_match("/[0-9]{1,2}:[0-9]{2,2}/",$web_time);
+ if (preg_match("/[0-9]{1,2}:[0-9]{2,2}/",$web_time))
+   return TRUE;
+ else
+   return preg_match("/[0-9]{4,4}/",$web_time);
 }
 
 // Convert a date from "spanish" format (DD/MM/YYYY) to a (DD,MM,YYYY) array
@@ -175,8 +178,12 @@ function cmp_web_dates ($date_a, $date_b) {
 
 // Convert "spanish" time (HH:MM) to "PostgreSQL" (total minutes)
 function hour_web_to_sql($web_hour) {
- $hourHM=explode(":",$web_hour);
- return($hourHM[0]*60+$hourHM[1]);
+ if(strstr($web_hour,":")) {
+   $hourHM=explode(":",$web_hour);
+   return($hourHM[0]*60+$hourHM[1]);
+ }
+ else
+   return(substr($web_hour,0,-2)*60+substr($web_hour,2));
 }
 
 // Convert "PostgreSQL" time (total minutes) to "spanish" (HH:MM)
