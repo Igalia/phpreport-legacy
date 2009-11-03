@@ -5,7 +5,7 @@
  * title = Page title
  *
  */
-header('Content-Type:  charset=UTF-8');
+header('Content-Type: text/html; charset=UTF-8');
 ?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
 <html>
 <head>
