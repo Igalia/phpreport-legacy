@@ -549,7 +549,7 @@ function setCombosStatus(type, task_number) {
 <td style="text-align: center; vertical-align: top;">
 
 <center>
-<form name="task" action="#last_task" method="post">
+<form name="task" action="#last_task" method="post" onkeypress="return false">
 <input type="hidden" name="day" value="<?=$day?>">
 <input type="hidden" name="hoxe" value="<?=$hoxe?>">
 <input type="hidden" name="weekly_hours" value="<?=$weekly_hours?>">
